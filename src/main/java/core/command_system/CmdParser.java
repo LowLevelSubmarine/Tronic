@@ -1,5 +1,6 @@
 package core.command_system;
 
+import core.Core;
 import core.command_system.arguments.CmdArgument;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -12,11 +13,13 @@ import java.util.stream.Collectors;
 
 public class CmdParser {
 
+    private final Core core;
     private final String invoke;
     private final String[] args;
     private final MessageReceivedEvent event;
 
-    public CmdParser(MessageReceivedEvent event) throws InvalidSyntaxException {
+    public CmdParser(Core core, MessageReceivedEvent event) throws InvalidSyntaxException {
+        this.core = core;
         String prefix = ">";
         String raw = event.getMessage().getContentDisplay();
         if (!raw.startsWith(">")) {
@@ -67,11 +70,16 @@ public class CmdParser {
         return null;
     }
 
-    public String getText(int index) {
+    public String getText(int index) throws CmdArgument.InvalidArgumentException {
         if (validIndex(index)) {
             return Arrays.stream(this.args).skip(index).map(s -> " " + s).collect(Collectors.joining()).substring(1);
+        } else {
+            throw new CmdArgument.InvalidArgumentException("Any text");
         }
-        return null;
+    }
+
+    public Core getCore() {
+        return this.core;
     }
 
     private boolean validIndex(int index) {

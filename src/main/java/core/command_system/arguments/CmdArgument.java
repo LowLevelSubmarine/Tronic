@@ -14,6 +14,11 @@ public interface CmdArgument<T> {
             this.expected = expected;
         }
 
+        public InvalidArgumentException(String expected) {
+            this.input = null;
+            this.expected = expected;
+        }
+
         public String getInput() {
             return this.input;
         }

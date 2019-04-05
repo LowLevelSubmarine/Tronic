@@ -2,14 +2,21 @@ package core.command_system;
 
 import core.Core;
 import core.command_system.arguments.CmdArgument;
-import core.command_system.commands.CmdRepeat;
+import core.command_system.commands.administration.CmdSetGame;
+import core.command_system.commands.fun.CmdRepeat;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class CmdHandler {
 
+    private final Core core;
+
     private final Cmd[] cmds = {
-            new CmdRepeat()
-    };
+            new CmdSetGame(),
+            new CmdRepeat()};
+
+    public CmdHandler(Core core) {
+        this.core = core;
+    }
 
     public void handle(MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) {
@@ -17,7 +24,7 @@ public class CmdHandler {
         }
         System.out.println(event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
         try {
-            CmdParser parser = new CmdParser(event);
+            CmdParser parser = new CmdParser(core, event);
             for (Cmd cmd : this.cmds) {
                 if (parser.getInvoke().equals(cmd.invoke())) {
                     if (parser.isGuildAccess() && cmd.guildAccess()) {

@@ -5,7 +5,7 @@ import net.dv8tion.jda.core.entities.User;
 
 public enum Permission {
 
-    NONE(0), GUILD(1), BOT(2);
+    NONE(0), GUILD_ADMIN(1), BOT_ADMIN(2), HOST(3);
 
     private final int level;
 
