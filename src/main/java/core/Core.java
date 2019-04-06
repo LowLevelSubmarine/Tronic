@@ -1,5 +1,6 @@
 package core;
 
+import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
 import core.config.TronicConfig;
 import core.listeners.MessageReceivedListener;
 import core.storage.Storage;
@@ -26,6 +27,7 @@ public class Core {
         builder.setEnableShutdownHook(true); //TODO: turn off
         builder.setAutoReconnect(true);
         builder.setAudioEnabled(true);
+        builder.setAudioSendFactory(new NativeAudioSendFactory());
         builder.addEventListener(this.allJDAListeners);
         builder.setGame(Game.playing(this.storage.getBot().getGame()));
         jda = builder.build();

@@ -28,12 +28,12 @@ public class CmdHandler {
             for (Cmd cmd : this.cmds) {
                 if (parser.getInvoke().equals(cmd.invoke())) {
                     if (parser.isGuildAccess() && cmd.guildAccess()) {
-                        if (cmd.requiredPermission().hasPermission(parser.getMember())) {
+                        if (cmd.requiredPermission().hasPermission(parser.getMember(), this.core)) {
                             run(cmd, parser);
                             return;
                         }
                     } else if (cmd.privateAccess()) {
-                        if (cmd.requiredPermission().hasPermission(parser.getUser())) {
+                        if (cmd.requiredPermission().hasPermission(parser.getUser(), this.core)) {
                             run(cmd, parser);
                             return;
                         }

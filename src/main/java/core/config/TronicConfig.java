@@ -1,9 +1,6 @@
 package core.config;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import core.storage.serialized.UserSerialized;
-import net.dv8tion.jda.core.entities.User;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -22,7 +19,7 @@ public class TronicConfig implements Config {
     public static TronicConfig load(File file) {
         XStream xStream = new XStream();
         xStream.alias("tronic", TronicConfig.class);
-        xStream.alias("token-info", TokenInfo.class);
+        xStream.alias("tokenInfo", TokenInfo.class);
         xStream.allowTypes(new Class[]{TronicConfig.class, TokenInfo.class});
         return XStreamUtil.loadConfigFrom(file, new TronicConfig(), xStream);
     }
