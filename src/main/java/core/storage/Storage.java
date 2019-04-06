@@ -21,6 +21,7 @@ public class Storage {
         if (botData == null) {
             botData = new BotData();
             botData.populate(this, BOT_DATA_KEY);
+            saveBot(botData);
         }
         return botData;
     }
@@ -30,6 +31,7 @@ public class Storage {
         if (guildData == null) {
             guildData = new GuildData();
             guildData.populate(this, guild.getId());
+            saveGuild(guildData);
         }
         return guildData;
     }
@@ -39,26 +41,27 @@ public class Storage {
         if (userData == null) {
             userData = new UserData();
             userData.populate(this, user.getId());
+            saveUser(userData);
         }
         return userData;
     }
 
     void saveBot(BotData botData) {
-        this.botData.save(botData.getId());
+        this.botData.save(botData);
     }
 
     void saveGuild(GuildData guildData) {
-        this.guildData.save(guildData.getId());
+        this.guildData.save(guildData);
     }
 
     void saveUser(UserData userData) {
-        this.userData.save(userData.getId());
+        this.userData.save(userData);
     }
 
     class Type<T extends Storable> {
         private final LinkedList<T> cache = new LinkedList<>();
         private final Shelf shelf;
-        public Type(File root, Class<T> clazz) {
+        Type(File root, Class<T> clazz) {
             this.shelf = new Shelf(root);
             for (String key : this.shelf.keys("")) {
                 T item = this.shelf.item(key).get(clazz);
@@ -66,7 +69,7 @@ public class Storage {
                 this.cache.add(item);
             }
         }
-        public T get(String id) {
+        T get(String id) {
             for (T item : cache) {
                 if (item.getId().equals(id)) {
                     return item;
@@ -75,11 +78,12 @@ public class Storage {
             return null;
 
         }
-        public void save(String id) {
-            T item = get(id);
-            if (item != null) {
-                this.shelf.item(id).put(item);
+        void save(T data) {
+            T item = get(data.getId());
+            if (item == null) {
+                this.cache.add(data);
             }
+            this.shelf.item(data.getId()).put(item);
         }
     }
 
