@@ -1,4 +1,4 @@
-package core.config.token;
+package core.config;
 
 public class TokenInfo {
     public String name = "";

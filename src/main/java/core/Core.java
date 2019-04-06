@@ -1,5 +1,6 @@
 package core;
 
+import core.config.TronicConfig;
 import core.listeners.MessageReceivedListener;
 import core.storage.Storage;
 import net.dv8tion.jda.core.JDA;
@@ -16,8 +17,10 @@ public class Core {
     private final ListenerAdapter[] allJDAListeners = {
         new MessageReceivedListener(this)
     };
+    private final TronicConfig config;
 
-    public Core(String token) throws LoginException, InterruptedException {
+    public Core(String token, TronicConfig config) throws LoginException, InterruptedException {
+        this.config = config;
         JDABuilder builder = new JDABuilder();
         builder.setToken(token);
         builder.setEnableShutdownHook(true); //TODO: turn off
@@ -42,6 +45,10 @@ public class Core {
 
     public Storage getStorage() {
         return this.storage;
+    }
+
+    public TronicConfig getConfig() {
+        return this.config;
     }
 
     private void onConnect() {
