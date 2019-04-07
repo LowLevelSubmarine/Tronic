@@ -6,7 +6,7 @@ public class Syntax {
 
     private LinkedList<SyntaxOption> options = new LinkedList<>();
 
-    public Syntax addOption(SyntaxOption option) {
+    public Syntax add(SyntaxOption option) {
         this.options.add(option);
         return this;
     }

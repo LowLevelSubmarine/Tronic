@@ -1,6 +1,6 @@
 package core.command_system;
 
-import core.Core;
+import core.Tronic;
 import core.command_system.arguments.CmdArgument;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 
 public class CmdParser {
 
-    private final Core core;
+    private final Tronic tronic;
     private final String invoke;
     private final String[] args;
     private final MessageReceivedEvent event;
 
-    public CmdParser(Core core, MessageReceivedEvent event) throws InvalidSyntaxException {
-        this.core = core;
+    public CmdParser(Tronic tronic, MessageReceivedEvent event) throws InvalidSyntaxException {
+        this.tronic = tronic;
         String prefix = ">";
         String raw = event.getMessage().getContentDisplay();
         if (!raw.startsWith(">")) {
@@ -78,8 +78,8 @@ public class CmdParser {
         }
     }
 
-    public Core getCore() {
-        return this.core;
+    public Tronic getTronic() {
+        return this.tronic;
     }
 
     private boolean validIndex(int index) {

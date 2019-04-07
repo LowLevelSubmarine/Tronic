@@ -3,15 +3,17 @@ package core;
 import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
 import core.config.TronicConfig;
 import core.listeners.MessageReceivedListener;
+import core.music.GuildPlayerManager;
 import core.storage.Storage;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 
-public class Core {
+public class Tronic {
 
     private final JDA jda;
     private final Storage storage = new Storage();
@@ -19,12 +21,14 @@ public class Core {
         new MessageReceivedListener(this)
     };
     private final TronicConfig config;
+    private final GuildPlayerManager playerManager;
 
-    public Core(String token, TronicConfig config) throws LoginException, InterruptedException {
+    public Tronic(String token, TronicConfig config) throws LoginException, InterruptedException {
         this.config = config;
+        this.playerManager = new GuildPlayerManager();
         JDABuilder builder = new JDABuilder();
         builder.setToken(token);
-        builder.setEnableShutdownHook(true); //TODO: turn off
+        builder.setEnableShutdownHook(false);
         builder.setAutoReconnect(true);
         builder.setAudioEnabled(true);
         builder.setAudioSendFactory(new NativeAudioSendFactory());
@@ -33,11 +37,10 @@ public class Core {
         jda = builder.build();
         jda.awaitReady();
         System.out.println("Successfully logged in as: " + jda.getSelfUser().getName());
-        onConnect();
     }
 
     public void shutdown() {
-        onShutdown();
+        this.jda.getPresence().setStatus(OnlineStatus.INVISIBLE);
         this.jda.shutdown();
     }
 
@@ -53,12 +56,8 @@ public class Core {
         return this.config;
     }
 
-    private void onConnect() {
-
-    }
-
-    private void onShutdown() {
-
+    public GuildPlayerManager getPlayerManager() {
+        return this.playerManager;
     }
 
 }

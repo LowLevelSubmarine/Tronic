@@ -1,21 +1,23 @@
 package core.command_system;
 
-import core.Core;
+import core.Tronic;
 import core.command_system.arguments.CmdArgument;
+import core.command_system.commands.administration.CmdRestart;
 import core.command_system.commands.administration.CmdSetGame;
 import core.command_system.commands.fun.CmdRepeat;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class CmdHandler {
 
-    private final Core core;
+    private final Tronic tronic;
 
     private final Cmd[] cmds = {
             new CmdSetGame(),
-            new CmdRepeat()};
+            new CmdRepeat(),
+            new CmdRestart()};
 
-    public CmdHandler(Core core) {
-        this.core = core;
+    public CmdHandler(Tronic tronic) {
+        this.tronic = tronic;
     }
 
     public void handle(MessageReceivedEvent event) {
@@ -24,16 +26,16 @@ public class CmdHandler {
         }
         System.out.println(event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
         try {
-            CmdParser parser = new CmdParser(core, event);
+            CmdParser parser = new CmdParser(tronic, event);
             for (Cmd cmd : this.cmds) {
                 if (parser.getInvoke().equals(cmd.invoke())) {
                     if (parser.isGuildAccess() && cmd.guildAccess()) {
-                        if (cmd.requiredPermission().hasPermission(parser.getMember(), this.core)) {
+                        if (cmd.requiredPermission().hasPermission(parser.getMember(), this.tronic)) {
                             run(cmd, parser);
                             return;
                         }
                     } else if (cmd.privateAccess()) {
-                        if (cmd.requiredPermission().hasPermission(parser.getUser(), this.core)) {
+                        if (cmd.requiredPermission().hasPermission(parser.getUser(), this.tronic)) {
                             run(cmd, parser);
                             return;
                         }

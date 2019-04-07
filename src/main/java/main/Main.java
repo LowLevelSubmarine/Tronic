@@ -1,5 +1,6 @@
-import core.Core;
-import core.command_system.syntax.Syntax;
+package main;
+
+import core.Tronic;
 import core.config.TronicConfig;
 import core.config.TokenInfo;
 import statics.Files;
@@ -7,13 +8,14 @@ import utils.UserSelection;
 
 import javax.security.auth.login.LoginException;
 
-public class Tronic {
+public class Main {
 
     private static String TOKEN;
     private static TronicConfig CONFIG;
-    private static Core CORE;
+    private static Tronic TRONIC;
 
     public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
         System.out.println("For help and more info, read the readme created in the applications folder :)");
         loadConfig();
         TOKEN = getToken();
@@ -22,7 +24,7 @@ public class Tronic {
 
     private static void boot() {
         try {
-            CORE = new Core(TOKEN, CONFIG);
+            TRONIC = new Tronic(TOKEN, CONFIG);
         } catch (LoginException e) {
             System.out.println("Failed access the Discord API with token: " + TOKEN + "\nYou can change it in: " + Files.TRONIC_CONFIG.getAbsolutePath() + ".");
         } catch (InterruptedException e) {
@@ -31,7 +33,7 @@ public class Tronic {
     }
 
     public static void shutdown() {
-        CORE.shutdown();
+        TRONIC.shutdown();
     }
 
     public static void restart() {

@@ -1,6 +1,6 @@
 package core.permissions;
 
-import core.Core;
+import core.Tronic;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
@@ -19,22 +19,22 @@ public enum Permission {
         return this.level;
     }
 
-    public boolean hasPermission(User user, Core core) {
-        return validate(user, null, core);
+    public boolean hasPermission(User user, Tronic tronic) {
+        return validate(user, null, tronic);
     }
 
-    public boolean hasPermission(Member member, Core core) {
-        return validate(member.getUser(), member.getGuild(), core);
+    public boolean hasPermission(Member member, Tronic tronic) {
+        return validate(member.getUser(), member.getGuild(), tronic);
     }
 
-    private boolean validate(User user, Guild guild, Core core) {
-        return calcLevel(user, guild, core) >= this.getLevel();
+    private boolean validate(User user, Guild guild, Tronic tronic) {
+        return calcLevel(user, guild, tronic) >= this.getLevel();
     }
 
-    private int calcLevel(User user, Guild guild, Core core) {
-        if (this.isBotHost(user, core)) {
+    private int calcLevel(User user, Guild guild, Tronic tronic) {
+        if (this.isBotHost(user, tronic)) {
             return HOST.getLevel();
-        } else if (this.isBotAdmin(user, core)) {
+        } else if (this.isBotAdmin(user, tronic)) {
             return BOT_ADMIN.getLevel();
         } else if (this.isGuildAdmin(user, guild)) {
             return GUILD_ADMIN.getLevel();
@@ -48,14 +48,14 @@ public enum Permission {
                 && guild.getMember(user).getPermissions().contains(net.dv8tion.jda.core.Permission.ADMINISTRATOR);
     }
 
-    private boolean isBotAdmin(User user, Core core) {
-        return user != null && core != null
-                && core.getStorage().getBot().isBotAdmin(user);
+    private boolean isBotAdmin(User user, Tronic tronic) {
+        return user != null && tronic != null
+                && tronic.getStorage().getBot().isBotAdmin(user);
     }
 
-    private boolean isBotHost(User user, Core core) {
-        return user != null && core != null
-                && core.getConfig().getHostId().equals(user.getId());
+    private boolean isBotHost(User user, Tronic tronic) {
+        return user != null && tronic != null
+                && tronic.getConfig().getHostId().equals(user.getId());
     }
 
 }

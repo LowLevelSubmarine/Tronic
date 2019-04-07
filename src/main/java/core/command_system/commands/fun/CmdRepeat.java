@@ -33,7 +33,7 @@ public class CmdRepeat implements Cmd {
 
     @Override
     public Syntax syntax() {
-        return new Syntax().addOption(new TextOption("the text u want me to repeat"));
+        return new Syntax().add(new TextOption("the text u want me to repeat"));
     }
 
     @Override

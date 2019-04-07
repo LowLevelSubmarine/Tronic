@@ -3,16 +3,16 @@ package core.command_system.commands.administration;
 import core.command_system.Cmd;
 import core.command_system.CmdInstance;
 import core.command_system.CmdParser;
-import core.command_system.arguments.CmdArgument;
 import core.command_system.syntax.Syntax;
 import core.command_system.syntax.TextOption;
 import core.permissions.Permission;
+import main.Main;
 
-public class CmdSetGame implements Cmd {
+public class CmdRestart implements Cmd {
 
     @Override
     public String invoke() {
-        return "setgame";
+        return "restart";
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CmdSetGame implements Cmd {
 
     @Override
     public Syntax syntax() {
-        return new Syntax().add(new TextOption("the game"));
+        return new Syntax().add(new TextOption("reason"));
     }
 
     @Override
@@ -40,24 +40,20 @@ public class CmdSetGame implements Cmd {
         return new Instance();
     }
 
+    private class Instance implements CmdInstance {
+        @Override
+        public void run(CmdParser parser) {
+            Main.restart();
+        }
+    }
+
     @Override
     public String info() {
-        return "Sets the game im playing";
+        return "Restarts me";
     }
 
     @Override
     public String description() {
-        return "Set the text below my username - the game im playing. " +
-                "Keep in mind that \"playing\" is always in front.";
+        return "Restarts me and posts a reason for that into every guild im on";
     }
-
-    private class Instance implements CmdInstance {
-        @Override
-        public void run(CmdParser parser) throws CmdArgument.InvalidArgumentException {
-            String game = parser.getText(0);
-            parser.getTronic().getStorage().getBot().setGame(game);
-            parser.getTronic().setGame(game);
-        }
-    }
-
 }
