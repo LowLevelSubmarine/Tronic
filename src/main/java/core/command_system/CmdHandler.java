@@ -4,23 +4,27 @@ import core.Tronic;
 import core.command_system.arguments.CmdArgument;
 import core.command_system.commands.administration.CmdRestart;
 import core.command_system.commands.administration.CmdSetGame;
+import core.command_system.commands.administration.CmdShutdown;
 import core.command_system.commands.fun.CmdRepeat;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public class CmdHandler {
+public class CmdHandler extends ListenerAdapter {
 
     private final Tronic tronic;
 
     private final Cmd[] cmds = {
             new CmdSetGame(),
             new CmdRepeat(),
-            new CmdRestart()};
+            new CmdRestart(),
+            new CmdShutdown()};
 
     public CmdHandler(Tronic tronic) {
         this.tronic = tronic;
     }
 
-    public void handle(MessageReceivedEvent event) {
+    @Override
+    public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) {
             return;
         }

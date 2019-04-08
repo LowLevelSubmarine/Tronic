@@ -16,6 +16,10 @@ public class GuildPlayer {
         this.guild = guild;
     }
 
+    public void play(QueueItem queueItem) {
+
+    }
+
     public void stop() {
         this.player.destroy();
     }

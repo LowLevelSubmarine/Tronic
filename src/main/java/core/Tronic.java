@@ -1,15 +1,15 @@
 package core;
 
 import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
+import core.buttons.ButtonHandler;
+import core.command_system.CmdHandler;
 import core.config.TronicConfig;
-import core.listeners.MessageReceivedListener;
-import core.music.GuildPlayerManager;
+import core.music.MusicManager;
 import core.storage.Storage;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 
@@ -17,22 +17,22 @@ public class Tronic {
 
     private final JDA jda;
     private final Storage storage = new Storage();
-    private final ListenerAdapter[] allJDAListeners = {
-        new MessageReceivedListener(this)
-    };
+    private final CmdHandler cmdHandler = new CmdHandler(this);
+    private final ButtonHandler btnHandler = new ButtonHandler();
     private final TronicConfig config;
-    private final GuildPlayerManager playerManager;
+    private final MusicManager playerManager;
 
     public Tronic(String token, TronicConfig config) throws LoginException, InterruptedException {
         this.config = config;
-        this.playerManager = new GuildPlayerManager();
+        this.playerManager = new MusicManager();
         JDABuilder builder = new JDABuilder();
         builder.setToken(token);
         builder.setEnableShutdownHook(false);
         builder.setAutoReconnect(true);
         builder.setAudioEnabled(true);
         builder.setAudioSendFactory(new NativeAudioSendFactory());
-        builder.addEventListener(this.allJDAListeners);
+        builder.addEventListener(this.cmdHandler);
+        builder.addEventListener(this.btnHandler);
         builder.setGame(Game.playing(this.storage.getBot().getGame()));
         jda = builder.build();
         jda.awaitReady();
@@ -56,8 +56,12 @@ public class Tronic {
         return this.config;
     }
 
-    public GuildPlayerManager getPlayerManager() {
+    public MusicManager getPlayerManager() {
         return this.playerManager;
+    }
+
+    public ButtonHandler getButtonHandler() {
+        return this.btnHandler;
     }
 
 }

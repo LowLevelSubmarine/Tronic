@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class TronicMessage {
 
-    private static final Color COLOR = Color.getHSBColor(292,74,61);
+    private static final Color COLOR = new Color(143, 41, 158);
     private final EmbedBuilder builder = new EmbedBuilder();
 
     public TronicMessage(String text) {

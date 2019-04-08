@@ -15,7 +15,7 @@ public class Main {
     private static Tronic TRONIC;
 
     public static void main(String[] args) {
-        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
+        Runtime.getRuntime().addShutdownHook(new Thread(Main::shutdown));
         System.out.println("For help and more info, read the readme created in the applications folder :)");
         loadConfig();
         TOKEN = getToken();

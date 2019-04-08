@@ -4,7 +4,7 @@ import net.dv8tion.jda.core.entities.Guild;
 
 import java.util.HashMap;
 
-public class GuildPlayerManager {
+public class MusicManager {
 
     private HashMap<Guild, GuildPlayer> guildPlayer = new HashMap<>();
 
