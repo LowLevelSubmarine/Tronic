@@ -1,9 +1,9 @@
 package core.command_system.commands.administration;
 
 import core.buttons.ButtonEvent;
-import core.buttons.ButtonHandler;
 import core.buttons.ButtonMessage;
 import core.command_system.Cmd;
+import core.command_system.CmdCategory;
 import core.command_system.CmdInstance;
 import core.command_system.CmdParser;
 import core.command_system.syntax.Syntax;
@@ -21,6 +21,11 @@ public class CmdShutdown implements Cmd {
     @Override
     public String invoke() {
         return "shutdown";
+    }
+
+    @Override
+    public CmdCategory category() {
+        return CmdCategory.ADMINISTRATION;
     }
 
     @Override

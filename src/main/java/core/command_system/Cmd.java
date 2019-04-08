@@ -6,6 +6,7 @@ import core.permissions.Permission;
 public interface Cmd {
 
     String invoke();
+    CmdCategory category();
     boolean guildAccess();
     boolean privateAccess();
     Permission requiredPermission();

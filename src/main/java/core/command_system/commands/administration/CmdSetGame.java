@@ -1,6 +1,7 @@
 package core.command_system.commands.administration;
 
 import core.command_system.Cmd;
+import core.command_system.CmdCategory;
 import core.command_system.CmdInstance;
 import core.command_system.CmdParser;
 import core.command_system.arguments.CmdArgument;
@@ -13,6 +14,11 @@ public class CmdSetGame implements Cmd {
     @Override
     public String invoke() {
         return "setgame";
+    }
+
+    @Override
+    public CmdCategory category() {
+        return CmdCategory.ADMINISTRATION;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package core.command_system.commands.fun;
 
 import core.command_system.Cmd;
+import core.command_system.CmdCategory;
 import core.command_system.CmdParser;
 import core.command_system.CmdInstance;
 import core.command_system.arguments.CmdArgument;
@@ -14,6 +15,11 @@ public class CmdRepeat implements Cmd {
     @Override
     public String invoke() {
         return "repeat";
+    }
+
+    @Override
+    public CmdCategory category() {
+        return CmdCategory.FUN;
     }
 
     @Override
