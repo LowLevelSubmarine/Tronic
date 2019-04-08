@@ -15,5 +15,5 @@ gradle-app.setting
 
 \.idea/
 
-tokens\.cfg
-data*
+tronic\.cfg
+data/
