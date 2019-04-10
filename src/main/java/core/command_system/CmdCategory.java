@@ -5,6 +5,7 @@ public enum CmdCategory {
     MUSIC,
     ADMINISTRATION,
     FUN,
+    SMARTBOT,
     INFO;
 
 }

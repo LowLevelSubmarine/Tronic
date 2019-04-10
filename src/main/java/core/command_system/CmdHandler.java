@@ -5,7 +5,9 @@ import core.command_system.arguments.CmdArgument;
 import core.command_system.commands.administration.CmdRestart;
 import core.command_system.commands.administration.CmdSetGame;
 import core.command_system.commands.administration.CmdShutdown;
+import core.command_system.commands.administration.CmdUpdate;
 import core.command_system.commands.fun.CmdRepeat;
+import core.command_system.commands.smartbot.CmdListen;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
@@ -17,6 +19,8 @@ public class CmdHandler extends ListenerAdapter {
             new CmdSetGame(),
             new CmdRepeat(),
             new CmdRestart(),
+            new CmdUpdate(),
+            new CmdListen(),
             new CmdShutdown()};
 
     public CmdHandler(Tronic tronic) {
