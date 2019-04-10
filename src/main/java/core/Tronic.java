@@ -10,8 +10,11 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.managers.AudioManager;
 
 import javax.security.auth.login.LoginException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Tronic {
 
@@ -40,6 +43,11 @@ public class Tronic {
     }
 
     public void shutdown() {
+        List<AudioManager> managers = this.jda.getAudioManagers();
+        for (AudioManager manager : managers) {
+            new Thread(manager::closeAudioConnection);
+            manager.closeAudioConnection();
+        }
         this.jda.getPresence().setStatus(OnlineStatus.INVISIBLE);
         this.jda.shutdown();
     }
