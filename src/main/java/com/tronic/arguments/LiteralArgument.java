@@ -1,9 +1,10 @@
 package com.tronic.arguments;
 
-public class LiteralArgument extends SingleArgument {
+public class LiteralArgument<T extends Argument> extends SingleArgument<T> {
+
     private final String string;
 
-    public LiteralArgument(String string, Argument argument) {
+    public LiteralArgument(String string, T argument) {
         super(argument);
         this.string = string;
     }
