@@ -1,6 +1,6 @@
 package com.tronic.bot;
 
-import com.tronic.arguments.ArgumentParseException;
+import com.tronic.arguments.InvalidArgumentException;
 import com.tronic.arguments.Arguments;
 import com.tronic.arguments.LiteralArgument;
 import com.tronic.arguments.TextArgument;
@@ -13,10 +13,10 @@ public class CommandRouter {
     public void routeCommand(String command, MessageReceivedEvent event) {
         try {
             Arguments arguments = new Arguments(command);
-            arguments.parseAndSplit(new LiteralArgument("say"));
-            String text = arguments.parseAndSplit(new TextArgument());
-            event.getChannel().sendMessage(new TronicMessage(text).build()).queue();
-        } catch (ArgumentParseException e) {
+            arguments.splitParse(new LiteralArgument("say")).throwException();
+            String text = arguments.splitParse(new TextArgument()).getOrThrowException();
+            event.getChannel().sendMessage(new TronicMessage(text).b()).queue();
+        } catch (InvalidArgumentException e) {
             Logger.log(this, "Invalid command: " + command);
         }
     }
