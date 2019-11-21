@@ -1,24 +1,14 @@
 package com.tronic.arguments;
 
-public class IntegerArgument extends SingleArgument {
-
-    private int integer;
-
-    public IntegerArgument(Argument argument) {
-        super(argument);
-    }
+public class IntegerArgument implements Argument<Integer> {
 
     @Override
-    protected void singleParse(String string) throws ParseException {
+    public Integer parse(Arguments arguments) throws ArgumentParseException {
         try {
-            this.integer = Integer.parseInt(string);
+            return Integer.valueOf(arguments.getNext());
         } catch (NumberFormatException e) {
-            throw new ParseException();
+            throw new ArgumentParseException();
         }
-    }
-
-    public int getInteger() {
-        return this.integer;
     }
 
 }

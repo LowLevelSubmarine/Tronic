@@ -10,7 +10,11 @@ public class MessageLoggerListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        Logger.log(this, event.getMessage().getContentDisplay());
+        if (!event.getAuthor().equals(event.getJDA().getSelfUser())) {
+            String authorTag = event.getAuthor().getAsTag();
+            String content = event.getMessage().getContentRaw();
+            Logger.log(this, authorTag + ": \"" + content + "\"");
+        }
     }
 
 }

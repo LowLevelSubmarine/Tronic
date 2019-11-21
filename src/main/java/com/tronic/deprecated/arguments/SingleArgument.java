@@ -1,4 +1,4 @@
-package com.tronic.arguments;
+package com.tronic.deprecated.arguments;
 
 public abstract class SingleArgument <T extends Argument> implements Argument {
 

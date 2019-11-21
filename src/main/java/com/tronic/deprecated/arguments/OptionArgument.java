@@ -1,4 +1,4 @@
-package com.tronic.arguments;
+package com.tronic.deprecated.arguments;
 
 public class OptionArgument <T extends Argument> extends SingleArgument<T> {
 
