@@ -9,9 +9,9 @@ public class LiteralArgument implements Argument<Void> {
     }
 
     @Override
-    public Void parse(Arguments arguments) throws ArgumentParseException {
+    public Void parse(Arguments arguments) throws InvalidArgumentException {
         if (!arguments.getNext().equals(this.literal)) {
-            throw new ArgumentParseException();
+            throw new InvalidArgumentException();
         }
         return null;
     }

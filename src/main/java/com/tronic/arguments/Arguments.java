@@ -18,20 +18,22 @@ public class Arguments {
         this.separator = separator;
     }
 
-    public <T> T parseAndSplit(Argument<T> argument) throws ArgumentParseException {
+    public <T> ArgumentResult<T> splitParse(Argument<T> argument) {
         if (!isEmpty()) {
-            T t = argument.parse(this);
+            ArgumentResult<T> result = parse(argument);
             split();
-            return t;
+            return result;
         }
         return null;
     }
 
-    public <T> T parse(Argument<T> argument) throws ArgumentParseException {
+    public <T> ArgumentResult<T> parse(Argument<T> argument) {
         if (!isEmpty()) {
-            return argument.parse(this);
+            try {
+                return new ArgumentResult<>(argument.parse(this));
+            } catch (InvalidArgumentException e) {}
         }
-        return null;
+        return new ArgumentResult<>();
     }
 
     public void split() {
@@ -65,6 +67,45 @@ public class Arguments {
 
     private int getNextSeparatorIndex() {
         return this.string.indexOf(this.separator) + this.separator.length();
+    }
+
+    public static class ArgumentResult<T> {
+
+        private final T result;
+        private final boolean valid;
+
+        private ArgumentResult(T result) {
+            this.result = result;
+            this.valid = true;
+        }
+
+        private ArgumentResult() {
+            this.result = null;
+            this.valid = false;
+        }
+
+        public T get() {
+            return this.result;
+        }
+
+        public boolean valid() {
+            return this.valid;
+        }
+
+        public void throwException() throws InvalidArgumentException {
+            if(!valid()) {
+                throw new InvalidArgumentException();
+            }
+        }
+
+        public T getOrThrowException() throws InvalidArgumentException {
+            if (valid()) {
+                return this.result;
+            } else {
+                throw new InvalidArgumentException();
+            }
+        }
+
     }
 
 }
