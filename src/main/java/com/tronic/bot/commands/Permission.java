@@ -2,6 +2,6 @@ package com.tronic.bot.commands;
 
 public enum Permission {
 
-    MASTER, NONE,
+    HOST, CO_HOST, ADMIN, NONE,
 
 }

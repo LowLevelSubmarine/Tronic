@@ -5,8 +5,13 @@ import com.tronic.bot.commands.*;
 public class ShutdownCommand implements Command {
 
     @Override
+    public String invoke() {
+        return "shutdown";
+    }
+
+    @Override
     public Permission getPermission() {
-        return null;
+        return Permission.MASTER;
     }
 
     @Override
@@ -20,12 +25,7 @@ public class ShutdownCommand implements Command {
     }
 
     @Override
-    public void parse(CommandInfo info) throws InvalidCommandArgumentsException {
-
-    }
-
-    @Override
-    public void run(CommandInfo info) {
+    public void run(CommandInfo info) throws InvalidCommandArgumentsException {
 
     }
 
@@ -33,5 +33,4 @@ public class ShutdownCommand implements Command {
     public HelpInfo getHelpInfo() {
         return null;
     }
-
 }
