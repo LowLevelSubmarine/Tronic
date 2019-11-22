@@ -2,11 +2,11 @@ package com.tronic.bot.commands;
 
 public interface Command {
 
+    String invoke();
     Permission getPermission();
     boolean silent();
     CommandType getType();
-    void parse(CommandInfo info) throws InvalidCommandArgumentsException;
-    void run(CommandInfo info);
+    void run(CommandInfo info) throws InvalidCommandArgumentsException;
     HelpInfo getHelpInfo();
 
 }

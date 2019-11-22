@@ -22,6 +22,10 @@ public class Tronic {
         }
     }
 
+    public JDA getJDA() {
+        return this.jda;
+    }
+
     public void shutdown() {
         this.jda.shutdown();
     }
