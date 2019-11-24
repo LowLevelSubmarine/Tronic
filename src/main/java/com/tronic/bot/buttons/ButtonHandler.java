@@ -1,11 +1,8 @@
 package com.tronic.bot.buttons;
 
 import com.tronic.bot.Tronic;
-import com.tronic.bot.io.Logger;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
-import org.apache.commons.codec.Charsets;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 

@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public class ShutdownCommand implements Command {
 
     private Message deleteMessage;
+    private CommandInfo info;
 
     @Override
     public String invoke() {
@@ -34,6 +35,7 @@ public class ShutdownCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
+        this.info = info;
         MessageEmbed embed = new TronicMessage("Do you really want to shut me down?").b();
         this.deleteMessage = info.getEvent().getChannel().sendMessage(embed).complete();
         Logger.log(this, Emoji.WHITE_CHECK_MARK.getUtf8());
@@ -42,7 +44,8 @@ public class ShutdownCommand implements Command {
     }
 
     private void onConfirm(Button button) {
-        this.deleteMessage.delete().queue();
+        this.deleteMessage.delete().complete();
+        this.info.getTronic().shutdown();
     }
 
     private void onDiscard(Button button) {
