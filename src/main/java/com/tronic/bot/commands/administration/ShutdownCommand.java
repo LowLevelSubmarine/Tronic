@@ -1,6 +1,7 @@
 package com.tronic.bot.commands.administration;
 
 import com.tronic.bot.commands.*;
+import com.tronic.bot.io.TronicMessage;
 
 public class ShutdownCommand implements Command {
 
@@ -11,7 +12,7 @@ public class ShutdownCommand implements Command {
 
     @Override
     public Permission getPermission() {
-        return Permission.MASTER;
+        return Permission.HOST;
     }
 
     @Override
@@ -26,11 +27,12 @@ public class ShutdownCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-
+        info.getEvent().getChannel().sendMessage(new TronicMessage("LOL").b()).queue();
     }
 
     @Override
     public HelpInfo getHelpInfo() {
         return null;
     }
+
 }

@@ -1,16 +1,20 @@
 package com.tronic.bot.listeners;
 
+import com.tronic.bot.Tronic;
 import com.tronic.bot.buttons.Button;
 import com.tronic.bot.statics.Emoji;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 
-public class ButtonListener extends ListenerAdapter {
+public class ButtonListener extends Listener  {
 
     private final HashMap<ButtonKey, Button> buttons = new HashMap<>();
+
+    public ButtonListener(Tronic tronic) {
+        super(tronic);
+    }
 
     @Override
     public void onGenericMessageReaction(@Nonnull GenericMessageReactionEvent event) {

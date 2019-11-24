@@ -1,5 +1,8 @@
 package com.tronic.bot;
 
+import com.tronic.bot.commands.CommandHandler;
+import com.tronic.bot.commands.fun.DiceCommand;
+import com.tronic.bot.commands.fun.SayCommand;
 import com.tronic.bot.listeners.ButtonListener;
 import com.tronic.bot.listeners.CommandListener;
 import com.tronic.bot.listeners.MessageLoggerListener;
@@ -12,11 +15,13 @@ public class Tronic {
 
     private final Listeners listeners = new Listeners();
     private final JDA jda;
+    private final CommandHandler commandHandler = new CommandHandler(this);
 
     public Tronic(String token) throws LoginException {
         this.jda = buildJDA(token);
         try {
             this.jda.awaitReady();
+            addCommands();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -30,6 +35,10 @@ public class Tronic {
         this.jda.shutdown();
     }
 
+    public CommandHandler getCommandHandler() {
+        return this.commandHandler;
+    }
+
     public Listeners getListeners() {
         return this.listeners;
     }
@@ -41,11 +50,16 @@ public class Tronic {
         return builder.build();
     }
 
-    public static class Listeners {
+    private void addCommands() {
+        this.commandHandler.addCommand(new DiceCommand());
+        this.commandHandler.addCommand(new SayCommand());
+    }
 
-        public final ButtonListener button = new ButtonListener();
-        public final CommandListener command = new CommandListener();
-        public final MessageLoggerListener messageLogger = new MessageLoggerListener();
+    public class Listeners {
+
+        public final ButtonListener button = new ButtonListener(Tronic.this);
+        public final CommandListener command = new CommandListener(Tronic.this);
+        public final MessageLoggerListener messageLogger = new MessageLoggerListener(Tronic.this);
 
         public void addAll(JDABuilder builder) {
             builder.addEventListeners(this.button);

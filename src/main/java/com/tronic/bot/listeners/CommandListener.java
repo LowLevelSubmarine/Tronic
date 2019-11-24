@@ -1,21 +1,23 @@
 package com.tronic.bot.listeners;
 
-import com.tronic.bot.CommandRouter;
+import com.tronic.bot.Tronic;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
 
-public class CommandListener extends ListenerAdapter {
+public class CommandListener extends Listener {
 
-    private CommandRouter router = new CommandRouter();
+    public CommandListener(Tronic tronic) {
+        super(tronic);
+    }
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         String prefix = "#";
         String messageContent = event.getMessage().getContentRaw();
         if (messageContent.startsWith(prefix)) {
-            this.router.routeCommand(messageContent.substring(prefix.length()), event);
+            String string = messageContent.substring(prefix.length());
+            getTronic().getCommandHandler().handle(string, event);
         }
     }
 

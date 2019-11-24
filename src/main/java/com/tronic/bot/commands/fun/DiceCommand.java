@@ -1,15 +1,15 @@
 package com.tronic.bot.commands.fun;
 
-import com.tronic.arguments.InvalidArgumentException;
-import com.tronic.arguments.TextArgument;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 
-public class SayCommand implements Command {
+import java.util.Random;
+
+public class DiceCommand implements Command {
 
     @Override
     public String invoke() {
-        return "say";
+        return "dice";
     }
 
     @Override
@@ -29,12 +29,8 @@ public class SayCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        try {
-            String text = info.getArguments().parse(new TextArgument()).getOrThrowException();
-            info.getEvent().getChannel().sendMessage(new TronicMessage(text).b()).queue();
-        } catch (InvalidArgumentException e) {
-            throw new InvalidCommandArgumentsException();
-        }
+        int value = new Random().nextInt(6) + 1;
+        info.getEvent().getChannel().sendMessage(new TronicMessage("The dice says: " + value).b()).queue();
     }
 
     @Override

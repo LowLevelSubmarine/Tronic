@@ -65,6 +65,10 @@ public class Arguments {
         return this.original;
     }
 
+    public Arguments copy() {
+        return new Arguments(this.string);
+    }
+
     private int getNextSeparatorIndex() {
         return this.string.indexOf(this.separator) + this.separator.length();
     }
