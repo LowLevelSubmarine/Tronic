@@ -1,6 +1,8 @@
 package com.tronic.bot;
 
+import com.tronic.bot.buttons.ButtonHandler;
 import com.tronic.bot.commands.CommandHandler;
+import com.tronic.bot.commands.administration.ShutdownCommand;
 import com.tronic.bot.commands.administration.SpeedtestCommand;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
@@ -18,6 +20,7 @@ public class Tronic {
     private final Listeners listeners = new Listeners();
     private final JDA jda;
     private final CommandHandler commandHandler = new CommandHandler(this);
+    private final ButtonHandler buttonHandler = new ButtonHandler(this);
 
     public Tronic(String token) throws LoginException {
         this.jda = buildJDA(token);
@@ -41,6 +44,10 @@ public class Tronic {
         return this.commandHandler;
     }
 
+    public ButtonHandler getButtonHandler() {
+        return this.buttonHandler;
+    }
+
     public Listeners getListeners() {
         return this.listeners;
     }
@@ -53,6 +60,8 @@ public class Tronic {
     }
 
     private void addCommands() {
+        this.commandHandler.addCommand(new ShutdownCommand());
+
         this.commandHandler.addCommand(new DiceCommand());
         this.commandHandler.addCommand(new SayCommand());
         this.commandHandler.addCommand(new PingCommand());
