@@ -2,8 +2,14 @@ package com.tronic.bot.commands;
 
 import com.tronic.arguments.Arguments;
 import com.tronic.bot.Tronic;
+import com.tronic.bot.io.Logger;
+import com.tronic.bot.io.TronicMessage;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
+import org.simmetrics.metrics.Levenshtein;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class CommandHandler {
@@ -31,10 +37,20 @@ public class CommandHandler {
             invoke = string;
             arguments = "";
         }
+        ArrayList<CommandHandler.DifferencesObj> differences = new ArrayList<>();
         for (Command command : this.commands) {
-            if (command.invoke().equals(invoke)) {
-                runChecked(command, arguments, event);
-                return;
+            CommandHandler.DifferencesObj obj =new CommandHandler.DifferencesObj (new Levenshtein().compare(invoke,command.invoke()),command);
+            ///TODO: Turn sout out!
+            System.out.println(command.invoke()+"  "+obj.getFl());
+            differences.add(new CommandHandler.DifferencesObj (new Levenshtein().compare(invoke,command.invoke()),command));
+        }
+        if (differences.size()>=1 ) {
+            Collections.sort(differences);
+            DifferencesObj obj = differences.get(differences.size()-1);
+            if (obj.getFl()>= 0.7f) {
+                runChecked(obj.getCommand(),arguments,event);
+            } else if (obj.getFl()>= 0.3f) {
+                event.getChannel().sendMessage(new TronicMessage("Do you mean `"+obj.getCommand().invoke()+"` ?").b()).queue();
             }
         }
     }
@@ -48,6 +64,28 @@ public class CommandHandler {
         }
     }
 
+    private class DifferencesObj implements Comparable {
+        Float fl;
+        Command command;
+        public DifferencesObj(Float fl, Command command) {
+            this.fl =fl;
+            this.command = command;
+        }
+
+        public Float getFl() {
+            return fl;
+        }
+
+        public Command getCommand() {
+            return command;
+        }
+
+        @Override
+        public int compareTo(@NotNull Object o) {
+            DifferencesObj diff = (DifferencesObj) o;
+            return this.fl.compareTo(diff.getFl());
+        }
+    }
     private class CommandThread extends Thread {
 
         private final Command command;
@@ -68,6 +106,7 @@ public class CommandHandler {
                 this.commandInfo.getEvent().getChannel().sendMessage(e.getErrorMessage()).queue();
             }
         }
+
 
     }
 
