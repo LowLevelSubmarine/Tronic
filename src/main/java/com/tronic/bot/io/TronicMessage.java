@@ -37,4 +37,8 @@ public class TronicMessage {
         return this.builder.build();
     }
 
+    public MessageEmbed b() {
+        return this.builder.build();
+    }
+
 }

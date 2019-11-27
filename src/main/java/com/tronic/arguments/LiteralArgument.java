@@ -1,18 +1,19 @@
 package com.tronic.arguments;
 
-public class LiteralArgument<T extends Argument> extends SingleArgument<T> {
+public class LiteralArgument implements Argument<Void> {
 
-    private final String string;
+    private final String literal;
 
-    public LiteralArgument(String string, T argument) {
-        super(argument);
-        this.string = string;
+    public LiteralArgument(String literal) {
+        this.literal = literal;
     }
 
     @Override
-    protected void singleParse(String string) throws ParseException {
-        if (!this.string.equals(string)) {
-            throw new ParseException();
+    public Void parse(Arguments arguments) throws InvalidArgumentException {
+        if (!arguments.getNext().equals(this.literal)) {
+            throw new InvalidArgumentException();
         }
+        return null;
     }
+
 }

@@ -1,14 +1,21 @@
 package com.tronic.bot.listeners;
 
+import com.tronic.bot.Tronic;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
 
-public class ButtonListener extends ListenerAdapter {
+public class ButtonListener extends Listener  {
+
+    public ButtonListener(Tronic tronic) {
+        super(tronic);
+    }
 
     @Override
     public void onGenericMessageReaction(@Nonnull GenericMessageReactionEvent event) {
-        super.onGenericMessageReaction(event);
+        if (!event.getUser().equals(event.getJDA().getSelfUser())) {
+            getTronic().getButtonHandler().handle(event);
+        }
     }
+
 }
