@@ -3,10 +3,10 @@ package com.tronic.bot.commands;
 import com.tronic.arguments.Arguments;
 import com.tronic.bot.Tronic;
 import com.tronic.bot.buttons.Button;
+import com.tronic.bot.music.Player;
 import com.tronic.bot.statics.Emoji;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandInfo {
@@ -39,6 +39,18 @@ public class CommandInfo {
 
     public Guild getGuild() throws IllegalStateException {
         return this.getEvent().getGuild();
+    }
+
+    public MessageChannel getChannel() {
+        return this.event.getChannel();
+    }
+
+    public Player getPlayer() {
+        return this.tronic.getPlayerManager().getPlayer(this.event.getGuild());
+    }
+
+    public User getAuthor() {
+        return this.event.getAuthor();
     }
 
     public MessageReceivedEvent getEvent() {

@@ -4,25 +4,40 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEvent;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.util.LinkedList;
 
 public class Player {
 
     private final AudioPlayer player;
-    private final VoiceChannel voiceChannel;
+    private final AudioManager audioManager;
     private final LinkedList<QueueItem> queue = new LinkedList<>();
 
-    Player(AudioPlayer player, VoiceChannel voiceChannel) {
+    Player(AudioPlayer player, Guild guild) {
         this.player = player;
-        this.voiceChannel = voiceChannel;
-        voiceChannel.getGuild().getAudioManager().setSendingHandler(new AudioPlayerSendHandler(player));
+        this.audioManager = guild.getAudioManager();
         this.player.addListener(this::onEvent);
+        this.audioManager.setSendingHandler(new AudioPlayerSendHandler(player));
+    }
+
+    public boolean isPaused() {
+        return this.player.isPaused();
     }
 
     public boolean isIdle() {
         return this.player.getPlayingTrack() == null;
+    }
+
+    public void skipHard() {
+        this.queue.pop();
+        loadNextTrack();
+    }
+
+    public void skipSoft() {
+        loadNextTrack();
     }
 
     public void setPaused(boolean paused) {
@@ -47,16 +62,21 @@ public class Player {
             this.queue.pop();
         }
         if (!this.queue.isEmpty()) {
-            ensureConnection();
             QueueItem queueItem = this.queue.getFirst();
+            ensureConnection(queueItem.getOwner());
             this.player.playTrack(queueItem.pop());
         }
     }
 
-    public void ensureConnection() {
-        if (!this.voiceChannel.getGuild().getAudioManager().isConnected()) {
-            this.voiceChannel.getGuild().getAudioManager().openAudioConnection(this.voiceChannel);
+    private boolean ensureConnection(Member target) {
+        if (!this.audioManager.isConnected()) {
+            GuildVoiceState voiceState = target.getVoiceState();
+            if (voiceState != null && voiceState.inVoiceChannel()) {
+                this.audioManager.openAudioConnection(voiceState.getChannel());
+                return true;
+            }
         }
+        return false;
     }
 
 }

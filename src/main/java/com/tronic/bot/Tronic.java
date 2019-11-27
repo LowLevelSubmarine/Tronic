@@ -2,12 +2,15 @@ package com.tronic.bot;
 
 import com.tronic.bot.buttons.ButtonHandler;
 import com.tronic.bot.commands.CommandHandler;
+import com.tronic.bot.commands.administration.BroadcastCommand;
 import com.tronic.bot.commands.administration.ShutdownCommand;
 import com.tronic.bot.commands.administration.SpeedtestCommand;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
 import com.tronic.bot.commands.info.PingCommand;
+import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
+import com.tronic.bot.commands.music.SkipCommand;
 import com.tronic.bot.listeners.ButtonListener;
 import com.tronic.bot.listeners.CommandListener;
 import com.tronic.bot.listeners.MessageLoggerListener;
@@ -67,14 +70,19 @@ public class Tronic {
     }
 
     private void addCommands() {
+        //Administration
+        this.commandHandler.addCommand(new BroadcastCommand());
         this.commandHandler.addCommand(new ShutdownCommand());
-
+        this.commandHandler.addCommand(new SpeedtestCommand());
+        //Fun
         this.commandHandler.addCommand(new DiceCommand());
         this.commandHandler.addCommand(new SayCommand());
+        //Info
         this.commandHandler.addCommand(new PingCommand());
-        this.commandHandler.addCommand(new SpeedtestCommand());
-
+        //Music
+        this.commandHandler.addCommand(new PauseCommand());
         this.commandHandler.addCommand(new PlayCommand());
+        this.commandHandler.addCommand(new SkipCommand());
     }
 
     public class Listeners {
