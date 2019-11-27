@@ -13,6 +13,7 @@ import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.commands.music.SkipCommand;
 import com.tronic.bot.listeners.ButtonListener;
 import com.tronic.bot.listeners.CommandListener;
+import com.tronic.bot.listeners.ExperimentStartupListener;
 import com.tronic.bot.listeners.MessageLoggerListener;
 import com.tronic.bot.music.PlayerManager;
 import net.dv8tion.jda.api.JDA;
@@ -94,6 +95,7 @@ public class Tronic {
         public void addAll(JDABuilder builder) {
             builder.addEventListeners(this.button);
             builder.addEventListeners(this.command);
+            builder.addEventListeners(new ExperimentStartupListener(Tronic.this));
             builder.addEventListeners(this.messageLogger);
         }
 
