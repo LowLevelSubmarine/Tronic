@@ -2,7 +2,6 @@ package com.tronic.bot.commands;
 
 import com.tronic.arguments.Arguments;
 import com.tronic.bot.Tronic;
-import com.tronic.bot.io.Logger;
 import com.tronic.bot.io.TronicMessage;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
@@ -65,8 +64,10 @@ public class CommandHandler {
     }
 
     private class DifferencesObj implements Comparable {
+
         Float fl;
         Command command;
+
         public DifferencesObj(Float fl, Command command) {
             this.fl =fl;
             this.command = command;
@@ -85,7 +86,9 @@ public class CommandHandler {
             DifferencesObj diff = (DifferencesObj) o;
             return this.fl.compareTo(diff.getFl());
         }
+
     }
+
     private class CommandThread extends Thread {
 
         private final Command command;
@@ -106,7 +109,6 @@ public class CommandHandler {
                 this.commandInfo.getEvent().getChannel().sendMessage(e.getErrorMessage()).queue();
             }
         }
-
 
     }
 

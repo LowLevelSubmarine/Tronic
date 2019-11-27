@@ -7,9 +7,11 @@ import com.tronic.bot.commands.administration.SpeedtestCommand;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
 import com.tronic.bot.commands.info.PingCommand;
+import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.listeners.ButtonListener;
 import com.tronic.bot.listeners.CommandListener;
 import com.tronic.bot.listeners.MessageLoggerListener;
+import com.tronic.bot.music.PlayerManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 
@@ -21,6 +23,7 @@ public class Tronic {
     private final JDA jda;
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler(this);
+    private final PlayerManager playerManager = new PlayerManager();
 
     public Tronic(String token) throws LoginException {
         this.jda = buildJDA(token);
@@ -48,6 +51,10 @@ public class Tronic {
         return this.buttonHandler;
     }
 
+    public PlayerManager getPlayerManager() {
+        return this.playerManager;
+    }
+
     public Listeners getListeners() {
         return this.listeners;
     }
@@ -66,6 +73,8 @@ public class Tronic {
         this.commandHandler.addCommand(new SayCommand());
         this.commandHandler.addCommand(new PingCommand());
         this.commandHandler.addCommand(new SpeedtestCommand());
+
+        this.commandHandler.addCommand(new PlayCommand());
     }
 
     public class Listeners {

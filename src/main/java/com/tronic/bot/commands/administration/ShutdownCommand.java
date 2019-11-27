@@ -34,7 +34,7 @@ public class ShutdownCommand implements Command {
     }
 
     @Override
-    public void run(CommandInfo info) throws InvalidCommandArgumentsException {
+    public void run(CommandInfo info) {
         this.info = info;
         MessageEmbed embed = new TronicMessage("Do you really want to shut me down?").b();
         this.deleteMessage = info.getEvent().getChannel().sendMessage(embed).complete();
