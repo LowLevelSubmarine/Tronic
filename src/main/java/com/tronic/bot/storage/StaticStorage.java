@@ -1,6 +1,7 @@
 package com.tronic.bot.storage;
 
 import com.toddway.shelf.Shelf;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 
 import java.io.File;
@@ -13,25 +14,48 @@ public class StaticStorage extends StorageElement {
     public StaticStorage(Shelf shelf) {
         super(shelf);
     }
-    public void setCoHosters(LinkedList<User> hosters) {
+    private void setCoHosters(LinkedList<String> hosters) {
         super.set("cohoster",hosters);
     }
 
-    public void setCoHoster(User hoster) {
-        LinkedList<User> ll = getCoHosters();
-        ll.add(hoster);
+    public void addCoHoster(User hoster) {
+        LinkedList<String> ll = new LinkedList<>();
+        List<Object> list = super.getList("cohoster",String.class);
+        if (list!=null) {
+            for (Object user :list) {
+                ll.add((String) user);
+            }
+        }
+        ll.add(hoster.getId());
         super.set("cohoster",ll);
     }
 
-    public LinkedList<User> getCoHosters() {
-        List<Object> list = super.getList("cohoster",User.class);
-        LinkedList<User> ll = new LinkedList<>();
-        if (list!= null) {
-            for (Object user : list) {
-                ll.add((User) user);
+    public void removeCoHoster(User hoster) {
+        LinkedList<String> ll = new LinkedList<>();
+        List<Object> list = super.getList("cohoster",String.class);
+        if (list!=null) {
+            for (Object user :list) {
+                String id = (String) user;
+                if (!id.equals(hoster.getId())) {
+                    ll.add(id);
+                }
             }
+            setCoHosters(ll);
         }
-        return ll;
     }
 
+    public boolean isCoHoster(User hoster) {
+        LinkedList<String> ll = new LinkedList<>();
+        List<Object> list = super.getList("cohoster",String.class);
+        if (list!=null) {
+            for (Object user :list) {
+                String id = (String) user;
+                if (id.equals(hoster.getId())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
 }
