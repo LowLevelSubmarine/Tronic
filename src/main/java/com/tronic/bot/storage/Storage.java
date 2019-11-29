@@ -1,40 +1,49 @@
 package com.tronic.bot.storage;
 
-import com.tronic.bot.tools.FileUtils;
+import com.toddway.shelf.Clock;
+import com.toddway.shelf.FileStorage;
+import com.toddway.shelf.KotlinxSerializer;
+import com.toddway.shelf.Shelf;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.tetraowl.watcher.toolbox.JavaTools;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.regex.Pattern;
 
 public class Storage {
 
-    private static final Pattern MATCHER_GUILD_ID = Pattern.compile("[0-9]{18}");
-    private static final Pattern MATCHER_USER_ID = Pattern.compile("[0-9]{18}");
-    private static final String STRING_STATIC_FILE_NAME = "STATIC.obj";
+    private static final String STRING_FILE_NAME_STATIC = "static";
+    private static final String STRING_FILE_PREFIX_GUILD = "guild-";
+    private static final String STRING_FILE_PREFIX_USER = "user-";
 
-    private final File root;
-    private final HashMap<String, GuildStorage> guildMap = new HashMap<>();
-    private final HashMap<String, UserStorage> userMap = new HashMap<>();
-    private final StaticStorage staticStorage;
+    private final Shelf shelf;
 
     public Storage() {
-        this.root = new File(JavaTools.getJarUrl(Storage.class));
-        this.staticStorage = new StaticStorage(FileUtils.getFileByPath(this.root.getAbsolutePath(), STRING_STATIC_FILE_NAME);
+        File root = new File(JavaTools.getJarUrl(Storage.class));
+        FileStorage fileStorage = new FileStorage(root);
+        KotlinxSerializer kotlinxSerializer = new KotlinxSerializer();
+        Clock clock = new Clock();
+        this.shelf = new Shelf(fileStorage, kotlinxSerializer, clock);
     }
 
     public StaticStorage getStatic() {
-        return this.staticStorage;
+        return new StaticStorage(this.shelf.item(STRING_FILE_NAME_STATIC).getShelf());
     }
 
     public GuildStorage getGuild(Guild guild) {
-        return null;
+        return new GuildStorage(this.shelf.item(getGuildKey(guild)).getShelf());
     }
 
     public UserStorage getUser(User user) {
-        return null;
+        return new UserStorage(this.shelf.item(getUserKey(user)).getShelf());
+    }
+
+    private String getGuildKey(Guild guild) {
+        return STRING_FILE_PREFIX_GUILD + guild.getId();
+    }
+
+    private String getUserKey(User user) {
+        return STRING_FILE_PREFIX_USER + user.getId();
     }
 
 }

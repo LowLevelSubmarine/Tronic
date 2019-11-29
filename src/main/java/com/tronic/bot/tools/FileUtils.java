@@ -4,7 +4,11 @@ import java.io.File;
 
 public class FileUtils {
 
-    public static File getFileByPath(String... names) {
+    public static File getFile(File file, String... names) {
+        return getFile(file.getAbsoluteFile(), names);
+    }
+
+    public static File getFile(String... names) {
         String finalName = null;
         for (String name : names) {
             if (finalName == null) {
