@@ -3,12 +3,14 @@ package com.tronic.bot.commands;
 import com.tronic.arguments.Arguments;
 import com.tronic.bot.Tronic;
 import com.tronic.bot.io.TronicMessage;
+import com.tronic.bot.tools.StatisticsSaver;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.simmetrics.metrics.Levenshtein;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 
 public class CommandHandler {
@@ -46,7 +48,11 @@ public class CommandHandler {
         if (differences.size()>=1 ) {
             Collections.sort(differences);
             DifferencesObj obj = differences.get(differences.size()-1);
-            if (obj.getFl()>= 0.7f) {
+            if (obj.getFl()== 1f) {
+                //StatisticsSaver.saveCommand(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor(),false));
+                runChecked(obj.getCommand(),arguments,event);
+            } else if (obj.getFl()>= 0.7f) {
+                //StatisticsSaver.saveCommand(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor(),true));
                 runChecked(obj.getCommand(),arguments,event);
             } else if (obj.getFl()>= 0.3f) {
                 event.getChannel().sendMessage(new TronicMessage("Do you mean `"+obj.getCommand().invoke()+"` ?").b()).queue();

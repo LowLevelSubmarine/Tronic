@@ -1,10 +1,14 @@
 package com.tronic.bot;
 
 import com.tronic.bot.buttons.ButtonHandler;
+import com.tronic.bot.commands.Command;
 import com.tronic.bot.commands.CommandHandler;
 import com.tronic.bot.commands.administration.BroadcastCommand;
+import com.tronic.bot.commands.CommandInfo;
+import com.tronic.bot.commands.administration.SandboxCommand;
 import com.tronic.bot.commands.administration.ShutdownCommand;
 import com.tronic.bot.commands.administration.SpeedtestCommand;
+import com.tronic.bot.commands.administration.StatisticsCommand;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
 import com.tronic.bot.commands.info.PingCommand;
@@ -80,10 +84,13 @@ public class Tronic {
         this.commandHandler.addCommand(new SayCommand());
         //Info
         this.commandHandler.addCommand(new PingCommand());
+        this.commandHandler.addCommand(new StatisticsCommand());
         //Music
         this.commandHandler.addCommand(new PauseCommand());
         this.commandHandler.addCommand(new PlayCommand());
         this.commandHandler.addCommand(new SkipCommand());
+        //Debugging
+        this.commandHandler.addCommand(new SandboxCommand());
     }
 
     public class Listeners {

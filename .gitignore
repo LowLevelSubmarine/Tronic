@@ -16,3 +16,5 @@ gradle-app.setting
 \.idea/
 
 src/main/java/com/tronic/bot/Testing.java
+
+out/
