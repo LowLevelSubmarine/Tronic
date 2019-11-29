@@ -10,12 +10,15 @@ import net.tetraowl.watcher.toolbox.JavaTools;
 import java.io.File;
 
 public abstract class StorageElement {
+
     Shelf shelf;
-    StorageElement(File file) {
-        this.shelf = new Shelf(new FileStorage(file), new KotlinxSerializer(), new Clock());
+
+    StorageElement(Shelf shelf) {
+        this.shelf = shelf;
     }
 
     void saveElement() {
         
     }
+
 }
