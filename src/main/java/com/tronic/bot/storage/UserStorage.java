@@ -1,11 +1,13 @@
 package com.tronic.bot.storage;
 
+import com.toddway.shelf.Shelf;
+
 import java.io.File;
 
 public class UserStorage extends StorageElement {
 
-    UserStorage(File file) {
-        super(file);
+    UserStorage(Shelf shelf) {
+        super(shelf);
     }
 
 }
