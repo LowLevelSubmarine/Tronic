@@ -2,6 +2,7 @@ package com.tronic.bot.commands.administration;
 
 import com.toddway.shelf.Shelf;
 import com.tronic.bot.commands.*;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class SandboxCommand implements Command {
     @Override
@@ -38,7 +40,11 @@ public class SandboxCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-
+        info.getTronic().getStorage().getStatic().setCoHoster(info.getAuthor());
+        LinkedList<User> hosters = info.getTronic().getStorage().getStatic().getCoHosters();
+        for (User use : hosters) {
+            info.getEvent().getChannel().sendMessage(use.getName()).queue();
+        }
     }
 
     public ByteArrayOutputStream convertTextToGraphic() {
