@@ -20,6 +20,7 @@ import com.tronic.bot.listeners.CommandListener;
 import com.tronic.bot.listeners.ExperimentStartupListener;
 import com.tronic.bot.listeners.MessageLoggerListener;
 import com.tronic.bot.music.PlayerManager;
+import com.tronic.bot.storage.Storage;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 
@@ -29,6 +30,7 @@ public class Tronic {
 
     private final Listeners listeners = new Listeners();
     private final JDA jda;
+    private final Storage storage = new Storage();
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler(this);
     private final PlayerManager playerManager = new PlayerManager();
@@ -49,6 +51,10 @@ public class Tronic {
 
     public void shutdown() {
         this.jda.shutdown();
+    }
+
+    public Storage getStorage() {
+        return this.storage;
     }
 
     public CommandHandler getCommandHandler() {
