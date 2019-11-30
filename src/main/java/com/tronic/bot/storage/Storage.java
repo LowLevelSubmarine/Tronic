@@ -59,7 +59,7 @@ public class Storage {
 
     private HashMap<String, UserStorage> loadUserStorages() {
         HashMap<String, UserStorage> userStorages = new HashMap<>();
-        for (File file : getSnowflakeFiles(FILE_GUILDS)) {
+        for (File file : getSnowflakeFiles(FILE_USERS)) {
             userStorages.put(file.getName(), new UserStorage(createShelf(file)));
         }
         return userStorages;

@@ -4,12 +4,17 @@ import net.tetraowl.watcher.toolbox.JavaTools;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class FileUtils {
 
     public static File getFile(File file, String... names) {
-        return getFile(file.getAbsoluteFile(), names);
+        String[] newNames = new String[names.length + 1];
+        System.arraycopy(names, 0, newNames, 1, names.length);
+        return getFile(newNames);
     }
 
     public static File getFile(String... names) {
@@ -18,7 +23,7 @@ public class FileUtils {
             if (finalName == null) {
                 finalName = name;
             } else {
-                finalName += File.pathSeparator + name;
+                finalName += File.pathSeparatorChar + name;
             }
         }
         return new File(finalName);
@@ -30,7 +35,10 @@ public class FileUtils {
 
     public static File[] getFiles(File root, FilenameFilter filenameFilter) {
         try {
-            return root.listFiles(filenameFilter);
+            File[] files = root.listFiles(filenameFilter);
+            if (files != null) {
+                return files;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

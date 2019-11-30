@@ -40,24 +40,20 @@ public class SandboxCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        info.getTronic().getStorage().getStatic().setCoHoster(info.getAuthor());
-        LinkedList<User> hosters = info.getTronic().getStorage().getStatic().getCoHosters();
-        for (User use : hosters) {
-            info.getEvent().getChannel().sendMessage(use.getName()).queue();
-        }
+        info.getTronic().getStorage().getStatic().addCoHoster(info.getAuthor());
     }
 
     public ByteArrayOutputStream convertTextToGraphic() {
         Object[][] data = {
-                {"Hari", new Integer(23), new Double(78.23), new Boolean(true)},
-                {"James", new Integer(23), new Double(47.64), new Boolean(false)},
-                {"Sally", new Integer(22), new Double(84.81), new Boolean(true)}
+                {"Hari", 23, 78.23, true},
+                {"James", 23, 47.64, false},
+                {"Sally", 22, 84.81, true}
         };
 
         Object[][] datta = {
-                {"FLO", new Integer(23), new Double(78.23), new Boolean(true)},
-                {"JOHANNA", new Integer(23), new Double(47.64), new Boolean(false)},
-                {"JULI", new Integer(22), new Double(84.81), new Boolean(true)}
+                {"FLO", 23, 78.23, true},
+                {"JOHANNA", 23, 47.64, false},
+                {"JULI", 22, 84.81, true}
         };
         Object[] columns = {"Name", "Age", "GPA", "Pass"};
         JTable table = new JTable(data, columns);
