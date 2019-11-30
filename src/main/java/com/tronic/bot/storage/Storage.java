@@ -78,6 +78,7 @@ public class Storage {
     }
 
     private Shelf createShelf(File file) {
+        file.mkdirs();
         FileStorage fileStorage = new FileStorage(file);
         KotlinxSerializer kotlinxSerializer = new KotlinxSerializer();
         Clock clock = new Clock();
