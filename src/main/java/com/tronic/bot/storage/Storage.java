@@ -23,6 +23,7 @@ public class Storage {
     private final HashMap<String, GuildStorage> guildStorages;
     private final HashMap<String, UserStorage> userStorages;
 
+
     public Storage() {
         this.staticStorage = new StaticStorage(createShelf(FILE_STATIC));
         this.guildStorages = loadGuildStorages();
@@ -79,9 +80,9 @@ public class Storage {
 
     private Shelf createShelf(File file) {
         FileStorage fileStorage = new FileStorage(file);
-        KotlinxSerializer kotlinxSerializer = new KotlinxSerializer();
+         Serializer serializer = new Serializer();
         Clock clock = new Clock();
-        return new Shelf(fileStorage, kotlinxSerializer, clock);
+        return new Shelf(fileStorage, serializer, clock);
     }
 
 }

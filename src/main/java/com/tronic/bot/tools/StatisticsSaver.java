@@ -1,28 +1,24 @@
 package com.tronic.bot.tools;
 
-import com.toddway.shelf.Shelf;
-import com.tronic.bot.Tronic;
-import net.dv8tion.jda.api.entities.User;
-import net.tetraowl.watcher.toolbox.JavaTools;
+import kotlin.reflect.KClass;
 
-import java.io.File;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.User;
+
+import java.lang.annotation.Annotation;
 import java.util.Date;
 
 public class StatisticsSaver {
-    public static void saveCommand(StatisticElement statisticElement) {
-
-    }
-
-    public static class StatisticElement{
+    public static class StatisticElement implements java.io.Serializable {
         private final String arguments;
         private final Date date;
-        private final User user;
+        private final String userId;
         private final boolean isAutocompleted;
 
-        public StatisticElement(String arguments, Date date, User user, boolean isAutocompleted) {
+        public StatisticElement(String arguments, Date date, String userId, boolean isAutocompleted) {
             this.arguments = arguments;
             this.date = date;
-            this.user = user;
+            this.userId = userId;
             this.isAutocompleted = isAutocompleted;
         }
 
@@ -34,8 +30,11 @@ public class StatisticsSaver {
             return date;
         }
 
-        public User getUser() {
-            return user;
+        public String getUserId() {
+            return userId;
+        }
+        public User getUser(JDA jda) {
+            return jda.getUserById(this.userId);
         }
 
         public boolean isAutocompleted() {

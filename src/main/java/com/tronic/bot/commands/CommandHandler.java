@@ -41,18 +41,16 @@ public class CommandHandler {
         ArrayList<CommandHandler.DifferencesObj> differences = new ArrayList<>();
         for (Command command : this.commands) {
             CommandHandler.DifferencesObj obj =new CommandHandler.DifferencesObj (new Levenshtein().compare(invoke,command.invoke()),command);
-            ///TODO: Turn sout out!
-            System.out.println(command.invoke()+"  "+obj.getFl());
             differences.add(new CommandHandler.DifferencesObj (new Levenshtein().compare(invoke,command.invoke()),command));
         }
         if (differences.size()>=1 ) {
             Collections.sort(differences);
             DifferencesObj obj = differences.get(differences.size()-1);
             if (obj.getFl()== 1f) {
-                //StatisticsSaver.saveCommand(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor(),false));
+                this.tronic.getStorage().getUser(event.getAuthor()).storeSatistic(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor().getId(),false));
                 runChecked(obj.getCommand(),arguments,event);
             } else if (obj.getFl()>= 0.7f) {
-                //StatisticsSaver.saveCommand(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor(),true));
+                this.tronic.getStorage().getUser(event.getAuthor()).storeSatistic(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor().getId(),true));
                 runChecked(obj.getCommand(),arguments,event);
             } else if (obj.getFl()>= 0.3f) {
                 event.getChannel().sendMessage(new TronicMessage("Do you mean `"+obj.getCommand().invoke()+"` ?").b()).queue();
