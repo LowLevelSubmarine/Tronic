@@ -15,6 +15,7 @@ import com.tronic.bot.commands.info.PingCommand;
 import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.commands.music.SkipCommand;
+import com.tronic.bot.commands.settings.SetPrefixCommand;
 import com.tronic.bot.listeners.ButtonListener;
 import com.tronic.bot.listeners.CommandListener;
 import com.tronic.bot.listeners.ExperimentStartupListener;
@@ -95,6 +96,8 @@ public class Tronic {
         this.commandHandler.addCommand(new PauseCommand());
         this.commandHandler.addCommand(new PlayCommand());
         this.commandHandler.addCommand(new SkipCommand());
+        //Settings
+        this.commandHandler.addCommand(new SetPrefixCommand());
         //Debugging
         this.commandHandler.addCommand(new SandboxCommand());
     }

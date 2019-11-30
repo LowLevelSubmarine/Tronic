@@ -5,6 +5,10 @@ import com.tronic.bot.Tronic;
 import com.tronic.bot.buttons.Button;
 import com.tronic.bot.music.Player;
 import com.tronic.bot.statics.Emoji;
+import com.tronic.bot.storage.GuildStorage;
+import com.tronic.bot.storage.StaticStorage;
+import com.tronic.bot.storage.Storage;
+import com.tronic.bot.storage.UserStorage;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -35,6 +39,18 @@ public class CommandInfo {
 
     public JDA getJDA() {
         return this.tronic.getJDA();
+    }
+
+    public StaticStorage getStaticStorage() {
+        return this.tronic.getStorage().getStatic();
+    }
+
+    public GuildStorage getGuildStorage(Guild guild) {
+        return this.tronic.getStorage().getGuild(guild);
+    }
+
+    public UserStorage getUserStorage(User user) {
+        return this.tronic.getStorage().getUser(user);
     }
 
     public Guild getGuild() throws IllegalStateException {

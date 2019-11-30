@@ -13,7 +13,7 @@ public class CommandListener extends Listener {
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        String prefix = "#";
+        String prefix = getTronic().getStorage().getGuild(event.getGuild()).getPrefix();
         String messageContent = event.getMessage().getContentRaw();
         if (messageContent.startsWith(prefix)) {
             String string = messageContent.substring(prefix.length());

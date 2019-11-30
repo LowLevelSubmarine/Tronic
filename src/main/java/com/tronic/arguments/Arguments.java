@@ -39,7 +39,7 @@ public class Arguments {
     public void split() {
         int nextSeparatorIndex = getNextSeparatorIndex();
         if (nextSeparatorIndex != -1) {
-            this.string = this.string.substring(getNextSeparatorIndex());
+            this.string = this.string.substring(nextSeparatorIndex + this.separator.length());
         } else {
             this.string = "";
         }
@@ -52,7 +52,7 @@ public class Arguments {
     public String getNext() {
         int nextSeparatorIndex = getNextSeparatorIndex();
         if (nextSeparatorIndex != -1) {
-            return this.string.substring(0, nextSeparatorIndex - this.separator.length());
+            return this.string.substring(0, nextSeparatorIndex);
         }
         return this.string;
     }
@@ -70,7 +70,7 @@ public class Arguments {
     }
 
     private int getNextSeparatorIndex() {
-        return this.string.indexOf(this.separator) + this.separator.length();
+        return this.string.indexOf(this.separator);
     }
 
     public static class ArgumentResult<T> {
