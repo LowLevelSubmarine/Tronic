@@ -1,10 +1,9 @@
 package com.tronic.bot;
 
 import com.tronic.bot.buttons.ButtonHandler;
-import com.tronic.bot.commands.Command;
+
 import com.tronic.bot.commands.CommandHandler;
 import com.tronic.bot.commands.administration.BroadcastCommand;
-import com.tronic.bot.commands.CommandInfo;
 import com.tronic.bot.commands.administration.SandboxCommand;
 import com.tronic.bot.commands.administration.ShutdownCommand;
 import com.tronic.bot.commands.administration.SpeedtestCommand;
@@ -12,6 +11,7 @@ import com.tronic.bot.commands.administration.StatisticsCommand;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
 import com.tronic.bot.commands.info.PingCommand;
+import com.tronic.bot.commands.info.UptimeCommand;
 import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.commands.music.SkipCommand;
@@ -22,10 +22,15 @@ import com.tronic.bot.listeners.ExperimentStartupListener;
 import com.tronic.bot.listeners.MessageLoggerListener;
 import com.tronic.bot.music.PlayerManager;
 import com.tronic.bot.storage.Storage;
+import com.tronic.bot.tools.ColorisedSout;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
+import java.awt.*;
 
 public class Tronic {
 
@@ -35,12 +40,14 @@ public class Tronic {
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler(this);
     private final PlayerManager playerManager = new PlayerManager();
+    Logger logger = LogManager.getLogger(Tronic.class);
 
     public Tronic(String token) throws LoginException {
         this.jda = buildJDA(token);
         try {
             this.jda.awaitReady();
             addCommands();
+            System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!"+ColorisedSout.ANSI_RESET);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -74,6 +81,10 @@ public class Tronic {
         return this.listeners;
     }
 
+    public Logger getLogger() {
+        return this.logger;
+    }
+
     private JDA buildJDA(String token) throws LoginException {
         JDABuilder builder = new JDABuilder();
         builder.setToken(token);
@@ -92,6 +103,7 @@ public class Tronic {
         //Info
         this.commandHandler.addCommand(new PingCommand());
         this.commandHandler.addCommand(new StatisticsCommand());
+        this.commandHandler.addCommand(new UptimeCommand());
         //Music
         this.commandHandler.addCommand(new PauseCommand());
         this.commandHandler.addCommand(new PlayCommand());

@@ -1,5 +1,6 @@
 package com.tronic.bot.tools;
 
+import com.tronic.bot.commands.Command;
 import kotlin.reflect.KClass;
 
 import net.dv8tion.jda.api.JDA;
@@ -20,6 +21,7 @@ public class StatisticsSaver {
             this.date = date;
             this.userId = userId;
             this.isAutocompleted = isAutocompleted;
+
         }
 
         public String getArguments() {
@@ -40,5 +42,7 @@ public class StatisticsSaver {
         public boolean isAutocompleted() {
             return isAutocompleted;
         }
+
+
     }
 }

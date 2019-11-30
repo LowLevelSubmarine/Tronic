@@ -15,6 +15,12 @@ public class UserStorage extends StorageElement {
     }
 
     public void storeSatistic(StatisticsSaver.StatisticElement element) {
+        LinkedList<StatisticsSaver.StatisticElement> ll =getStatistics();
+        ll.add(element);
+        super.set("statistics",ll);
+    }
+
+    public LinkedList<StatisticsSaver.StatisticElement> getStatistics () {
         LinkedList<StatisticsSaver.StatisticElement> ll = new LinkedList<>();
         List<Object> list = super.getList("statistics", StatisticsSaver.StatisticElement.class);
         if (list!=null) {
@@ -22,8 +28,7 @@ public class UserStorage extends StorageElement {
                 ll.add((StatisticsSaver.StatisticElement) user);
             }
         }
-        ll.add(element);
-        super.set("statistics",ll);
+        return ll;
     }
 
 }

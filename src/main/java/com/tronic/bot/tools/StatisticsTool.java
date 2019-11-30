@@ -26,6 +26,7 @@ public class StatisticsTool {
 
     public static ByteArrayOutputStream jpanelToBAOS(JPanel jPanel) {
         JScrollPane scroll = new JScrollPane(jPanel);
+        scroll.setSize(scroll.getPreferredSize());
 
 
         // JTable must have been added to a TLC in order to render
