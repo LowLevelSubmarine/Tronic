@@ -79,6 +79,7 @@ public class Storage {
     }
 
     private Shelf createShelf(File file) {
+        file.mkdirs();
         FileStorage fileStorage = new FileStorage(file);
          Serializer serializer = new Serializer();
         Clock clock = new Clock();

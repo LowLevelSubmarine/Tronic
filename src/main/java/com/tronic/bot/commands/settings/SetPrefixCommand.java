@@ -33,12 +33,12 @@ public class SetPrefixCommand implements Command {
         try {
             String newPrefix = info.getArguments().parse(new SingleArgument()).getOrThrowException();
             GuildStorage guildStorage = info.getGuildStorage(info.getGuild());
-            guildStorage.setPrefix(newPrefix);
             String oldPrefix = guildStorage.getPrefix();
+            guildStorage.setPrefix(newPrefix);
             info.getChannel().sendMessage(
                     new TronicMessage(
                             "PREFIX",
-                            "Changed prefix from \'" + oldPrefix + "\' to \'" + newPrefix + "\'!"
+                            "Changed prefix from \'" + oldPrefix + "\' to \'" + newPrefix + "\'"
                     ).b()).queue();
         } catch (InvalidArgumentException e) {
             throw new InvalidCommandArgumentsException();

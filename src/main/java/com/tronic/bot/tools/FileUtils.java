@@ -4,9 +4,6 @@ import net.tetraowl.watcher.toolbox.JavaTools;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class FileUtils {
@@ -14,19 +11,17 @@ public class FileUtils {
     public static File getFile(File file, String... names) {
         String[] newNames = new String[names.length + 1];
         System.arraycopy(names, 0, newNames, 1, names.length);
+        newNames[0] = file.getAbsolutePath();
         return getFile(newNames);
     }
 
     public static File getFile(String... names) {
-        String finalName = null;
-        for (String name : names) {
-            if (finalName == null) {
-                finalName = name;
-            } else {
-                finalName += File.pathSeparatorChar + name;
-            }
+        StringBuilder fileName = new StringBuilder();
+        for (int i = 0; i < names.length - 1; i++) {
+            fileName.append(names[i]).append(File.separatorChar);
         }
-        return new File(finalName);
+        fileName.append(names[names.length - 1]);
+        return new File(fileName.toString());
     }
 
     public static File[] getFiles(File root, Pattern filenamePattern) {
