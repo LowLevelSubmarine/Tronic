@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Serializer implements Shelf.Serializer {
@@ -34,8 +35,7 @@ public class Serializer implements Shelf.Serializer {
     @Override
     public <T> List<T> toTypeList(@NotNull String s, @NotNull KClass<T> kClass) {
         Class<T> cl = JvmClassMappingKt.getJavaClass(kClass);
-        T o = this.gson.fromJson(s,cl);
-        ArrayList<T> answer = new ArrayList<>();
-        return new ArrayList<>();
+        Type typeOfT = TypeToken.getParameterized(List.class, cl).getType();
+        return this.gson.fromJson(s,typeOfT);
     }
 }
