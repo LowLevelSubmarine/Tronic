@@ -58,4 +58,6 @@ public class StaticStorage extends StorageElement {
         }
         return false;
     }
+
+
 }

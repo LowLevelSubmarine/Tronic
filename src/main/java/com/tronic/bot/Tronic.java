@@ -15,22 +15,20 @@ import com.tronic.bot.commands.info.UptimeCommand;
 import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.commands.music.SkipCommand;
+import com.tronic.bot.commands.settings.HyperchannelCommand;
+import com.tronic.bot.commands.settings.HyperchannelNameCommand;
 import com.tronic.bot.commands.settings.SetPrefixCommand;
-import com.tronic.bot.listeners.ButtonListener;
-import com.tronic.bot.listeners.CommandListener;
-import com.tronic.bot.listeners.ExperimentStartupListener;
-import com.tronic.bot.listeners.MessageLoggerListener;
+import com.tronic.bot.hyperchannel.HyperchannelManager;
+import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.PlayerManager;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
-import java.awt.*;
 
 public class Tronic {
 
@@ -41,12 +39,14 @@ public class Tronic {
     private final ButtonHandler buttonHandler = new ButtonHandler(this);
     private final PlayerManager playerManager = new PlayerManager();
     Logger logger = LogManager.getLogger(Tronic.class);
+    private HyperchannelManager hyperchannelManager;
 
     public Tronic(String token) throws LoginException {
         this.jda = buildJDA(token);
         try {
             this.jda.awaitReady();
             addCommands();
+            hyperchannelManager = new HyperchannelManager(this);
             System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!"+ColorisedSout.ANSI_RESET);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -58,6 +58,8 @@ public class Tronic {
     }
 
     public void shutdown() {
+        System.out.println(ColorisedSout.ANSI_GREEN+"Bot shutdowned!"+ColorisedSout.ANSI_RESET);
+        this.hyperchannelManager.onShutdown();
         this.jda.shutdown();
     }
 
@@ -110,8 +112,15 @@ public class Tronic {
         this.commandHandler.addCommand(new SkipCommand());
         //Settings
         this.commandHandler.addCommand(new SetPrefixCommand());
+        this.commandHandler.addCommand(new HyperchannelCommand());
+        this.commandHandler.addCommand(new HyperchannelNameCommand());
         //Debugging
         this.commandHandler.addCommand(new SandboxCommand());
+    }
+
+
+    public HyperchannelManager getHyperchannelManager() {
+        return hyperchannelManager;
     }
 
     public class Listeners {
@@ -119,12 +128,18 @@ public class Tronic {
         public final ButtonListener button = new ButtonListener(Tronic.this);
         public final CommandListener command = new CommandListener(Tronic.this);
         public final MessageLoggerListener messageLogger = new MessageLoggerListener(Tronic.this);
+        public final JoinListener joinListener = new JoinListener(Tronic.this);
+        public final LeaveListener leaveListener = new LeaveListener(Tronic.this);
+        public final DeleteListener deleteListener = new DeleteListener(Tronic.this);
 
         public void addAll(JDABuilder builder) {
             builder.addEventListeners(this.button);
             builder.addEventListeners(this.command);
             builder.addEventListeners(new ExperimentStartupListener(Tronic.this));
             builder.addEventListeners(this.messageLogger);
+            builder.addEventListeners(this.joinListener);
+            builder.addEventListeners(this.leaveListener);
+            builder.addEventListeners(this.deleteListener);
         }
 
     }

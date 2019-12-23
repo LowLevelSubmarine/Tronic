@@ -6,10 +6,10 @@ import com.tronic.arguments.TextArgument;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 
-public class HyperchannelCommand implements Command {
+public class HyperchannelNameCommand implements Command {
     @Override
     public String invoke() {
-        return "sethyperchannel";
+        return "sethyperchannelname";
     }
 
     @Override
@@ -30,14 +30,11 @@ public class HyperchannelCommand implements Command {
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         try {
-            boolean state = info.getArguments().parse(new BooleanArgument()).getOrThrowException();
-            info.getTronic().getStorage().getGuild(info.getEvent().getGuild()).setHyperchannelState(state);
-            if (state) info.getChannel().sendMessage(new TronicMessage("Activate Hyperchannel!").b()).queue();
-            if (!state) info.getChannel().sendMessage(new TronicMessage("Deactivate Hyperchannel!").b()).queue();
-            info.getTronic().getHyperchannelManager().refreshHyper(info.getGuild());
-
+            String name = info.getArguments().parse(new TextArgument()).getOrThrowException();
+            info.getTronic().getHyperchannelManager().hyperChannelRename(name,info.getEvent().getGuild());
+            info.getChannel().sendMessage(new TronicMessage("Change new HyperChannel to "+name+" !").b()).queue();
         } catch (InvalidArgumentException e) {
-            info.getChannel().sendMessage(new TronicMessage("Please use true or false as an option!").b()).queue();
+            info.getChannel().sendMessage(new TronicMessage("Add a name as an options").b()).queue();
         }
     }
 
