@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.simmetrics.metrics.Levenshtein;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -40,8 +41,8 @@ public class CommandHandler {
         }
         ArrayList<CommandHandler.DifferencesObj> differences = new ArrayList<>();
         for (Command command : this.commands) {
-            CommandHandler.DifferencesObj obj =new CommandHandler.DifferencesObj (new Levenshtein().compare(invoke,command.invoke()),command);
-            differences.add(new CommandHandler.DifferencesObj (new Levenshtein().compare(invoke,command.invoke()),command));
+            CommandHandler.DifferencesObj obj = new DifferencesObj(new Levenshtein().compare(invoke, command.invoke()), command);
+            differences.add(new DifferencesObj(new Levenshtein().compare(invoke, command.invoke()), command));
         }
         if (differences.size()>=1 ) {
             Collections.sort(differences);
@@ -67,7 +68,7 @@ public class CommandHandler {
         }
     }
 
-    private class DifferencesObj implements Comparable {
+    private static class DifferencesObj implements Comparable<Object> {
 
         Float fl;
         Command command;
@@ -106,8 +107,8 @@ public class CommandHandler {
         @Override
         public void run() {
             try {
-                this.command.getClass().newInstance().run(this.commandInfo);
-            } catch (InstantiationException | IllegalAccessException e) {
+                this.command.getClass().getDeclaredConstructor().newInstance().run(this.commandInfo);
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
             } catch (InvalidCommandArgumentsException e) {
                 this.commandInfo.getEvent().getChannel().sendMessage(e.getErrorMessage()).queue();

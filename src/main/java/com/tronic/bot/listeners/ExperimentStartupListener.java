@@ -14,6 +14,6 @@ public class ExperimentStartupListener extends Listener {
 
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
-        System.out.println(new RangeStatistic(event.getJDA()).calc());
+        //System.out.println(new RangeStatistic(event.getJDA()).calc());
     }
 }
