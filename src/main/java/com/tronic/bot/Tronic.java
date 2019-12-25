@@ -15,6 +15,7 @@ import com.tronic.bot.commands.info.UptimeCommand;
 import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.commands.music.SkipCommand;
+import com.tronic.bot.commands.settings.HyperchannelCategoryCommand;
 import com.tronic.bot.commands.settings.HyperchannelCommand;
 import com.tronic.bot.commands.settings.HyperchannelNameCommand;
 import com.tronic.bot.commands.settings.SetPrefixCommand;
@@ -114,6 +115,7 @@ public class Tronic {
         this.commandHandler.addCommand(new SetPrefixCommand());
         this.commandHandler.addCommand(new HyperchannelCommand());
         this.commandHandler.addCommand(new HyperchannelNameCommand());
+        this.commandHandler.addCommand(new HyperchannelCategoryCommand());
         //Debugging
         this.commandHandler.addCommand(new SandboxCommand());
     }
@@ -131,6 +133,7 @@ public class Tronic {
         public final JoinListener joinListener = new JoinListener(Tronic.this);
         public final LeaveListener leaveListener = new LeaveListener(Tronic.this);
         public final DeleteListener deleteListener = new DeleteListener(Tronic.this);
+        public final MoveListener moveListener = new MoveListener(Tronic.this);
 
         public void addAll(JDABuilder builder) {
             builder.addEventListeners(this.button);
@@ -140,6 +143,7 @@ public class Tronic {
             builder.addEventListeners(this.joinListener);
             builder.addEventListeners(this.leaveListener);
             builder.addEventListeners(this.deleteListener);
+            builder.addEventListeners(this.moveListener);
         }
 
     }

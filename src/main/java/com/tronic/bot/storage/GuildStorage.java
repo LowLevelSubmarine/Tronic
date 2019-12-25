@@ -3,6 +3,8 @@ package com.tronic.bot.storage;
 import com.toddway.shelf.Shelf;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.tools.StatisticsSaver;
+import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.LinkedList;
@@ -69,5 +71,18 @@ public class GuildStorage extends StorageElement {
 
     public void setResidualHyper(LinkedList<String> residualHyper) {
         super.set("residualhyper",residualHyper);
+    }
+
+    public Category getHyperCategory(Guild guild) {
+        String id =  (String) super.get("hypercategory",String.class);
+        return (id.equals(""))? null : guild.getCategoryById(id);
+    }
+
+    public void setHyperCategory(Category category) {
+        if (category!= null) {
+            super.set("hypercategory",category.getId());
+        } else {
+            super.set("hypercategory","");
+        }
     }
 }

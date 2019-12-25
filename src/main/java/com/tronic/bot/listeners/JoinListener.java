@@ -18,6 +18,4 @@ public class JoinListener extends Listener {
         super.onGuildVoiceJoin(event);
         this.tronic.getHyperchannelManager().onUserJoins(event);
     }
-
-
 }

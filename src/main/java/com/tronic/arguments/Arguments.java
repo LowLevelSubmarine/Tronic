@@ -31,7 +31,7 @@ public class Arguments {
         if (!isEmpty()) {
             try {
                 return new ArgumentResult<>(argument.parse(this));
-            } catch (InvalidArgumentException e) {}
+            } catch (InvalidArgumentException ignored) {}
         }
         return new ArgumentResult<>();
     }

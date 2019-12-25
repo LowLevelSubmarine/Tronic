@@ -40,7 +40,6 @@ public class HyperchannelCommand implements Command {
             info.getChannel().sendMessage(new TronicMessage("Please use true or false as an option!").b()).queue();
         }
     }
-
     @Override
     public HelpInfo getHelpInfo() {
         return null;
