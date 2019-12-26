@@ -204,6 +204,12 @@ public class HyperchannelManager {
             }
             vc.getManager().setParent(category).queue();
             vc.getManager().setPosition(0).queue();
+            for (String id: this.hyperIds) {
+                try {
+                    guild.getVoiceChannelById(id).getManager().setParent(category).queue();
+                    guild.getVoiceChannelById(id).getManager().setPosition(guild.getVoiceChannelById(gs.getNewChannel()).getPosition()+1).queue();
+                } catch (NullPointerException ignored) {}
+            }
         } else {
             if (vc != null) {
                 vc.getManager().setParent(null).queue();

@@ -15,9 +15,7 @@ import com.tronic.bot.commands.info.UptimeCommand;
 import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.commands.music.SkipCommand;
-import com.tronic.bot.commands.settings.HyperchannelCategoryCommand;
 import com.tronic.bot.commands.settings.HyperchannelCommand;
-import com.tronic.bot.commands.settings.HyperchannelNameCommand;
 import com.tronic.bot.commands.settings.SetPrefixCommand;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
@@ -114,8 +112,6 @@ public class Tronic {
         //Settings
         this.commandHandler.addCommand(new SetPrefixCommand());
         this.commandHandler.addCommand(new HyperchannelCommand());
-        this.commandHandler.addCommand(new HyperchannelNameCommand());
-        this.commandHandler.addCommand(new HyperchannelCategoryCommand());
         //Debugging
         this.commandHandler.addCommand(new SandboxCommand());
     }

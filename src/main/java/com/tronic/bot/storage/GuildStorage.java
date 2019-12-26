@@ -75,7 +75,7 @@ public class GuildStorage extends StorageElement {
 
     public Category getHyperCategory(Guild guild) {
         String id =  (String) super.get("hypercategory",String.class);
-        return (id.equals(""))? null : guild.getCategoryById(id);
+        return (id == null || id.equals(""))? null : guild.getCategoryById(id);
     }
 
     public void setHyperCategory(Category category) {
