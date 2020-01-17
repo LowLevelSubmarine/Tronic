@@ -9,7 +9,9 @@ group 'com.tronic'
 version '1.0.0'
 
 sourceCompatibility = 1.8
-manifest { attributes( 'Main-Class': 'com.tronic.bot.Testing', 'Implementation-Version': version ) } //use Main Class instead of Testing
+jar {
+    manifest { attributes( 'Main-Class': 'com.tronic.bot.Testing', 'Implementation-Version': version ) } //use Main Class instead of Testing
+}
 
 repositories {
     mavenCentral()

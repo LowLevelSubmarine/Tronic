@@ -29,7 +29,7 @@ public class Updater {
         FileOutputStream fos = new FileOutputStream(ptJar+"/Tronic_"+time+".jar");
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         File file;
-        FileWriter fw = new FileWriter(new File(ptJar+"/tronic.jar"));
+        FileWriter fw = new FileWriter(new File(ptJar+"/tronic.json"));
         fw.write("[{\"procname\": \"java -jar "+ptJar+"/Tronic_"+time+"\", \"if\":\"\",\"else\":\"java -jar "+ptJar+"/Tronic_"+time+"\" }]");
         fw.close();
 
