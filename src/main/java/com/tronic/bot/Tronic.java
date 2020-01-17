@@ -3,11 +3,7 @@ package com.tronic.bot;
 import com.tronic.bot.buttons.ButtonHandler;
 
 import com.tronic.bot.commands.CommandHandler;
-import com.tronic.bot.commands.administration.BroadcastCommand;
-import com.tronic.bot.commands.administration.SandboxCommand;
-import com.tronic.bot.commands.administration.ShutdownCommand;
-import com.tronic.bot.commands.administration.SpeedtestCommand;
-import com.tronic.bot.commands.administration.StatisticsCommand;
+import com.tronic.bot.commands.administration.*;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
 import com.tronic.bot.commands.info.PingCommand;
@@ -98,6 +94,7 @@ public class Tronic {
         this.commandHandler.addCommand(new BroadcastCommand());
         this.commandHandler.addCommand(new ShutdownCommand());
         this.commandHandler.addCommand(new SpeedtestCommand());
+        this.commandHandler.addCommand(new UpdateCommand());
         //Fun
         this.commandHandler.addCommand(new DiceCommand());
         this.commandHandler.addCommand(new SayCommand());

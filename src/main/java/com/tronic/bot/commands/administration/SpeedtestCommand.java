@@ -16,8 +16,8 @@ import java.math.BigDecimal;
 
 public class SpeedtestCommand implements Command {
     SpeedTestSocket speedTestSocket = new SpeedTestSocket();
-    private static final String DOWNLOAD_URI = "http://2.testdebit.info/5M.iso";
-    private static final String UPLOAD_URI = "http://2.testdebit.info/";
+    private static final String DOWNLOAD_URI = "http://scaleway.testdebit.info/5M/5M.iso";
+    private static final String UPLOAD_URI = "https://scaleway.testdebit.info";
     private static final int UPLOAD_INTERVAL = 1000000;
     private String downloadspeed = Emoji.CLOCK1.getUtf8();
     private String uploadspeed = Emoji.CLOCK1.getUtf8();

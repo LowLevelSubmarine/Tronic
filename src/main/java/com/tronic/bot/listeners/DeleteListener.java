@@ -13,6 +13,8 @@ public class DeleteListener extends Listener {
     @Override
     public void onVoiceChannelDelete(@Nonnull VoiceChannelDeleteEvent event) {
         super.onVoiceChannelDelete(event);
-        this.getTronic().getHyperchannelManager().onChannelDelete(event);
+        if (this.getTronic().getHyperchannelManager()!=null) {
+            this.getTronic().getHyperchannelManager().onChannelDelete(event);
+        }
     }
 }
