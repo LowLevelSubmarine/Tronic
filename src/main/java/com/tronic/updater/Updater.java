@@ -31,44 +31,27 @@ public class Updater {
         new updater.Updater(setting);
     }
 
-    public void doUpgrade(URL url) throws IOException {
+    public void doUpgrade(URL url,AfterUpdater afterUpdater) throws IOException {
         String ptJar = JavaTools.getJarUrl(Updater.class);
         long time = System.currentTimeMillis();
         ReadableByteChannel rbc = Channels.newChannel(url.openStream());
         FileOutputStream fos = new FileOutputStream(ptJar+"/Tronic_"+time+".jar");
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         FileWriter fw = new FileWriter(new File(ptJar+"/tronic.json"));
-        fw.write("[{\"procname\": \"java -jar "+ptJar+"/Tronic_"+time+"\", \"if\":\"\",\"else\":\"java -jar "+ptJar+"/Tronic_"+time+"\" }]");
+        fw.write("[{\"procname\": \"java -jar "+ptJar+"/Tronic_"+time+".jar\", \"if\":\"\",\"else\":\"java -jar "+ptJar+"/Tronic_"+time+".jar\" }]");
         fw.close();
-        int os = 7777;
-        try {
-             os = OSTools.getOS();
-        } catch (OSnotDetectedException e) {
-            logger.warn("OS not detected!");
-        }
-        if (os == OSTools.OS_WINDOWS) {
-            try {
-                selfDestructWindowsJARFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (os ==OSTools.OS_LINUX || os==OSTools.OS_MAC) {
-            try {
-                selfDestructLinuxFile();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }
-        Process proc = Runtime.getRuntime().exec("java -jar"+ ptJar+"/Tronic_"+time+".jar");
-        System.exit(0);
+        afterUpdater.afterUpdate(ptJar+"/Tronic_"+time);
+
+    }
+    public interface AfterUpdater {
+        public void afterUpdate(String newJarName);
     }
 
     public static void initialJson() {
         String ptJar = JavaTools.getJarUrl(Updater.class);
-        System.out.println(ptJar+"/tronic.json");
         try {
             FileWriter fw = new FileWriter(ptJar+"/tronic.json");
-            fw.write("[{\"procname\": \"java -jar "+getCurrentJARFilePath().toString()+"\", \"if\":\"\",\"else\":\"java -jar "+getCurrentJARFilePath().toString()+"\" }]");
+            fw.write("[{\"procname\": \"java -jar "+getCurrentJARFilePath().toString()+".jar\", \"if\":\"\",\"else\":\"java -jar "+getCurrentJARFilePath().toString()+".jar\" }]");
             fw.close();
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -78,7 +61,7 @@ public class Updater {
 
     }
 
-    private void selfDestructLinuxFile() throws URISyntaxException {
+    public static void selfDestructLinuxFile() throws URISyntaxException {
         File file = getCurrentJARFilePath();
         file.delete();
     }
@@ -105,7 +88,7 @@ public class Updater {
         }
     }
 
-    private static void selfDestructWindowsJARFile() throws Exception
+    public static void selfDestructWindowsJARFile() throws Exception
     {
         String ptJar = JavaTools.getJarUrl(Updater.class);
         Runtime runtime = Runtime.getRuntime();
