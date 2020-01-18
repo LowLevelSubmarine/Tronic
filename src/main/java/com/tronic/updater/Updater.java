@@ -102,7 +102,7 @@ public class Updater {
     }
 
     public static void initialError() {
-        File f = new File( JavaTools.getJarUrl(Updater.class)+"/log4j2.xml");
+        File f = new File( "log4j2.xml");
         if (!f.exists()) {
             try {
                 FileWriter fw = new FileWriter(f);
