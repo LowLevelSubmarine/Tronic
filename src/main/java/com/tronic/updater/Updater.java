@@ -51,7 +51,7 @@ public class Updater {
         String ptJar = JavaTools.getJarUrl(Updater.class);
         try {
             FileWriter fw = new FileWriter(ptJar+"/tronic.json");
-            fw.write("[{\"procname\": \"java -jar "+getCurrentJARFilePath().toString()+".jar\", \"if\":\"\",\"else\":\"java -jar "+getCurrentJARFilePath().toString()+"\" }]");
+            fw.write("[{\"procname\": \"java -jar "+getCurrentJARFilePath().toString()+"\", \"if\":\"\",\"else\":\"java -jar "+getCurrentJARFilePath().toString()+"\" }]");
             fw.close();
         } catch (URISyntaxException e) {
             e.printStackTrace();
