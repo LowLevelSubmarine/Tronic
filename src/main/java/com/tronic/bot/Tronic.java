@@ -18,6 +18,7 @@ import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.PlayerManager;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
+import com.tronic.updater.Updater;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.apache.logging.log4j.LogManager;
@@ -42,6 +43,7 @@ public class Tronic {
             this.jda.awaitReady();
             addCommands();
             hyperchannelManager = new HyperchannelManager(this);
+            Updater.initialJson();
             System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!"+ColorisedSout.ANSI_RESET);
         } catch (InterruptedException e) {
             e.printStackTrace();
