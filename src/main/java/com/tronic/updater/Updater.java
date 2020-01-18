@@ -64,6 +64,7 @@ public class Updater {
 
     public static void initialJson() {
         String ptJar = JavaTools.getJarUrl(Updater.class);
+        System.out.println(ptJar+"/tronic.json");
         try {
             FileWriter fw = new FileWriter(ptJar+"/tronic.json");
             fw.write("[{\"procname\": \"java -jar "+getCurrentJARFilePath().toString()+"\", \"if\":\"\",\"else\":\"java -jar "+getCurrentJARFilePath().toString()+"\" }]");
