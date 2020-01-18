@@ -59,6 +59,7 @@ public class Updater {
                 e.printStackTrace();
             }
         }
+        Process proc = Runtime.getRuntime().exec("java -jar"+ ptJar+"/Tronic_"+time+".jar");
         System.exit(0);
     }
 
