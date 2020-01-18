@@ -44,6 +44,7 @@ public class Tronic {
             addCommands();
             hyperchannelManager = new HyperchannelManager(this);
             Updater.initialJson();
+            Updater.initialError();
             System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!"+ColorisedSout.ANSI_RESET);
         } catch (InterruptedException e) {
             e.printStackTrace();

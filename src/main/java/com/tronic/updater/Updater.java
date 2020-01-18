@@ -101,4 +101,30 @@ public class Updater {
         return new File(Updater.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
     }
 
+    public static void initialError() {
+        File f = new File( JavaTools.getJarUrl(Updater.class)+"/log4j2.xml");
+        if (!f.exists()) {
+            try {
+                FileWriter fw = new FileWriter(f);
+                fw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                        "<Configuration status=\"INFO\">\n" +
+                        "    <Appenders>\n" +
+                        "        <Console name=\"Console\" target=\"SYSTEM_OUT\">\n" +
+                        "            <PatternLayout pattern=\"%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n\"/>\n" +
+                        "        </Console>\n" +
+                        "    </Appenders>\n" +
+                        "    <Loggers>\n" +
+                        "        <Root level=\"info\">\n" +
+                        "            <AppenderRef ref=\"Console\"/>\n" +
+                        "        </Root>\n" +
+                        "    </Loggers>\n" +
+                        "</Configuration>");
+                fw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 }
