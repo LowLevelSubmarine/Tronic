@@ -36,7 +36,6 @@ public class UpdateCommand implements Command {
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         Updater updater = new Updater();
         String build = getClass().getPackage().getImplementationVersion();
-        build ="1.0.0";
         System.out.println(build);
         String finalBuild = build;
         updater.getOnlineVersion((version, download) -> {
