@@ -60,7 +60,18 @@ public class Updater {
             }
         }
         System.exit(0);
+    }
 
+    public static void initialJson() {
+        try {
+            FileWriter fw = new FileWriter(getCurrentJARFilePath());
+            fw.write("[{\"procname\": \"java -jar "+getCurrentJARFilePath().toString()+"\", \"if\":\"\",\"else\":\"java -jar "+getCurrentJARFilePath().toString()+"\" }]");
+            fw.close();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
