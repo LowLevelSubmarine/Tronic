@@ -18,4 +18,9 @@ public class ReleaseConfig implements ConfigProvider {
         return false;
     }
 
+    @Override
+    public String getHost() {
+        return null;
+    }
+
 }

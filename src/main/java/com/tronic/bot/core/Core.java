@@ -38,12 +38,14 @@ public class Core {
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler(this);
     private final PlayerManager playerManager = new PlayerManager(this);
+    private final String hostToken;
     Logger logger = LogManager.getLogger(Tronic.class);
     private HyperchannelManager hyperchannelManager;
 
 
     public Core(ConfigProvider configProvider) throws LoginException {
         this.configProvider = configProvider;
+        this.hostToken = configProvider.getHost();
         this.jda = buildJDA(configProvider.getToken());
         try {
             this.jda.awaitReady();
@@ -59,6 +61,10 @@ public class Core {
 
     public boolean getDebugMode() {
         return this.configProvider.getDebugMode();
+    }
+
+    public String getHostToken() {
+        return hostToken;
     }
 
     public JDA getJDA() {
