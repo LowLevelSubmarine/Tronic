@@ -12,7 +12,7 @@ public class SetCoHosterCommand implements Command {
 
     @Override
     public Permission getPermission() {
-        return Permission.CO_HOST;
+        return Permission.HOST;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SetCoHosterCommand implements Command {
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         User user = info.getJDA().getUserById(info.getArguments().getString());
         info.getCore().getStorage().getStatic().addCoHoster(user);
-        info.getChannel().sendMessage(new TronicMessage("Add user "+user.getName()+" to coHoster list").b()).queue();
+        info.getChannel().sendMessage(new TronicMessage("Add user "+user.getAsMention()+" to coHoster list").b()).queue();
 
     }
 
