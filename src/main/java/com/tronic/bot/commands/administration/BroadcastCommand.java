@@ -62,7 +62,7 @@ public class BroadcastCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("Broadcast","Send a broadcast  over all guilds","broadcast");
     }
 
     private void broadcast() {

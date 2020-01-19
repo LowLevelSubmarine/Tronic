@@ -93,6 +93,6 @@ public class UpdateCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("Updater","Updates the bot to a new version","update");
     }
 }

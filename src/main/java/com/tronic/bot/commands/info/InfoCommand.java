@@ -28,7 +28,7 @@ public class InfoCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        TronicMessage tm = new TronicMessage("Info","");
+        TronicMessage tm = new TronicMessage("Info","https://github.com/LowLevelSubmarine/Tronic");
         tm.addField("Tronic version", Info.VERSION,false);
         tm.addField("Jvm Version", System.getProperty("java.version"),false);
         tm.addField("OS", System.getProperty("os.name")+" "+System.getProperty("os.version"),false);
@@ -38,6 +38,6 @@ public class InfoCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Info","Shows info abou the bot","info");
+        return new HelpInfo("Info","Shows info about the bot","info");
     }
 }

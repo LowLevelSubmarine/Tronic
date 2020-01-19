@@ -54,7 +54,7 @@ public class ShutdownCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("shutdown","shut the bot down","shutdown");
     }
 
 }

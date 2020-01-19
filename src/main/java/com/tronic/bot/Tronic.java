@@ -6,6 +6,7 @@ import com.tronic.bot.commands.CommandHandler;
 import com.tronic.bot.commands.administration.*;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
+import com.tronic.bot.commands.info.HelpCommand;
 import com.tronic.bot.commands.info.InfoCommand;
 import com.tronic.bot.commands.info.PingCommand;
 import com.tronic.bot.commands.info.UptimeCommand;
@@ -22,6 +23,7 @@ import com.tronic.bot.tools.ColorisedSout;
 import com.tronic.updater.Updater;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import org.apache.commons.net.bsd.RCommandClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -107,6 +109,7 @@ public class Tronic {
         this.commandHandler.addCommand(new StatisticsCommand());
         this.commandHandler.addCommand(new UptimeCommand());
         this.commandHandler.addCommand(new InfoCommand());
+        this.commandHandler.addCommand(new HelpCommand());
         //Music
         this.commandHandler.addCommand(new PauseCommand());
         this.commandHandler.addCommand(new PlayCommand());

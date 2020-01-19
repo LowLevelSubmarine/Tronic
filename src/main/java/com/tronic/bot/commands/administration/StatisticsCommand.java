@@ -56,7 +56,7 @@ public class StatisticsCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("statistics","shows statistics","statistics");
     }
 
 

@@ -27,6 +27,10 @@ public class CommandHandler {
         this.commands.add(command);
     }
 
+    public LinkedList<Command> getCommands() {
+        return commands;
+    }
+
     public void handle(String string, MessageReceivedEvent event) {
         String separator = " ";
         int separatorIndex = string.indexOf(separator);

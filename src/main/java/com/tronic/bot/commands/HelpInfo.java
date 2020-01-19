@@ -16,4 +16,11 @@ public class HelpInfo {
         return this.shortDescription;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSyntax() {
+        return syntax;
+    }
 }

@@ -25,7 +25,7 @@ public class HyperchannelCommand implements Command {
 
     @Override
     public CommandType getType() {
-        return null;
+        return CommandType.ADMINISTRATION;
     }
 
     @Override
@@ -70,6 +70,6 @@ public class HyperchannelCommand implements Command {
     }
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("Hyperchannel","Set category (Name of category)|name(Name of Hyperchannel)|activation (Whether it is activated true or false) for hyperchannel","sethyperchannel");
     }
 }

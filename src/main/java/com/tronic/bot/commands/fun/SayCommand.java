@@ -39,7 +39,7 @@ public class SayCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("Say Command","says a inserted text","say");
     }
 
 }

@@ -35,7 +35,7 @@ public class DiceCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("Dice","","dice");
     }
 
 }

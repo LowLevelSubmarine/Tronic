@@ -40,7 +40,7 @@ public class UptimeCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("Uptime","shows the uptime of the bot","uptime");
     }
     private String uptimeMessage() {
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();

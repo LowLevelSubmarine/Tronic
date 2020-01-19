@@ -33,7 +33,7 @@ public class PauseCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("Pause","pause the music (when running)","pause");
     }
 
 }

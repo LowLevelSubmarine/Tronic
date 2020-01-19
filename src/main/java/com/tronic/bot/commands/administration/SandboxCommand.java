@@ -105,7 +105,7 @@ public class SandboxCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("Sandbox","dbg tool","sandbox");
     }
 
 }

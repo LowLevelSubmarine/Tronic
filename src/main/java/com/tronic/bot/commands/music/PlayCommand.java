@@ -55,7 +55,7 @@ public class PlayCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("Play","plays music","play");
     }
 
 }

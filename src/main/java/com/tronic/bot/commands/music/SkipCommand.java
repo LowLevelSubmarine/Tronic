@@ -31,7 +31,7 @@ public class SkipCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("skip","skips running track","skip");
     }
 
 }
