@@ -7,17 +7,22 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class PlayerManager {
 
+    private final Core core;
     private final HashMap<Guild, Player> players = new HashMap<>();
     private final AudioPlayerManager manager = createManager();
+
+    public PlayerManager(Core core) {
+        this.core = core;
+    }
 
     public Player getPlayer(Guild guild) {
         if (this.players.containsKey(guild)) {
@@ -32,7 +37,7 @@ public class PlayerManager {
     }
 
     private Player createPlayer(Guild guild) {
-        Player player = new Player(this.manager.createPlayer(), guild);
+        Player player = new Player(guild, this.manager.createPlayer());
         this.players.put(guild, player);
         return player;
     }
@@ -47,7 +52,7 @@ public class PlayerManager {
         void onLoaded(QueueItemLoadResult queueItemLoadResult);
     }
 
-    public static class QueueItemLoadResult {
+    public class QueueItemLoadResult {
 
         private final LinkedList<AudioTrack> tracks;
         private final boolean isSearchResult;
@@ -86,20 +91,20 @@ public class PlayerManager {
 
         public QueueItem get() {
             if (!isPlaylist()) {
-                return new QueueItem(new Track(this.tracks.getFirst()), this.owner);
+                return new QueueItem(this.owner, new Track(this.tracks.getFirst()));
             } else {
                 LinkedList<Track> tracks = new LinkedList<>();
                 for (AudioTrack track : this.tracks) {
                     tracks.add(new Track(track));
                 }
-                return new QueueItem(tracks, this.name, this.owner);
+                return new QueueItem(this.owner, tracks, this.name);
             }
         }
 
         public LinkedList<QueueItem> getSearchResults() {
             LinkedList<QueueItem> queueItems = new LinkedList<>();
             for (AudioTrack track : this.tracks) {
-                queueItems.add(new QueueItem(new Track(track), this.owner));
+                queueItems.add(new QueueItem(this.owner, new Track(track)));
             }
             return queueItems;
         }

@@ -8,8 +8,6 @@ import kotlin.reflect.KClass;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Serializer implements Shelf.Serializer {

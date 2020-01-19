@@ -1,23 +1,23 @@
 package com.tronic.bot.listeners;
 
-import com.tronic.bot.Tronic;
+import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import javax.annotation.Nonnull;
 
 public class CommandListener extends Listener {
 
-    public CommandListener(Tronic tronic) {
-        super(tronic);
+    public CommandListener(Core core) {
+        super(core);
     }
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        String prefix = getTronic().getStorage().getGuild(event.getGuild()).getPrefix();
+        String prefix = getCore().getStorage().getGuild(event.getGuild()).getPrefix();
         String messageContent = event.getMessage().getContentRaw();
         if (messageContent.startsWith(prefix)) {
             String string = messageContent.substring(prefix.length());
-            getTronic().getCommandHandler().handle(string, event);
+            getCore().getCommandHandler().handle(string, event);
         }
     }
 

@@ -15,7 +15,7 @@ gradle-app.setting
 
 \.idea/
 
-src/main/java/com/tronic/bot/Testing.java
+src/main/java/com/tronic/bot/TestConfig.java
 
 out/
 !out/production/classes/log4j2.xml

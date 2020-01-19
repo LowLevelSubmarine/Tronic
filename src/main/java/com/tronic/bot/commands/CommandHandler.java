@@ -1,7 +1,7 @@
 package com.tronic.bot.commands;
 
 import com.tronic.arguments.Arguments;
-import com.tronic.bot.Tronic;
+import com.tronic.bot.core.Core;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.tools.StatisticsSaver;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -16,11 +16,11 @@ import java.util.LinkedList;
 
 public class CommandHandler {
 
-    private final Tronic tronic;
+    private final Core core;
     private final LinkedList<Command> commands = new LinkedList<>();
 
-    public CommandHandler(Tronic tronic) {
-        this.tronic = tronic;
+    public CommandHandler(Core core) {
+        this.core = core;
     }
 
     public void addCommand(Command command) {
@@ -52,10 +52,10 @@ public class CommandHandler {
             Collections.sort(differences);
             DifferencesObj obj = differences.get(differences.size()-1);
             if (obj.getFl()== 1f) {
-                this.tronic.getStorage().getUser(event.getAuthor()).storeSatistic(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor().getId(),false));
+                this.core.getStorage().getUser(event.getAuthor()).storeSatistic(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor().getId(),false));
                 runChecked(obj.getCommand(),arguments,event);
             } else if (obj.getFl()>= 0.7f) {
-                this.tronic.getStorage().getUser(event.getAuthor()).storeSatistic(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor().getId(),true));
+                this.core.getStorage().getUser(event.getAuthor()).storeSatistic(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor().getId(),true));
                 runChecked(obj.getCommand(),arguments,event);
             } else if (obj.getFl()>= 0.3f) {
                 event.getChannel().sendMessage(new TronicMessage("Do you mean `"+obj.getCommand().invoke()+"` ?").b()).queue();
@@ -107,7 +107,7 @@ public class CommandHandler {
 
         private CommandThread(Command command, String string, MessageReceivedEvent event) {
             this.command = command;
-            this.commandInfo = new CommandInfo(CommandHandler.this.tronic, new Arguments(string), event);
+            this.commandInfo = new CommandInfo(CommandHandler.this.core, new Arguments(string), event);
         }
 
         @Override

@@ -1,18 +1,18 @@
 package com.tronic.bot.listeners;
 
-import com.tronic.bot.Tronic;
+import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public abstract class Listener extends ListenerAdapter {
 
-    private final Tronic tronic;
+    private final Core core;
 
-    public Listener(Tronic tronic) {
-        this.tronic = tronic;
+    public Listener(Core core) {
+        this.core = core;
     }
 
-    protected Tronic getTronic() {
-        return this.tronic;
+    protected Core getCore() {
+        return this.core;
     }
 
 }

@@ -1,16 +1,14 @@
-package com.tronic.bot;
+package com.tronic.bot.core;
 
 import javax.security.auth.login.LoginException;
 
-public class TronicWrapper {
+public class Tronic {
 
-    private Tronic tronic;
+    private final ConfigProvider configProvider;
+    private Core core;
 
-    public static void main(String[] args) {
-        new TronicWrapper();
-    }
-
-    private TronicWrapper() {
+    public Tronic(ConfigProvider configProvider) {
+        this.configProvider = configProvider;
         start();
     }
 
@@ -21,14 +19,14 @@ public class TronicWrapper {
 
     private void start() {
         try {
-            this.tronic = new Tronic("");
+            this.core = new Core(this.configProvider);
         } catch (LoginException e) {
             e.printStackTrace();
         }
     }
 
     private void shutdown() {
-        this.tronic.shutdown();
+        this.core.shutdown();
     }
 
 }

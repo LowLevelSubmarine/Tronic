@@ -1,13 +1,12 @@
 package com.tronic.bot.commands;
 
 import com.tronic.arguments.Arguments;
-import com.tronic.bot.Tronic;
+import com.tronic.bot.core.Core;
 import com.tronic.bot.buttons.Button;
 import com.tronic.bot.music.Player;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.storage.GuildStorage;
 import com.tronic.bot.storage.StaticStorage;
-import com.tronic.bot.storage.Storage;
 import com.tronic.bot.storage.UserStorage;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
@@ -15,22 +14,22 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandInfo {
 
-    private final Tronic tronic;
+    private final Core core;
     private final Arguments arguments;
     private final MessageReceivedEvent event;
 
-    public CommandInfo(Tronic tronic, Arguments arguments, MessageReceivedEvent event) {
-        this.tronic = tronic;
+    public CommandInfo(Core core, Arguments arguments, MessageReceivedEvent event) {
+        this.core = core;
         this.arguments = arguments;
         this.event = event;
     }
 
     public void createButton(Message message, Emoji emoji, Button.PressListener listener) {
-        new Button(this.tronic, message, emoji, listener);
+        this.core.getButtonManager().register(new Button(message, emoji, listener));
     }
 
-    public Tronic getTronic() {
-        return this.tronic;
+    public Core getCore() {
+        return this.core;
     }
 
     public Arguments getArguments() {
@@ -38,19 +37,19 @@ public class CommandInfo {
     }
 
     public JDA getJDA() {
-        return this.tronic.getJDA();
+        return this.core.getJDA();
     }
 
     public StaticStorage getStaticStorage() {
-        return this.tronic.getStorage().getStatic();
+        return this.core.getStorage().getStatic();
     }
 
     public GuildStorage getGuildStorage(Guild guild) {
-        return this.tronic.getStorage().getGuild(guild);
+        return this.core.getStorage().getGuild(guild);
     }
 
     public UserStorage getUserStorage(User user) {
-        return this.tronic.getStorage().getUser(user);
+        return this.core.getStorage().getUser(user);
     }
 
     public Guild getGuild() throws IllegalStateException {
@@ -62,7 +61,7 @@ public class CommandInfo {
     }
 
     public Player getPlayer() {
-        return this.tronic.getPlayerManager().getPlayer(this.event.getGuild());
+        return this.core.getPlayerManager().getPlayer(this.event.getGuild());
     }
 
     public User getAuthor() {

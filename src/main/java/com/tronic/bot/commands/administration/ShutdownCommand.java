@@ -45,7 +45,7 @@ public class ShutdownCommand implements Command {
 
     private void onConfirm(Button button) {
         this.deleteMessage.delete().complete();
-        this.info.getTronic().shutdown();
+        this.info.getCore().shutdown();
     }
 
     private void onDiscard(Button button) {

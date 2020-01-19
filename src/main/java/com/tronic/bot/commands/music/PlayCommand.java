@@ -38,7 +38,7 @@ public class PlayCommand implements Command {
             if (!text.contains("youtube.com")) {
                 text = "ytsearch:" + text;
             }
-            info.getTronic().getPlayerManager().loadQueueItem(text, info.getEvent().getMember(), this::onQueueItemLoaded);
+            info.getCore().getPlayerManager().loadQueueItem(text, info.getEvent().getMember(), this::onQueueItemLoaded);
         } catch (InvalidArgumentException e) {
             throw new InvalidCommandArgumentsException();
         }
@@ -48,7 +48,7 @@ public class PlayCommand implements Command {
         if (queueItemLoadResult != null) {
             Player player = this.info.getPlayer();
             if (player != null) {
-                player.queue(queueItemLoadResult.get());
+                player.addToQueue(queueItemLoadResult.get());
             }
         }
     }
