@@ -72,7 +72,7 @@ public class UpdateCommand implements Command {
                                     e.printStackTrace();
                                 }
                             }
-                            info.getTronic().shutdown();
+                            info.getCore().shutdown();
                             System.exit(0);
                         });
                     } catch (IOException e) {

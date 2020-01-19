@@ -28,7 +28,7 @@ public class SetCoHosterCommand implements Command {
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         User user = info.getJDA().getUserById(info.getArguments().getString());
-        info.getTronic().getStorage().getStatic().addCoHoster(user);
+        info.getCore().getStorage().getStatic().addCoHoster(user);
         info.getChannel().sendMessage(new TronicMessage("Add user "+user.getName()+" to coHoster list").b()).queue();
 
     }

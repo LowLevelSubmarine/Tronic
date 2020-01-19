@@ -34,17 +34,17 @@ public class HyperchannelCommand implements Command {
                 String value = info.getArguments().parse(new SingleArgument()).getOrThrowException();
                 switch (option) {
                     case "activate":
-                        info.getTronic().getStorage().getGuild(info.getEvent().getGuild()).setHyperchannelState((value.equals("true")));
+                        info.getCore().getStorage().getGuild(info.getEvent().getGuild()).setHyperchannelState((value.equals("true")));
                         if (value.equals("true")) info.getChannel().sendMessage(new TronicMessage("Activate Hyperchannel!").b()).queue();
                         if (!value.equals("true")) info.getChannel().sendMessage(new TronicMessage("Deactivate Hyperchannel!").b()).queue();
-                        info.getTronic().getHyperchannelManager().refreshHyper(info.getGuild());
+                        info.getCore().getHyperchannelManager().refreshHyper(info.getGuild());
                         break;
                     case "category":
-                        info.getTronic().getHyperchannelManager().setHyperCategory(value,info.getEvent().getGuild());
+                        info.getCore().getHyperchannelManager().setHyperCategory(value,info.getEvent().getGuild());
                         info.getChannel().sendMessage(new TronicMessage("Change new HyperChannelCategory to "+value+" !").b()).queue();
                         break;
                     case "name":
-                        info.getTronic().getHyperchannelManager().hyperChannelRename(value,info.getEvent().getGuild());
+                        info.getCore().getHyperchannelManager().hyperChannelRename(value,info.getEvent().getGuild());
                         info.getChannel().sendMessage(new TronicMessage("Change new HyperChannel to "+value+" !").b()).queue();
                         break;
                 }
@@ -54,7 +54,7 @@ public class HyperchannelCommand implements Command {
                         info.getChannel().sendMessage(new TronicMessage("Please use true or false as an value!").b()).queue();
                         break;
                     case "category":
-                        info.getTronic().getHyperchannelManager().setHyperCategory(null,info.getEvent().getGuild());
+                        info.getCore().getHyperchannelManager().setHyperCategory(null,info.getEvent().getGuild());
                         info.getChannel().sendMessage(new TronicMessage("HyperChannels are now not using a category (Not Recommended)!").b()).queue();
                         break;
                     case "name":

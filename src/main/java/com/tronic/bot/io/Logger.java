@@ -1,6 +1,5 @@
 package com.tronic.bot.io;
 
-import com.tronic.bot.Tronic;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.logging.Level;

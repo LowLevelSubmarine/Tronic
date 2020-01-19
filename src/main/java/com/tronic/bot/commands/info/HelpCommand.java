@@ -28,7 +28,7 @@ public class HelpCommand implements Command {
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         TronicMessage tm = new TronicMessage("Help","");
-        for (Command c:info.getTronic().getCommandHandler().getCommands()) {
+        for (Command c:info.getCore().getCommandHandler().getCommands()) {
             tm.addField(c.getHelpInfo().getTitle()+"-"+c.getType().name(),c.getHelpInfo().getShortDescription()+"\n ```"+c.getHelpInfo().getSyntax()+"```",false);
         }
         info.getAuthor().openPrivateChannel().queue((channel)->channel.sendMessage(tm.b()).queue());

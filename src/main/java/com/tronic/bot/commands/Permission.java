@@ -1,6 +1,6 @@
 package com.tronic.bot.commands;
 
-import com.tronic.bot.Tronic;
+import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.Event;
@@ -17,7 +17,7 @@ public enum Permission {
         this.level = level;
     }
 
-    public boolean isValid (MessageReceivedEvent event, Tronic tronic) {
+    public boolean isValid (MessageReceivedEvent event, Core tronic) {
         boolean isCoHost =tronic.getStorage().getStatic().isCoHoster(event.getAuthor());
         boolean isAdmin = event.getGuild().getMember(event.getAuthor()).hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
         System.out.println(this.level);

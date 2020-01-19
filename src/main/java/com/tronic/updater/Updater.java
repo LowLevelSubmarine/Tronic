@@ -2,7 +2,6 @@ package com.tronic.updater;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tronic.bot.Tronic;
 import com.tronic.bot.tools.FileUtils;
 import net.tetraowl.watcher.toolbox.JavaTools;
 import org.apache.logging.log4j.LogManager;

@@ -1,6 +1,6 @@
 package com.tronic.bot.hyperchannel;
 
-import com.tronic.bot.Tronic;
+import com.tronic.bot.core.Core;
 import com.tronic.bot.storage.GuildStorage;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Random;
 
 public class HyperchannelManager {
-    private Tronic tronic;
+    private Core tronic;
     private LinkedList<String> hyperIds = new LinkedList<>();
     private final static String CHANNEL_NAME = "Hyper Channel";
 
-    public HyperchannelManager(Tronic tronic) {
+    public HyperchannelManager(Core tronic) {
     this.tronic =tronic;
         for (Guild guild:this.tronic.getJDA().getGuilds()) {
             for (String string: this.tronic.getStorage().getGuild(guild).getResiduallHyper()) {

@@ -2,24 +2,30 @@ package com.tronic.bot.core;
 
 import com.tronic.bot.buttons.ButtonHandler;
 import com.tronic.bot.commands.CommandHandler;
-import com.tronic.bot.commands.administration.BroadcastCommand;
-import com.tronic.bot.commands.administration.SandboxCommand;
-import com.tronic.bot.commands.administration.ShutdownCommand;
-import com.tronic.bot.commands.administration.SpeedtestCommand;
-import com.tronic.bot.commands.administration.StatisticsCommand;
+import com.tronic.bot.commands.administration.*;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
+import com.tronic.bot.commands.info.HelpCommand;
+import com.tronic.bot.commands.info.InfoCommand;
 import com.tronic.bot.commands.info.PingCommand;
+import com.tronic.bot.commands.info.UptimeCommand;
 import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.commands.music.SearchCommand;
 import com.tronic.bot.commands.music.SkipCommand;
+import com.tronic.bot.commands.settings.HyperchannelCommand;
+import com.tronic.bot.commands.settings.SetCoHosterCommand;
 import com.tronic.bot.commands.settings.SetPrefixCommand;
+import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.PlayerManager;
 import com.tronic.bot.storage.Storage;
+import com.tronic.bot.tools.ColorisedSout;
+import com.tronic.updater.Updater;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
 
@@ -32,6 +38,9 @@ public class Core {
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler(this);
     private final PlayerManager playerManager = new PlayerManager(this);
+    Logger logger = LogManager.getLogger(Tronic.class);
+    private HyperchannelManager hyperchannelManager;
+
 
     public Core(ConfigProvider configProvider) throws LoginException {
         this.configProvider = configProvider;
@@ -39,6 +48,10 @@ public class Core {
         try {
             this.jda.awaitReady();
             addCommands();
+            hyperchannelManager = new HyperchannelManager(this);
+            Updater.initialJson();
+            Updater.initialError();
+            System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!"+ColorisedSout.ANSI_RESET);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -54,6 +67,7 @@ public class Core {
 
     public void shutdown() {
         this.jda.shutdown();
+        System.out.println(ColorisedSout.ANSI_GREEN+"Bot shutdowned!"+ColorisedSout.ANSI_RESET);
     }
 
     public Storage getStorage() {
@@ -76,6 +90,10 @@ public class Core {
         return this.listeners;
     }
 
+    public HyperchannelManager getHyperchannelManager() {
+        return hyperchannelManager;
+    }
+
     private JDA buildJDA(String token) throws LoginException {
         JDABuilder builder = new JDABuilder();
         builder.setToken(token);
@@ -88,19 +106,24 @@ public class Core {
         this.commandHandler.addCommand(new BroadcastCommand());
         this.commandHandler.addCommand(new ShutdownCommand());
         this.commandHandler.addCommand(new SpeedtestCommand());
+        this.commandHandler.addCommand(new UpdateCommand());
+        this.commandHandler.addCommand(new SetCoHosterCommand());
         //Fun
         this.commandHandler.addCommand(new DiceCommand());
         this.commandHandler.addCommand(new SayCommand());
         //Info
         this.commandHandler.addCommand(new PingCommand());
         this.commandHandler.addCommand(new StatisticsCommand());
+        this.commandHandler.addCommand(new UptimeCommand());
+        this.commandHandler.addCommand(new InfoCommand());
+        this.commandHandler.addCommand(new HelpCommand());
         //Music
         this.commandHandler.addCommand(new PauseCommand());
         this.commandHandler.addCommand(new PlayCommand());
-        this.commandHandler.addCommand(new SearchCommand());
         this.commandHandler.addCommand(new SkipCommand());
         //Settings
         this.commandHandler.addCommand(new SetPrefixCommand());
+        this.commandHandler.addCommand(new HyperchannelCommand());
         //Debugging
         this.commandHandler.addCommand(new SandboxCommand());
     }
