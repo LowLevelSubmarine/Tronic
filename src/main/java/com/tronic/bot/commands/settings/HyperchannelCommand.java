@@ -1,9 +1,7 @@
 package com.tronic.bot.commands.settings;
 
-import com.tronic.arguments.BooleanArgument;
 import com.tronic.arguments.InvalidArgumentException;
 import com.tronic.arguments.SingleArgument;
-import com.tronic.arguments.TextArgument;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 

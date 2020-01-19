@@ -14,6 +14,7 @@ import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.commands.music.SkipCommand;
 import com.tronic.bot.commands.settings.HyperchannelCommand;
+import com.tronic.bot.commands.settings.SetCoHosterCommand;
 import com.tronic.bot.commands.settings.SetPrefixCommand;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
@@ -101,6 +102,7 @@ public class Tronic {
         this.commandHandler.addCommand(new ShutdownCommand());
         this.commandHandler.addCommand(new SpeedtestCommand());
         this.commandHandler.addCommand(new UpdateCommand());
+        this.commandHandler.addCommand(new SetCoHosterCommand());
         //Fun
         this.commandHandler.addCommand(new DiceCommand());
         this.commandHandler.addCommand(new SayCommand());

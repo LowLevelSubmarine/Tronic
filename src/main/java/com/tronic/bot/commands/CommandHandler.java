@@ -67,8 +67,10 @@ public class CommandHandler {
         if (command.silent()) {
             event.getMessage().delete().queue();
         }
-        if (command.getPermission().isValid()) {
+        if (command.getPermission().isValid(event,this.tronic)) {
             new CommandThread(command, string, event).start();
+        } else {
+            event.getChannel().sendMessage(new TronicMessage("You are not allowed to do this").b()).queue();
         }
     }
 
