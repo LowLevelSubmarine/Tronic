@@ -6,6 +6,7 @@ import com.tronic.bot.commands.CommandHandler;
 import com.tronic.bot.commands.administration.*;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
+import com.tronic.bot.commands.info.InfoCommand;
 import com.tronic.bot.commands.info.PingCommand;
 import com.tronic.bot.commands.info.UptimeCommand;
 import com.tronic.bot.commands.music.PauseCommand;
@@ -105,6 +106,7 @@ public class Tronic {
         this.commandHandler.addCommand(new PingCommand());
         this.commandHandler.addCommand(new StatisticsCommand());
         this.commandHandler.addCommand(new UptimeCommand());
+        this.commandHandler.addCommand(new InfoCommand());
         //Music
         this.commandHandler.addCommand(new PauseCommand());
         this.commandHandler.addCommand(new PlayCommand());

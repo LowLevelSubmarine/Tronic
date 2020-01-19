@@ -4,6 +4,7 @@ import com.tronic.bot.buttons.Button;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
+import com.tronic.bot.statics.Info;
 import com.tronic.updater.Updater;
 import net.dv8tion.jda.api.entities.Message;
 import net.tetraowl.watcher.toolbox.JavaTools;
@@ -43,11 +44,9 @@ public class UpdateCommand implements Command {
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         Updater updater = new Updater();
-        String build = getClass().getPackage().getImplementationVersion();
-        System.out.println(build);
-        String finalBuild = build;
+        String build = Info.VERSION;
         updater.getOnlineVersion((version, download) -> {
-            if (Updater.isBigger(finalBuild,version)) {
+            if (Updater.isBigger(build,version)) {
                 Message m = info.getChannel().sendMessage(new TronicMessage("Do you want to upgrade to version "+version+"?").b()).complete();
                 info.createButton(m,  Emoji.WHITE_CHECK_MARK,(Button button)->{
                     try {
