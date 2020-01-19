@@ -38,6 +38,4 @@ dependencies {
     implementation 'gui.ava:html2image:2.0.1'
     implementation 'tech.tablesaw:tablesaw-core:0.36.0'
     implementation 'tech.tablesaw:tablesaw-html:0.36.0'
-
-
 }
