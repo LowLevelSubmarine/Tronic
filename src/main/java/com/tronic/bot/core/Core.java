@@ -147,6 +147,9 @@ public class Core {
             builder.addEventListeners(new ExperimentStartupListener(Core.this));
             builder.addEventListeners(this.messageLogger);
             builder.addEventListeners(this.startup);
+            builder.addEventListeners(new JoinListener(Core.this));
+            builder.addEventListeners(new LeaveListener(Core.this));
+            builder.addEventListeners(new MoveListener(Core.this));
         }
 
     }

@@ -68,6 +68,6 @@ public class HyperchannelCommand implements Command {
     }
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Hyperchannel","Set category (Name of category)|name(Name of Hyperchannel)|activation (Whether it is activated true or false) for hyperchannel","sethyperchannel");
+        return new HelpInfo("Hyperchannel","Set category (Name of category)|name(Name of Hyperchannel)|activate (Whether it is activated true or false) for hyperchannel","sethyperchannel");
     }
 }
