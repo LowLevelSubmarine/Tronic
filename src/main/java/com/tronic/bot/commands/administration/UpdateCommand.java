@@ -51,7 +51,7 @@ public class UpdateCommand implements Command {
                 info.createButton(m,  Emoji.WHITE_CHECK_MARK,(Button button)->{
                     try {
                         updater.doUpgrade(download,(String file)->{
-                            m.editMessage(new TronicMessage("Bot download succesfull! Restarting!\nt").b()).queue();
+                            m.editMessage(new TronicMessage("Bot download succesfull! Restarting!\n").b()).queue();
                             String ptJar = JavaTools.getJarUrl(Updater.class);
                             int os = 7777;
                             try {

@@ -19,11 +19,15 @@ import com.tronic.bot.commands.settings.SetPrefixCommand;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.PlayerManager;
+import com.tronic.bot.storage.GuildStorage;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
 import com.tronic.updater.Updater;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.internal.entities.ActivityImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -53,6 +57,7 @@ public class Core {
             hyperchannelManager = new HyperchannelManager(this);
             Updater.initialJson();
             Updater.initialError();
+            this.jda.getPresence().setActivity(Activity.playing(GuildStorage.DEFAULT_PREFIX+"help"));
             System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!"+ColorisedSout.ANSI_RESET);
         } catch (InterruptedException e) {
             e.printStackTrace();

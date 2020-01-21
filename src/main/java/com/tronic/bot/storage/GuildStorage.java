@@ -11,8 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GuildStorage extends StorageElement {
-    private static final String DEFAULT_PREFIX="!";
-    private static final String DEFAULT_HYPERNAME ="New Channel";
+    public static final String DEFAULT_PREFIX="!";
+    public static final String DEFAULT_HYPERNAME ="New Channel";
 
     GuildStorage(Shelf shelf) {
         super(shelf);
