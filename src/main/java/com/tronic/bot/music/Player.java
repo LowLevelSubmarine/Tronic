@@ -79,8 +79,10 @@ public class Player {
             this.player.playTrack(track.getAudioTrack());
             ensureConnection(this.queue.getCurrent().getTarget());
             return true;
+        } else {
+            this.player.stopTrack();
+            return false;
         }
-        return false;
     }
 
     private Track getNextTrack() {
