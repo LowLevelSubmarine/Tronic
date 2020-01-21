@@ -99,8 +99,16 @@ public class QueueList<T> {
         return this.pos == 0;
     }
 
+    public boolean isPosValid() {
+        return -1 < this.pos && this.pos < this.content.size();
+    }
+
     public boolean isIdle() {
         return this.pos == -1;
+    }
+
+    public boolean contains(T t) {
+        return this.content.contains(t);
     }
 
     private boolean isPosAffected(int pos) {

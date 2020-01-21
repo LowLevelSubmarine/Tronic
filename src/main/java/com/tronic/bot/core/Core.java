@@ -35,7 +35,7 @@ import javax.security.auth.login.LoginException;
 
 public class Core {
 
-    private final ConfigProvider configProvider;
+    private final Tronic tronic;
     private final Listeners listeners = new Listeners();
     private final JDA jda;
     private final Storage storage = new Storage();
@@ -47,10 +47,10 @@ public class Core {
     private HyperchannelManager hyperchannelManager;
 
 
-    public Core(ConfigProvider configProvider) throws LoginException {
-        this.configProvider = configProvider;
-        this.hostToken = configProvider.getHost();
-        this.jda = buildJDA(configProvider.getToken());
+    public Core(Tronic tronic) throws LoginException {
+        this.tronic = tronic;
+        this.hostToken = tronic.getConfigProvider().getHost();
+        this.jda = buildJDA(tronic.getConfigProvider().getToken());
         try {
             this.jda.awaitReady();
             addCommands();
@@ -64,8 +64,12 @@ public class Core {
         }
     }
 
+    public void restart() {
+        this.tronic.restart();
+    }
+
     public boolean getDebugMode() {
-        return this.configProvider.getDebugMode();
+        return this.tronic.getConfigProvider().getDebugMode();
     }
 
     public String getHostToken() {
@@ -115,6 +119,7 @@ public class Core {
     private void addCommands() {
         //Administration
         this.commandHandler.addCommand(new BroadcastCommand());
+        this.commandHandler.addCommand(new RestartCommand());
         this.commandHandler.addCommand(new ShutdownCommand());
         this.commandHandler.addCommand(new SpeedtestCommand());
         this.commandHandler.addCommand(new UpdateCommand());
@@ -131,6 +136,7 @@ public class Core {
         //Music
         this.commandHandler.addCommand(new PauseCommand());
         this.commandHandler.addCommand(new PlayCommand());
+        this.commandHandler.addCommand(new SearchCommand());
         this.commandHandler.addCommand(new SkipCommand());
         //Settings
         this.commandHandler.addCommand(new SetPrefixCommand());

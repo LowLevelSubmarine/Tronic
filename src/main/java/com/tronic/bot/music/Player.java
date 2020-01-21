@@ -62,6 +62,7 @@ public class Player {
 
     public void setPaused(boolean paused) {
         this.player.setPaused(paused);
+        sendStateChange();
     }
 
     public void skipSoft() {
@@ -74,15 +75,24 @@ public class Player {
     }
 
     private boolean playNextTrack() {
-        Track track = getNextTrack();
-        if (track != null) {
-            this.player.playTrack(track.getAudioTrack());
+        Track oldTrack = getCurrentTrack();
+        Track newTrack = getNextTrack();
+        if (newTrack != null) {
+            this.player.playTrack(newTrack.getAudioTrack());
             ensureConnection(this.queue.getCurrent().getTarget());
+            sendTrackChange(newTrack, oldTrack);
             return true;
         } else {
             this.player.stopTrack();
             return false;
         }
+    }
+
+    private Track getCurrentTrack() {
+        if (this.queue.isPosValid() && this.queue.getCurrent().isPosValid()) {
+            return this.queue.getCurrent().getCurrent();
+        }
+        return null;
     }
 
     private Track getNextTrack() {
@@ -117,9 +127,21 @@ public class Player {
         return false;
     }
 
+    private void sendTrackChange(Track newTrack, Track oldTrack) {
+        for (EventListener eventListener : this.eventListeners) {
+            eventListener.onTrackChanged(newTrack, oldTrack, this);
+        }
+    }
+
+    private void sendStateChange() {
+        for (EventListener eventListener : this.eventListeners) {
+            eventListener.onStateChanged(isPaused(), this);
+        }
+    }
+
     public interface EventListener {
         void onTrackChanged(Track newTrack, Track oldTrack, Player player);
-        void onStateChanged(boolean isPlaying, Player player);
+        void onStateChanged(boolean isPaused, Player player);
     }
 
 }

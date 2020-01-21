@@ -40,7 +40,11 @@ public class PlayCommand implements Command {
             }
             info.getCore().getPlayerManager().loadQueueItem(text, info.getEvent().getMember(), this::onQueueItemLoaded);
         } catch (InvalidArgumentException e) {
-            throw new InvalidCommandArgumentsException();
+            if (info.getPlayer().isPaused()) {
+                info.getPlayer().setPaused(false);
+            } else {
+                throw new InvalidCommandArgumentsException();
+            }
         }
     }
 

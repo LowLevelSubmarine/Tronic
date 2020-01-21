@@ -25,7 +25,7 @@ public class Tronic {
 
     private void start() {
         try {
-            this.core = new Core(this.configProvider);
+            this.core = new Core(this);
         } catch (LoginException e) {
             e.printStackTrace();
         }
@@ -33,6 +33,11 @@ public class Tronic {
 
     private void shutdown() {
         this.core.shutdown();
+        this.core = null;
+    }
+
+    public ConfigProvider getConfigProvider() {
+        return this.configProvider;
     }
 
 }

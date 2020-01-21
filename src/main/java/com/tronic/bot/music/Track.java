@@ -2,8 +2,11 @@ package com.tronic.bot.music;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import java.util.Random;
+
 public class Track {
 
+    private final long id = new Random().nextLong();
     private final AudioTrack audioTrack;
     private final String title;
     private final String artist;
@@ -39,4 +42,12 @@ public class Track {
         return this.uri;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Track) {
+            Track other = (Track) obj;
+            return other.id == this.id && other.audioTrack.equals(this.audioTrack);
+        }
+        return false;
+    }
 }

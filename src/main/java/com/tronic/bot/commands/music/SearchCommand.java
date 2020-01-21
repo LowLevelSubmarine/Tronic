@@ -18,6 +18,7 @@ public class SearchCommand implements Command {
 
     private CommandInfo info;
     private String query;
+    private Message message;
 
     @Override
     public String invoke() {
@@ -60,7 +61,7 @@ public class SearchCommand implements Command {
             String displayName = searchResults.get(i).getDisplayName();
             options.append(JDAUtils.getEmoji(i + 1).getUtf8()).append(" ").append(displayName).append("\n");
         }
-        Message message = info.getChannel().sendMessage(new TronicMessage(
+        this.message = info.getChannel().sendMessage(new TronicMessage(
                 "Search Results for: " + this.query,
                 options.toString()
         ).b()).complete();
@@ -77,7 +78,7 @@ public class SearchCommand implements Command {
         return null;
     }
 
-    private static class SelectListener implements Button.PressListener {
+    private class SelectListener implements Button.PressListener {
 
         private final QueueItem option;
         private final Player player;
@@ -90,6 +91,7 @@ public class SearchCommand implements Command {
         @Override
         public void onPressed(Button button) {
             this.player.addToQueue(this.option);
+            SearchCommand.this.message.delete().queue();
         }
 
     }
