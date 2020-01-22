@@ -83,6 +83,7 @@ public class Player {
             sendTrackChange(newTrack, oldTrack);
             return true;
         } else {
+            sendTrackChange(null, oldTrack);
             this.player.stopTrack();
             return false;
         }
