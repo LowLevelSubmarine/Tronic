@@ -5,10 +5,7 @@ import com.tronic.bot.commands.CommandHandler;
 import com.tronic.bot.commands.administration.*;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
-import com.tronic.bot.commands.info.HelpCommand;
-import com.tronic.bot.commands.info.InfoCommand;
-import com.tronic.bot.commands.info.PingCommand;
-import com.tronic.bot.commands.info.UptimeCommand;
+import com.tronic.bot.commands.info.*;
 import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.commands.music.SearchCommand;
@@ -83,6 +80,7 @@ public class Core {
     public void shutdown() {
         this.jda.shutdown();
         System.out.println(ColorisedSout.ANSI_GREEN+"Bot shutdowned!"+ColorisedSout.ANSI_RESET);
+        //System.exit(0);
     }
 
     public Storage getStorage() {
@@ -132,7 +130,9 @@ public class Core {
         this.commandHandler.addCommand(new StatisticsCommand());
         this.commandHandler.addCommand(new UptimeCommand());
         this.commandHandler.addCommand(new InfoCommand());
+        this.commandHandler.addCommand(new NeardInfoCommands());
         this.commandHandler.addCommand(new HelpCommand());
+        this.commandHandler.addCommand(new InviteCommand());
         //Music
         this.commandHandler.addCommand(new PauseCommand());
         this.commandHandler.addCommand(new PlayCommand());

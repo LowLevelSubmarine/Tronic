@@ -31,7 +31,7 @@ public class HyperchannelCommand implements Command {
         try {
             String option = info.getArguments().splitParse(new SingleArgument()).getOrThrowException();
             try {
-                String value = info.getArguments().parse(new SingleArgument()).getOrThrowException();
+                String value = info.getArguments().getString();
                 switch (option) {
                     case "activate":
                         info.getCore().getStorage().getGuild(info.getEvent().getGuild()).setHyperchannelState((value.equals("true")));
@@ -48,7 +48,7 @@ public class HyperchannelCommand implements Command {
                         info.getChannel().sendMessage(new TronicMessage("Change new HyperChannel to "+value+" !").b()).queue();
                         break;
                 }
-            } catch (InvalidArgumentException |NullPointerException e) {
+            } catch (NullPointerException e) {
                 switch (option) {
                     case "activate":
                         info.getChannel().sendMessage(new TronicMessage("Please use true or false as an value!").b()).queue();
