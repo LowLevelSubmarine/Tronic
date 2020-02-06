@@ -75,7 +75,7 @@ public class SearchCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("Search","Shows different results for a song","search");
     }
 
     private class SelectListener implements Button.PressListener {

@@ -22,9 +22,7 @@ import com.tronic.bot.tools.ColorisedSout;
 import com.tronic.updater.Updater;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.internal.entities.ActivityImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -133,6 +131,7 @@ public class Core {
         this.commandHandler.addCommand(new NeardInfoCommands());
         this.commandHandler.addCommand(new HelpCommand());
         this.commandHandler.addCommand(new InviteCommand());
+        this.commandHandler.addCommand(new WhoamiCommand());
         //Music
         this.commandHandler.addCommand(new PauseCommand());
         this.commandHandler.addCommand(new PlayCommand());

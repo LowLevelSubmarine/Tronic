@@ -1,4 +1,4 @@
-package com.tronic.bot.commands.administration;
+package com.tronic.bot.commands.info;
 
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
@@ -41,7 +41,7 @@ public class SpeedtestCommand implements Command {
 
     @Override
     public CommandType getType() {
-        return CommandType.ADMINISTRATION;
+        return CommandType.INFO;
     }
 
     @Override
