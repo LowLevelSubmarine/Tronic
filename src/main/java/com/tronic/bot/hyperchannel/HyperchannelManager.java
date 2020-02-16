@@ -98,8 +98,10 @@ public class HyperchannelManager {
         if (hyperIds.contains(event.getChannelLeft().getId())) {
             testAndRemoveHyper(event.getChannelLeft());
         }
-        if (this.tronic.getStorage().getGuild(event.getGuild()).getNewChannel().equals(event.getChannelJoined().getId())) {
-            onNewMember(event.getGuild(),event.getChannelJoined(),event.getMember());
+        if (this.tronic.getStorage().getGuild(event.getGuild()).getHyperchannelState()) {
+            if (this.tronic.getStorage().getGuild(event.getGuild()).getNewChannel().equals(event.getChannelJoined().getId())) {
+                onNewMember(event.getGuild(),event.getChannelJoined(),event.getMember());
+            }
         }
     }
 
