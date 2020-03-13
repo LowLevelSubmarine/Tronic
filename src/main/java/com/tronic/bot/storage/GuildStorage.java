@@ -2,6 +2,7 @@ package com.tronic.bot.storage;
 
 import com.toddway.shelf.Shelf;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
+import com.tronic.bot.statics.Presets;
 import com.tronic.bot.tools.StatisticsSaver;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
@@ -11,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GuildStorage extends StorageElement {
-    public static final String DEFAULT_PREFIX="!";
     public static final String DEFAULT_HYPERNAME ="New Channel";
 
     GuildStorage(Shelf shelf) {
@@ -20,7 +20,7 @@ public class GuildStorage extends StorageElement {
 
     public String getPrefix() {
         String prefix = (String) super.get("prefix",String.class);
-        return  prefix!=null ? prefix : DEFAULT_PREFIX ;
+        return  prefix!=null ? prefix : Presets.PREFIX;
     }
 
     public void setPrefix(String prefix) {
@@ -37,7 +37,7 @@ public class GuildStorage extends StorageElement {
 
     public String getHyperName() {
         String name = (String) super.get("hypername",String.class);
-        return  name != null ? name : DEFAULT_HYPERNAME;
+        return  name != null ? name : Presets.NEW_CHANNEL;
     }
 
     public void setHyperName(String hyperName) {

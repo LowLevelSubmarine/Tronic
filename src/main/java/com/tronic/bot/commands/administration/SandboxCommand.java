@@ -5,6 +5,7 @@ import com.tronic.bot.core.Core;
 import com.tronic.bot.stats.RangeStatistic;
 import com.tronic.bot.tools.HTMLTable;
 import com.tronic.bot.tools.StatisticsSaver;
+import gui.ava.html.Html2Image;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 
@@ -27,7 +28,7 @@ public class SandboxCommand implements Command {
 
     @Override
     public Permission getPermission() {
-        return Permission.NONE;
+        return Permission.HOST;
     }
 
     @Override
@@ -42,7 +43,18 @@ public class SandboxCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        info.getCore().getStorage().getStatic().addCoHoster(info.getAuthor());
+        Html2Image html2Image = new Html2Image();
+        html2Image.getParser().loadHtml(getHTML(info.getCore()));
+        BufferedImage bufIm = html2Image.getImageRenderer().getBufferedImage();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write( bufIm, "png", baos );
+            baos.flush();
+            info.getAuthor().openPrivateChannel().complete().sendFile(baos.toByteArray(),"statistics.png").queue();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

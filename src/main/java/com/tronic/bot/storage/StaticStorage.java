@@ -1,6 +1,7 @@
 package com.tronic.bot.storage;
 
 import com.toddway.shelf.Shelf;
+import com.tronic.bot.statics.Presets;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 
@@ -57,6 +58,15 @@ public class StaticStorage extends StorageElement {
             return false;
         }
         return false;
+    }
+
+    public void setBotVolume (int vol){
+        super.set("volume",vol);
+    }
+
+    public int getBotVolume() {
+        Integer vol = (Integer) super.get("volume",Integer.class);
+        return vol == null ? Presets.VOLUME: vol;
     }
 
 

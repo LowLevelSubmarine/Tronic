@@ -18,16 +18,19 @@ public class Storage {
     private static final File FILE_STATIC = FileUtils.getFile(FILE_ROOT, "static");
     private static final File FILE_GUILDS = FileUtils.getFile(FILE_ROOT, "guilds");
     private static final File FILE_USERS = FileUtils.getFile(FILE_ROOT, "users");
+    private static final File FILE_VOLUME = FileUtils.getFile(FILE_ROOT, "volume");
 
     private final StaticStorage staticStorage;
     private final HashMap<String, GuildStorage> guildStorages;
     private final HashMap<String, UserStorage> userStorages;
+    private final HashMap<String, VolumeStorage> volumeStorage;
 
 
     public Storage() {
         this.staticStorage = new StaticStorage(createShelf(FILE_STATIC));
         this.guildStorages = loadGuildStorages();
         this.userStorages = loadUserStorages();
+        this.volumeStorage = loadVolumeStorages();
     }
 
     public StaticStorage getStatic() {
@@ -50,12 +53,28 @@ public class Storage {
         }
     }
 
+    public VolumeStorage getVolume(String videoId) {
+        if (this.volumeStorage.containsKey(videoId)) {
+            return this.volumeStorage.get(videoId);
+        } else {
+            return new VolumeStorage(createShelf(getVolumeStorageFile(videoId)),this.staticStorage);
+        }
+    }
+
     private HashMap<String, GuildStorage> loadGuildStorages() {
         HashMap<String, GuildStorage> guildStorages = new HashMap<>();
         for (File file : getSnowflakeFiles(FILE_GUILDS)) {
             guildStorages.put(file.getName(), new GuildStorage(createShelf(file)));
         }
         return guildStorages;
+    }
+
+    private HashMap<String, VolumeStorage> loadVolumeStorages() {
+        HashMap<String, VolumeStorage> volumeStorage = new HashMap<>();
+        for (File file : getSnowflakeFiles(FILE_VOLUME)) {
+            volumeStorage.put(file.getName(), new VolumeStorage(createShelf(file),this.staticStorage));
+        }
+        return volumeStorage;
     }
 
     private HashMap<String, UserStorage> loadUserStorages() {
@@ -76,6 +95,10 @@ public class Storage {
 
     private File getUserStorageFile(User user) {
         return FileUtils.getFile(FILE_USERS, user.getId());
+    }
+
+    private File getVolumeStorageFile(String videoId) {
+        return FileUtils.getFile(FILE_VOLUME, videoId);
     }
 
     private Shelf createShelf(File file) {

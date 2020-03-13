@@ -2,11 +2,7 @@ package com.tronic.bot.tools;
 import com.lowagie.text.Document;
 import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Element;
-import tech.tablesaw.api.StringColumn;
-import tech.tablesaw.api.Table;
-import tech.tablesaw.columns.Column;
-import tech.tablesaw.io.html.HtmlWriteOptions;
-import tech.tablesaw.io.html.HtmlWriter;
+
 
 import javax.swing.text.html.HTMLDocument;
 import java.io.*;

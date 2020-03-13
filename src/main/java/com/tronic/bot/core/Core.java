@@ -10,13 +10,11 @@ import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
 import com.tronic.bot.commands.music.SearchCommand;
 import com.tronic.bot.commands.music.SkipCommand;
-import com.tronic.bot.commands.settings.HyperchannelCommand;
-import com.tronic.bot.commands.settings.SetCoHosterCommand;
-import com.tronic.bot.commands.settings.SetPrefixCommand;
+import com.tronic.bot.commands.settings.*;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.PlayerManager;
-import com.tronic.bot.storage.GuildStorage;
+import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
 import com.tronic.updater.Updater;
@@ -52,7 +50,7 @@ public class Core {
             hyperchannelManager = new HyperchannelManager(this);
             Updater.initialJson();
             Updater.initialError();
-            this.jda.getPresence().setActivity(Activity.playing(GuildStorage.DEFAULT_PREFIX+"help"));
+            this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
             System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!"+ColorisedSout.ANSI_RESET);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -140,6 +138,8 @@ public class Core {
         //Settings
         this.commandHandler.addCommand(new SetPrefixCommand());
         this.commandHandler.addCommand(new HyperchannelCommand());
+        this.commandHandler.addCommand(new BotVolumeCommand());
+        this.commandHandler.addCommand(new RemoveCoHosterCommand());
         //Debugging
         this.commandHandler.addCommand(new SandboxCommand());
     }
