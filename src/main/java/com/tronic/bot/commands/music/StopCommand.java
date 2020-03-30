@@ -1,13 +1,12 @@
 package com.tronic.bot.commands.music;
 
 import com.tronic.bot.commands.*;
-import com.tronic.bot.music_new.playing.Player;
 
-public class PauseCommand implements Command {
+public class StopCommand implements Command {
 
     @Override
     public String invoke() {
-        return "pause";
+        return "stop";
     }
 
     @Override
@@ -27,13 +26,12 @@ public class PauseCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        Player player = info.getPlayer();
-        player.setPaused(!player.isPaused());
+        info.getPlayer().stop();
     }
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Pause","pause the music (when running)","pause");
+        return null;
     }
 
 }

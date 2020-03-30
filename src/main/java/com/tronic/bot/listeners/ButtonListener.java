@@ -15,6 +15,7 @@ public class ButtonListener extends Listener  {
     public void onGenericMessageReaction(@Nonnull GenericMessageReactionEvent event) {
         if (!event.getUser().equals(event.getJDA().getSelfUser())) {
             getCore().getButtonManager().handle(event);
+            getCore().getNewButtonHandler().handle(event);
         }
     }
 

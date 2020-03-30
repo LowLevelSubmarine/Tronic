@@ -3,10 +3,11 @@ package com.tronic.bot.commands.music;
 import com.tronic.arguments.InvalidArgumentException;
 import com.tronic.arguments.TextArgument;
 import com.tronic.bot.commands.*;
-import com.tronic.bot.music.Player;
-import com.tronic.bot.music.PlayerManager;
+import com.tronic.bot.music_new.MusicManager;
+import com.tronic.bot.music_new.playing.QueueItem;
+import com.tronic.bot.music_new.playing.SingleQueueItem;
 
-public class PlayCommand implements Command {
+public class PlayCommand implements Command, MusicManager.QueueItemResultListener {
 
     private CommandInfo info;
 
@@ -34,11 +35,13 @@ public class PlayCommand implements Command {
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         this.info = info;
         try {
-            String text = info.getArguments().parse(new TextArgument()).getOrThrowException();
-            if (!text.contains("youtube.com")) {
-                text = "ytsearch:" + text;
+            String query = info.getArguments().parse(new TextArgument()).getOrThrowException();
+            if (!query.startsWith("https://")) {
+                QueueItem queueItem = new SingleQueueItem(info.getMusicManger().getTrackProvider().magnetSearch(query), info.getMember());
+                this.info.getPlayer().addToQueue(queueItem);
+            } else {
+                info.getCore().getMusicManager().loadQueueItem(query, this, info.getMember());
             }
-            info.getCore().getPlayerManager().loadQueueItem(text, info.getEvent().getMember(), this::onQueueItemLoaded);
         } catch (InvalidArgumentException e) {
             if (info.getPlayer().isPaused()) {
                 info.getPlayer().setPaused(false);
@@ -48,18 +51,19 @@ public class PlayCommand implements Command {
         }
     }
 
-    private void onQueueItemLoaded(PlayerManager.QueueItemLoadResult queueItemLoadResult) {
-        if (queueItemLoadResult != null) {
-            Player player = this.info.getPlayer();
-            if (player != null) {
-                player.addToQueue(queueItemLoadResult.get());
-            }
-        }
-    }
-
     @Override
     public HelpInfo getHelpInfo() {
         return new HelpInfo("Play","plays music","play");
+    }
+
+    @Override
+    public void onResult(QueueItem queueItem) {
+        this.info.getPlayer().addToQueue(queueItem);
+    }
+
+    @Override
+    public void onError() {
+
     }
 
 }

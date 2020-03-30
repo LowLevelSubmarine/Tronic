@@ -5,6 +5,7 @@ import com.tronic.bot.commands.CommandHandler;
 import com.tronic.bot.commands.administration.*;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
+<<<<<<< Updated upstream
 import com.tronic.bot.commands.info.*;
 import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
@@ -15,6 +16,21 @@ import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.PlayerManager;
 import com.tronic.bot.statics.Presets;
+=======
+import com.tronic.bot.commands.info.HelpCommand;
+import com.tronic.bot.commands.info.InfoCommand;
+import com.tronic.bot.commands.info.PingCommand;
+import com.tronic.bot.commands.info.UptimeCommand;
+import com.tronic.bot.commands.music.*;
+import com.tronic.bot.commands.settings.HyperchannelCommand;
+import com.tronic.bot.commands.settings.SetCoHosterCommand;
+import com.tronic.bot.commands.settings.SetPrefixCommand;
+import com.tronic.bot.hyperchannel.HyperchannelManager;
+import com.tronic.bot.listeners.*;
+import com.tronic.bot.music.PlayerManager;
+import com.tronic.bot.music_new.MusicManager;
+import com.tronic.bot.storage.GuildStorage;
+>>>>>>> Stashed changes
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
 import com.tronic.updater.Updater;
@@ -34,7 +50,9 @@ public class Core {
     private final Storage storage = new Storage();
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler(this);
+    private final com.tronic.bot.buttons_new.ButtonHandler newButtonHandler = new com.tronic.bot.buttons_new.ButtonHandler();
     private final PlayerManager playerManager = new PlayerManager(this);
+    private final MusicManager musicManager = new MusicManager(this);
     private final String hostToken;
     Logger logger = LogManager.getLogger(Tronic.class);
     private HyperchannelManager hyperchannelManager;
@@ -91,8 +109,16 @@ public class Core {
         return this.buttonHandler;
     }
 
+    public com.tronic.bot.buttons_new.ButtonHandler getNewButtonHandler() {
+        return this.newButtonHandler;
+    }
+
     public PlayerManager getPlayerManager() {
         return this.playerManager;
+    }
+
+    public MusicManager getMusicManager() {
+        return this.musicManager;
     }
 
     public Listeners getListeners() {

@@ -26,7 +26,7 @@ public class SkipCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        info.getPlayer().skipHard();
+        info.getPlayer().skip();
     }
 
     @Override

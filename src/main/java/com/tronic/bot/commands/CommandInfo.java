@@ -3,7 +3,8 @@ package com.tronic.bot.commands;
 import com.tronic.arguments.Arguments;
 import com.tronic.bot.core.Core;
 import com.tronic.bot.buttons.Button;
-import com.tronic.bot.music.Player;
+import com.tronic.bot.music_new.MusicManager;
+import com.tronic.bot.music_new.playing.Player;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.storage.GuildStorage;
 import com.tronic.bot.storage.StaticStorage;
@@ -56,12 +57,24 @@ public class CommandInfo {
         return this.getEvent().getGuild();
     }
 
+    public Member getMember() throws IllegalStateException {
+        return this.getEvent().getMember();
+    }
+
     public MessageChannel getChannel() {
         return this.event.getChannel();
     }
 
-    public Player getPlayer() {
+    public MusicManager getMusicManger() {
+        return this.core.getMusicManager();
+    }
+
+    public com.tronic.bot.music.Player getOldPlayer() {
         return this.core.getPlayerManager().getPlayer(this.event.getGuild());
+    }
+
+    public Player getPlayer() {
+        return this.core.getMusicManager().getPlayer(this.event.getGuild());
     }
 
     public User getAuthor() {
