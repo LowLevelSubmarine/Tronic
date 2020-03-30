@@ -5,7 +5,6 @@ import com.tronic.bot.commands.CommandHandler;
 import com.tronic.bot.commands.administration.*;
 import com.tronic.bot.commands.fun.DiceCommand;
 import com.tronic.bot.commands.fun.SayCommand;
-<<<<<<< Updated upstream
 import com.tronic.bot.commands.info.*;
 import com.tronic.bot.commands.music.PauseCommand;
 import com.tronic.bot.commands.music.PlayCommand;
@@ -15,22 +14,8 @@ import com.tronic.bot.commands.settings.*;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.PlayerManager;
-import com.tronic.bot.statics.Presets;
-=======
-import com.tronic.bot.commands.info.HelpCommand;
-import com.tronic.bot.commands.info.InfoCommand;
-import com.tronic.bot.commands.info.PingCommand;
-import com.tronic.bot.commands.info.UptimeCommand;
-import com.tronic.bot.commands.music.*;
-import com.tronic.bot.commands.settings.HyperchannelCommand;
-import com.tronic.bot.commands.settings.SetCoHosterCommand;
-import com.tronic.bot.commands.settings.SetPrefixCommand;
-import com.tronic.bot.hyperchannel.HyperchannelManager;
-import com.tronic.bot.listeners.*;
-import com.tronic.bot.music.PlayerManager;
 import com.tronic.bot.music_new.MusicManager;
-import com.tronic.bot.storage.GuildStorage;
->>>>>>> Stashed changes
+import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
 import com.tronic.updater.Updater;
