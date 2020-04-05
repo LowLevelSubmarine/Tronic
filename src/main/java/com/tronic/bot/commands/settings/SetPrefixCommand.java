@@ -2,11 +2,18 @@ package com.tronic.bot.commands.settings;
 
 import com.tronic.arguments.InvalidArgumentException;
 import com.tronic.arguments.SingleArgument;
+import com.tronic.bot.buttons_new.Button;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
-import com.tronic.bot.storage.GuildStorage;
+import com.tronic.bot.statics.Emoji;
+import com.tronic.bot.tools.MessageChanger;
 
 public class SetPrefixCommand implements Command {
+
+    private MessageChanger messageChanger;
+    private CommandInfo info;
+    private String oldPrefix;
+    private String newPrefix;
 
     @Override
     public String invoke() {
@@ -31,18 +38,31 @@ public class SetPrefixCommand implements Command {
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         try {
-            String newPrefix = info.getArguments().parse(new SingleArgument()).getOrThrowException();
-            GuildStorage guildStorage = info.getGuildStorage(info.getGuild());
-            String oldPrefix = guildStorage.getPrefix();
-            guildStorage.setPrefix(newPrefix);
-            info.getChannel().sendMessage(
-                    new TronicMessage(
-                            "PREFIX",
-                            "Changed prefix from \'" + oldPrefix + "\' to \'" + newPrefix + "\'"
-                    ).b()).queue();
+            this.newPrefix = info.getArguments().parse(new SingleArgument()).getOrThrowException();
+            this.oldPrefix = info.getGuildStorage(info.getGuild()).getPrefix();
+            this.info = info;
+            Button declineButton = new Button(Emoji.X, this::onDecline);
+            Button acceptButton = new Button(Emoji.WHITE_CHECK_MARK, this::onAccept);
+            this.messageChanger = new MessageChanger(info.getCore(), info.getChannel());
+            this.messageChanger.change(new TronicMessage(
+                    "PREFIX",
+                    "Would you like to change this guilds prefix from '" + this.oldPrefix + "' to '" + this.newPrefix + "'?"
+            ).b(), declineButton, acceptButton);
         } catch (InvalidArgumentException e) {
             throw new InvalidCommandArgumentsException();
         }
+    }
+
+    private void onAccept() {
+        this.info.getGuildStorage(this.info.getGuild()).setPrefix(newPrefix);
+        this.messageChanger.change(new TronicMessage(
+                "PREFIX",
+                "Changed prefix from \'" + this.oldPrefix + "\' to \'" + this.newPrefix + "\'"
+        ).b());
+    }
+
+    private void onDecline() {
+        this.messageChanger.delete();
     }
 
     @Override

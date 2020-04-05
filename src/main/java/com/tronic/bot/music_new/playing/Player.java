@@ -1,8 +1,9 @@
 package com.tronic.bot.music_new.playing;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.player.event.AudioEvent;
-import com.sedmelluq.discord.lavaplayer.player.event.AudioEventListener;
+import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
@@ -12,7 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import java.util.IdentityHashMap;
 import java.util.LinkedList;
 
-public class Player implements AudioEventListener {
+public class Player extends AudioEventAdapter {
 
     private final Core core;
     private final Guild guild;
@@ -28,6 +29,14 @@ public class Player implements AudioEventListener {
         this.audioPlayer.addListener(this);
     }
 
+    public Core getCore() {
+        return this.core;
+    }
+
+    public TextChannel getChannel() {
+        return this.guild.getDefaultChannel();
+    }
+
     public void addToQueue(QueueItem queueItem) {
         this.queue.add(queueItem);
         new QueueMessage(queueItem, this);
@@ -40,24 +49,27 @@ public class Player implements AudioEventListener {
         ensurePlayback();
     }
 
-    public QueueItem getCurrentQueueItem() {
-        return this.queue.getCurrent();
+    public void skip() {
+        this.audioPlayer.stopTrack();
     }
 
-    public boolean skip() {
-        return playNext(true);
-    }
-
-    public boolean playlistSkip() {
-        return playNext(true);
+    public void playlistSkip() {
+        while (this.queue.getCurrent().hasNextTrack()) {
+            this.queue.getCurrent().nextTrack();
+        }
+        playNextTrack(true);
     }
 
     public void stop() {
         while (this.queue.hasNext()) {
             QueueItem queueItem = this.queue.remove(this.queue.size());
             sendQueueItemRemoved(queueItem);
-            playNext(true);
         }
+        playNextTrack(true);
+    }
+
+    public boolean isPaused() {
+        return this.audioPlayer.isPaused();
     }
 
     public void setPaused(boolean paused) {
@@ -67,47 +79,16 @@ public class Player implements AudioEventListener {
         }
     }
 
-    public boolean isPaused() {
-        return this.audioPlayer.isPaused();
-    }
-
-    public void addEventListener(EventListener eventListener) {
-        this.eventListeners.put(eventListener, eventListener);
-    }
-
-    public void removeEventListener(EventListener eventListener) {
-        this.eventListeners.remove(eventListener);
+    public QueueItem getCurrentQueueItem() {
+        return this.queue.getCurrent();
     }
 
     @Override
-    public void onEvent(AudioEvent event) {
-        if (this.audioPlayer.getPlayingTrack() == null) {
-            playNext(false);
-        }
+    public void onTrackEnd(AudioPlayer player, AudioTrack lastTrack, AudioTrackEndReason endReason) {
+        playNextTrack(endReason == AudioTrackEndReason.STOPPED);
     }
 
-    TextChannel getChannel() {
-        return this.guild.getDefaultChannel();
-    }
-
-    Core getCore() {
-        return this.core;
-    }
-
-    private void ensurePlayback() {
-        if (isIdle()) {
-            playNext(false);
-            if (isPaused()) {
-                setPaused(false);
-            }
-        }
-    }
-
-    private boolean isIdle() {
-        return this.audioPlayer.getPlayingTrack() == null;
-    }
-
-    private boolean playNext(boolean skip) {
+    private boolean playNextTrack(boolean skip) {
         if (this.queue.isIdle() || !this.queue.getCurrent().hasNextTrack()) {
             if (this.queue.hasNext()) {
                 this.queue.next();
@@ -119,12 +100,23 @@ public class Player implements AudioEventListener {
             ensureConnection(this.queue.getCurrent().getOwner());
             return true;
         } else {
-            this.audioPlayer.removeListener(this);
             this.audioPlayer.stopTrack();
-            this.audioPlayer.addListener(this);
             sendQueueItemChanged(this.queue.getCurrent(), null, skip);
             this.guild.getAudioManager().closeAudioConnection();
             return false;
+        }
+    }
+
+    private boolean isIdle() {
+        return this.audioPlayer.getPlayingTrack() == null;
+    }
+
+    private void ensurePlayback() {
+        if (isIdle()) {
+            playNextTrack(false);
+            if (isPaused()) {
+                setPaused(false);
+            }
         }
     }
 
@@ -137,6 +129,14 @@ public class Player implements AudioEventListener {
             }
         }
         return false;
+    }
+
+    public void addEventListener(EventListener eventListener) {
+        this.eventListeners.put(eventListener, eventListener);
+    }
+
+    public void removeEventListener(EventListener eventListener) {
+        this.eventListeners.remove(eventListener);
     }
 
     private void sendQueueItemRemoved(QueueItem queueItem) {

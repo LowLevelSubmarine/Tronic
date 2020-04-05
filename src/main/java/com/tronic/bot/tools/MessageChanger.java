@@ -5,6 +5,7 @@ import com.tronic.bot.buttons_new.Button;
 import com.tronic.bot.buttons_new.ButtonHandler;
 import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -13,14 +14,14 @@ import java.util.LinkedList;
 public class MessageChanger implements Runnable {
 
     private final Core core;
-    private final TextChannel textChannel;
+    private final MessageChannel textChannel;
     private boolean running;
     private Message message;
     private MessageChangeAction nextMessageChangeAction;
 
-    public MessageChanger(Core core, TextChannel textChannel) {
+    public MessageChanger(Core core, MessageChannel messageChannel) {
         this.core = core;
-        this.textChannel = textChannel;
+        this.textChannel = messageChannel;
     }
 
     public void change(MessageEmbed embed, Button... buttons) {
@@ -59,7 +60,7 @@ public class MessageChanger implements Runnable {
             this.buttonHandler = buttonHandler;
         }
 
-        public Message changeMessage(TextChannel channel) {
+        public Message changeMessage(MessageChannel channel) {
             Message message = channel.sendMessage(this.embed).complete();
             for (Button button : this.buttons) {
                 this.buttonHandler.register(button, message).complete();
