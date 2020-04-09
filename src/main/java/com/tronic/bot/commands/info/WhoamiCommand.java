@@ -3,7 +3,8 @@ package com.tronic.bot.commands.info;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 
-public class WhoamiCommand implements Command {
+public class WhoAmICommand implements Command {
+
     @Override
     public String invoke() {
         return "whoami";
@@ -16,7 +17,7 @@ public class WhoamiCommand implements Command {
 
     @Override
     public boolean silent() {
-        return true;
+        return false;
     }
 
     @Override
@@ -33,4 +34,5 @@ public class WhoamiCommand implements Command {
     public HelpInfo getHelpInfo() {
         return new HelpInfo("WhoAmI","Tells you your (highest) Permission Role","whoami");
     }
+
 }

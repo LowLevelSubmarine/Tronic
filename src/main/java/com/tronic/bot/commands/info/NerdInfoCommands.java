@@ -5,10 +5,11 @@ import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Info;
 import net.tetraowl.watcher.toolbox.JavaTools;
 
-public class NeardInfoCommands implements Command {
+public class NerdInfoCommands implements Command {
+
     @Override
     public String invoke() {
-        return "neardinfo";
+        return "nerdinfo";
     }
 
     @Override
@@ -18,7 +19,7 @@ public class NeardInfoCommands implements Command {
 
     @Override
     public boolean silent() {
-        return true;
+        return false;
     }
 
     @Override
@@ -28,7 +29,7 @@ public class NeardInfoCommands implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        TronicMessage tm = new TronicMessage("NeardInfo","https://github.com/LowLevelSubmarine/Tronic");
+        TronicMessage tm = new TronicMessage("NerdInfo","https://github.com/LowLevelSubmarine/Tronic");
         if (Info.VERSION != null) {
             tm.addField("Tronic version", Info.VERSION,false);
         }
@@ -40,6 +41,6 @@ public class NeardInfoCommands implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Info","Shows some neardy info about the bot","neardinfo");
+        return new HelpInfo("Info","Shows some nerdy info about the bot","nerdinfo");
     }
 }

@@ -2,12 +2,11 @@ package com.tronic.bot.commands.info;
 
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
-import net.dv8tion.jda.api.entities.PrivateChannel;
-import net.dv8tion.jda.api.exceptions.ContextException;
 
 import java.util.LinkedList;
 
 public class HelpCommand implements Command {
+
     @Override
     public String invoke() {
         return "help";
@@ -20,7 +19,7 @@ public class HelpCommand implements Command {
 
     @Override
     public boolean silent() {
-        return true;
+        return false;
     }
 
     @Override

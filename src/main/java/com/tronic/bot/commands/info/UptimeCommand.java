@@ -3,14 +3,12 @@ package com.tronic.bot.commands.info;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 
-import java.beans.SimpleBeanInfo;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 public class UptimeCommand implements Command {
+
     @Override
     public String invoke() {
         return "uptime";
@@ -33,8 +31,6 @@ public class UptimeCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-
-
         info.getEvent().getChannel().sendMessage(new TronicMessage("Uptime",uptimeMessage()).b()).queue();
     }
 
@@ -42,6 +38,7 @@ public class UptimeCommand implements Command {
     public HelpInfo getHelpInfo() {
         return new HelpInfo("Uptime","shows the uptime of the bot","uptime");
     }
+
     private String uptimeMessage() {
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
         long millisec = rb.getUptime();
@@ -72,4 +69,5 @@ public class UptimeCommand implements Command {
         }
         return builder.toString();
     }
+
 }

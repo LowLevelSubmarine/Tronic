@@ -12,11 +12,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import toolbox.os.OSTools;
 import toolbox.process.OSnotDetectedException;
-import updater.UpdaterSettings;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 public class UpdateCommand implements Command {
     Logger logger = LogManager.getLogger(Updater.class);
@@ -47,11 +45,11 @@ public class UpdateCommand implements Command {
         String build = Info.VERSION;
         updater.getOnlineVersion((version, download) -> {
             if (Updater.isBigger(build,version)) {
-                Message m = info.getChannel().sendMessage(new TronicMessage("Do you want to upgrade to version "+version+"?").b()).complete();
+                Message m = info.getChannel().sendMessage(new TronicMessage("Do you want to update Tronic to version "+version+"?").b()).complete();
                 info.createButton(m,  Emoji.WHITE_CHECK_MARK,(Button button)->{
                     try {
                         updater.doUpgrade(download,(String file)->{
-                            m.editMessage(new TronicMessage("Bot download succesfull! Restarting!\n").b()).queue();
+                            m.editMessage(new TronicMessage("Download successful. Restarting!\n").b()).queue();
                             String ptJar = JavaTools.getJarUrl(Updater.class);
                             int os = 7777;
                             try {
@@ -76,23 +74,23 @@ public class UpdateCommand implements Command {
                             System.exit(0);
                         });
                     } catch (IOException e) {
-                        info.getChannel().sendMessage(new TronicMessage("An error occurs while the download").b()).queue();
+                        info.getChannel().sendMessage(new TronicMessage("An error occurred while downloading!").b()).queue();
                     }
                 });
                 info.createButton(m,Emoji.X,(Button button) -> {
 
                 });
             } else {
-                info.getChannel().sendMessage(new TronicMessage("No updates available").b()).queue();
+                info.getChannel().sendMessage(new TronicMessage("There are currently no updates available").b()).queue();
             }
         },(String version,Exception e)->{
-            info.getChannel().sendMessage(new TronicMessage("No updates available or an error happens").b()).queue();
+            info.getChannel().sendMessage(new TronicMessage("An error occurred").b()).queue();
         });
     }
 
-
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Updater","Updates the bot to a new version","update");
+        return new HelpInfo("Update Tronic","Automatically updates the bot to the newest version","update");
     }
+
 }

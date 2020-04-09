@@ -15,12 +15,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.math.BigDecimal;
 
 public class SpeedtestCommand implements Command {
+
     SpeedTestSocket speedTestSocket = new SpeedTestSocket();
     private static final String DOWNLOAD_URI = "http://scaleway.testdebit.info/5M/5M.iso";
     private static final String UPLOAD_URI = "https://scaleway.testdebit.info";
     private static final int UPLOAD_INTERVAL = 1000000;
-    private String downloadspeed = Emoji.CLOCK1.getUtf8();
-    private String uploadspeed = Emoji.CLOCK1.getUtf8();
+    private String downloadSpeed = Emoji.CLOCK1.getUtf8();
+    private String uploadSpeed = Emoji.CLOCK1.getUtf8();
     private Message message;
 
 
@@ -53,7 +54,7 @@ public class SpeedtestCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("speedtest","Run a speedtest","speedtest");
+        return new HelpInfo("Test the hosts connection","Run a speedtest","speedtest");
     }
 
     private void updateMessage() {
@@ -61,13 +62,14 @@ public class SpeedtestCommand implements Command {
     }
     private  TronicMessage createMessage() {
         TronicMessage message = new TronicMessage("Speedtest","");
-        message.addField("Download",this.downloadspeed,true);
-        message.addField("Upload",this.uploadspeed,true);
+        message.addField("Download",this.downloadSpeed,true);
+        message.addField("Upload",this.uploadSpeed,true);
         return message;
     }
 
 
-    class Speedtest implements ISpeedTestListener {
+    private class Speedtest implements ISpeedTestListener {
+
         private final MessageReceivedEvent event;
 
         Speedtest(MessageReceivedEvent event) {
@@ -77,12 +79,12 @@ public class SpeedtestCommand implements Command {
         @Override
         public void onCompletion(SpeedTestReport report) {
             if (report.getSpeedTestMode() == SpeedTestMode.DOWNLOAD) {
-                SpeedtestCommand.this.downloadspeed = getMbits(report.getTransferRateBit());
+                SpeedtestCommand.this.downloadSpeed = getMbits(report.getTransferRateBit());
                 SpeedtestCommand.this.speedTestSocket.startUpload(UPLOAD_URI, UPLOAD_INTERVAL);
                 SpeedtestCommand.this.updateMessage();
             }
             if (report.getSpeedTestMode() == SpeedTestMode.UPLOAD) {
-                SpeedtestCommand.this.uploadspeed = getMbits(report.getTransferRateBit());
+                SpeedtestCommand.this.uploadSpeed = getMbits(report.getTransferRateBit());
                 SpeedtestCommand.this.updateMessage();
             }
         }
@@ -100,5 +102,6 @@ public class SpeedtestCommand implements Command {
         private String getMbits(BigDecimal decimal) {
             return DoubleToolkit.round(decimal.doubleValue() / 1024 / 1024, 2) + " MBit/s";
         }
+
     }
 }

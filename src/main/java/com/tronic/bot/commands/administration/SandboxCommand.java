@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 public class SandboxCommand implements Command {
+
     @Override
     public String invoke() {
         return "sandbox";

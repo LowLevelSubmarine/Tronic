@@ -1,13 +1,10 @@
 package com.tronic.bot.commands.info;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
-import com.tronic.bot.statics.Emoji;
 import net.dv8tion.jda.api.JDA;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class PingCommand implements Command {
+
     @Override
     public String invoke() {
         return "ping";
@@ -32,12 +29,12 @@ public class PingCommand implements Command {
     @Override
     public void run(CommandInfo info) {
         JDA jda = info.getJDA();
-        long pingtime = jda.getGatewayPing();
-        info.getEvent().getChannel().sendMessage(new TronicMessage("The current API response time is  "+pingtime+"ms").b()).queue();
+        long pingTime = jda.getGatewayPing();
+        info.getEvent().getChannel().sendMessage(new TronicMessage("The current API response time is  "+pingTime+"ms").b()).queue();
     }
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Ping","Get the ping of the Discord API.","ping");
+        return new HelpInfo("Ping","Shows you the ping of the Discord API.","ping");
     }
 }

@@ -31,7 +31,7 @@ public class RestartCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Restart","Restart the bot","restart");
+        return new HelpInfo("Restart Tronic","Restart the bot","restart");
     }
 
 }

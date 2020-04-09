@@ -17,7 +17,7 @@ public class InfoCommand implements Command {
 
     @Override
     public boolean silent() {
-        return true;
+        return false;
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.tronic.bot.commands.info;
 
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
+import com.tronic.bot.tools.Markdown;
 
 public class InviteCommand implements Command {
+
     @Override
     public String invoke() {
         return "invite";
@@ -16,7 +18,7 @@ public class InviteCommand implements Command {
 
     @Override
     public boolean silent() {
-        return true;
+        return false;
     }
 
     @Override
@@ -26,11 +28,18 @@ public class InviteCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        info.getChannel().sendMessage(new TronicMessage("Invite link: "+info.getJDA().getInviteUrl(net.dv8tion.jda.api.Permission.ADMINISTRATOR)).b()).queue();
+        info.getChannel().sendMessage(new TronicMessage(
+                Markdown.uri("Here's the invite link", createInviteUrl(info))
+        ).b()).queue();
+    }
+
+    private String createInviteUrl(CommandInfo info) {
+        return info.getJDA().getInviteUrl(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
     }
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Invite Command","post an invite link to the command","invite");
+        return new HelpInfo("Invite Tronic","Posts a invite link so you can add Tronic to your own server","invite");
     }
+
 }
