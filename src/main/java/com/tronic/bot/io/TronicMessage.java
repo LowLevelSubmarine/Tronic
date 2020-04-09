@@ -1,5 +1,6 @@
 package com.tronic.bot.io;
 
+import com.tronic.bot.core.Tronic;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
@@ -18,15 +19,17 @@ public class TronicMessage {
     public TronicMessage(String title, String text) {
         setDefaults();
         this.builder.setTitle(title);
-        this.builder.setDescription(text);
+        if (text != null) this.builder.setDescription(text);
     }
 
-    public void addField(String name, String value, boolean inline) {
+    public TronicMessage addField(String name, String value, boolean inline) {
         this.builder.addField(name, value, inline);
+        return this;
     }
 
-    public void addBlankField(boolean inline) {
+    public TronicMessage addBlankField(boolean inline) {
         this.builder.addBlankField(inline);
+        return this;
     }
 
     private void setDefaults() {

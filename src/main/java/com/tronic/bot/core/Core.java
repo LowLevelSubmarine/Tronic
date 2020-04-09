@@ -126,6 +126,7 @@ public class Core {
     private void addCommands() {
         //Administration
         this.commandHandler.addCommand(new BroadcastCommand());
+        this.commandHandler.addCommand(new RangeReportCommand());
         this.commandHandler.addCommand(new RestartCommand());
         this.commandHandler.addCommand(new ShutdownCommand());
         this.commandHandler.addCommand(new SpeedtestCommand());
