@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.Collection;
 
-public class QueueItem {
+public class  QueueItem {
 
     private final Member target;
     private final String title;

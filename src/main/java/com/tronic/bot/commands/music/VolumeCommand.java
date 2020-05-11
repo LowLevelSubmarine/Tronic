@@ -30,6 +30,6 @@ public class VolumeCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Volume","set the Volume for a song","volume 1-200");
+        return new HelpInfo("Volume","set the Volume for a song","volume <1-200>");
     }
 }

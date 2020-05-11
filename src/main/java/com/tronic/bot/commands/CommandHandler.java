@@ -117,7 +117,8 @@ public class CommandHandler {
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
             } catch (InvalidCommandArgumentsException e) {
-                this.commandInfo.getEvent().getChannel().sendMessage(e.getErrorMessage()).queue();
+                //this.commandInfo.getEvent().getChannel().sendMessage(e.getErrorMessage()).queue();
+                this.commandInfo.getEvent().getChannel().sendMessage("Correct Syntax: "+this.command.getHelpInfo().getSyntax()).queue();
             }
         }
 
