@@ -84,7 +84,7 @@ public class Core {
     public void shutdown() {
         this.jda.shutdown();
         System.out.println(ColorisedSout.ANSI_GREEN+"Bot shutdowned!"+ColorisedSout.ANSI_RESET);
-        //System.exit(0);
+        System.exit(0);
     }
 
     public Storage getStorage() {
