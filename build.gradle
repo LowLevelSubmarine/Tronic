@@ -12,6 +12,11 @@ jar {
     manifest { attributes( 'Main-Class': 'com.tronic.bot.ReleaseConfig', 'Implementation-Version': version ) } //use Main Class instead of Testing
 }
 
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked"
+    }
+}
 repositories {
     mavenCentral()
     jcenter()
