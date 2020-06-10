@@ -45,7 +45,9 @@ jobs:
       uses: EndBug/add-and-commit@v4.2.0
       with: 
         message: build.gradle -> ${{steps.version.outputs.VERSION}}
-        ref: "master" 
+        ref: "master"
+        author_name: BOT
+        author_email: bot@tronic.de
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
     - name: echo
