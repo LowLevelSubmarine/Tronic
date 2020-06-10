@@ -71,7 +71,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ./build/libs/bot-${{steps.version.outputs.VERSION}}-all.jar
-        asset_name: "bot-$VERSION-all.jar"
+        asset_name: bot-${{steps.version.outputs.VERSION}}-all.jar
         asset_content_type:  application/java-archive
     - name: Cleanup 
       run: rm -rf ./build
