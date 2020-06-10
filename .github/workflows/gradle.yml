@@ -38,12 +38,19 @@ jobs:
     - name: upgrade Version
       run: |
         echo ::set-env name=VERSION::$(./version.sh)
+    - name: Hello world
+      run: echo Hello world $VERSION
+    - name: DBG
+      run: ./version
     - name: build jar
       run: ./gradlew shadowjar
     - name: Commit Gradle Changes
-      uses: EndBug/add-and-commit@v4
+      uses: EndBug/add-and-commit@v4.2.0
       with: 
         message: "build.gradle -> $VERSION"
+        ref: "master" 
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
