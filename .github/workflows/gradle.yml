@@ -26,7 +26,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build -Xlint:unchecked
     - name: Integration check
       uses: squalrus/merge-bot@v0.2.0
       with:
@@ -40,7 +40,7 @@ jobs:
       run: |
         echo ::set-env name=VERSION::$(./version.sh)
     - name: build jar
-      run: ./gradlew shadowjar
+      run: ./gradlew shadowjar -Xlint:unchecked
     - name: Commit Gradle Changes
       uses: EndBug/add-and-commit@v4
       with: 
