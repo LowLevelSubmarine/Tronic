@@ -6,7 +6,7 @@ name: Java CI with Gradle
 on:
   pull_request:
     branches: [ master ]
-    types: [opened, labeled, unlabeled, synchronize]
+    types: [opened, reopened, labeled, unlabeled, synchronize]
 
 jobs:
   build:
@@ -37,14 +37,15 @@ jobs:
     - name: prepare version.sh
       run: chmod a+x version.sh
     - name: upgrade Version
+      id: version
       run: |
-        echo ::set-env name=VERSION::$(./version.sh)
+        echo ::set-output name=VERSION::$(./version.sh)
     - name: build jar
       run: ./gradlew shadowjar
     - name: Commit Gradle Changes
       uses: EndBug/add-and-commit@v4.2.0
       with: 
-        message: "build.gradle -> $VERSION"
+        message: build.gradle -> ${{steps.version.outputs.VERSION}}
         ref: "master" 
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
@@ -56,8 +57,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{VERSION}}
-        release_name: "Version ${{VERSION}}"
+        tag_name: ${{steps.version.outputs.VERSION}}
+        release_name: Version ${{steps.version.outputs.VERSION}}
         body: |
           - Updated dependencies
         draft: false
@@ -69,7 +70,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./build/libs/bot-${{VERSION}}-all.jar
+        asset_path: ./build/libs/bot-${{steps.version.outputs.VERSION}}-all.jar
         asset_name: "bot-$VERSION-all.jar"
         asset_content_type:  application/java-archive
     - name: Cleanup 
