@@ -39,10 +39,6 @@ jobs:
     - name: upgrade Version
       run: |
         echo ::set-env name=VERSION::$(./version.sh)
-    - name: Hello world
-      run: echo Hello world $VERSION
-    - name: DBG
-      run: ./version
     - name: build jar
       run: ./gradlew shadowjar
     - name: Commit Gradle Changes
@@ -52,14 +48,16 @@ jobs:
         ref: "master" 
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+    - name: echo
+      run: echo ${{VERSION}}
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: $VERSION
-        release_name: "Version $VERSION"
+        tag_name: ${{VERSION}}
+        release_name: "Version ${{VERSION}}"
         body: |
           - Updated dependencies
         draft: false
@@ -71,8 +69,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./build/libs/bot-$VERSION-all.jar
-        asset_name: bot-$VERSION-all.jar
+        asset_path: ./build/libs/bot-${{VERSION}}-all.jar
+        asset_name: "bot-$VERSION-all.jar"
         asset_content_type:  application/java-archive
     - name: Cleanup 
       run: rm -rf ./build
