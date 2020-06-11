@@ -28,14 +28,13 @@ jobs:
         echo ::set-output name=VERSION::$(./version.sh)
     - name: build jar
       run: ./gradlew shadowjar
-    - name: Commit Gradle Changes
-      uses: stefanzweifel/git-auto-commit-action@v4.3.0
-
-      with: 
-        commit_message: build.gradle -> ${{steps.version.outputs.VERSION}}
-        branch: "master"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+    - name: push
+      uses: github-actions-x/commit@v2.6
+      with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          push-branch: master
+          commit-message: "build.gradle -> ${{steps.version.outputs.VERSION}}"
+          rebase: 'true' # pull abd rebase before commit
     - name: echo
       run: echo  ${{ secrets.GITHUB_TOKEN }}
     - name: Create Release
