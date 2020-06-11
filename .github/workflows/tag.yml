@@ -24,12 +24,6 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Integration check
-      uses: squalrus/merge-bot@v0.4.1
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        reviewers: false
-        labels: dependencies
     - name: prepare version.sh
       run: chmod a+x version.sh
     - name: upgrade Version
