@@ -25,7 +25,8 @@ public class Updater {
     private String USER = "LowLevelSubmarine";
     private String REPO = "Tronic";
     Logger logger = LogManager.getLogger(Updater.class);
-    public void getOnlineVersion(UpdaterSettings.onSucces onSucces,UpdaterSettings.onError onError) {
+
+    public void getOnlineVersion(UpdaterSettings.onSucces onSucces, UpdaterSettings.onError onError) {
         UpdaterSettings setting = new UpdaterSettings(USER, REPO, onError,onSucces,true);
         new updater.Updater(setting);
     }
@@ -37,7 +38,11 @@ public class Updater {
         FileOutputStream fos = new FileOutputStream(ptJar+"/Tronic_"+time+".jar");
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         FileWriter fw = new FileWriter(new File(ptJar+"/tronic.json"));
-        fw.write("[{\"procname\": \"java -jar "+ptJar+"/Tronic_"+time+".jar\", \"if\":\"\",\"else\":\"java -jar "+ptJar+"/Tronic_"+time+".jar\" }]");
+        try {
+            fw.write("{\"work\":[{\"keepalive\": \"java -jar "+getCurrentJARFilePath().toString()+"\" }]}");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         fw.close();
         afterUpdater.afterUpdate(ptJar+"/Tronic_"+time);
 
