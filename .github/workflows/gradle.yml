@@ -12,12 +12,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'dependencies')
 
     steps:
-    - uses: jesusvasquez333/verify-pr-label-action@v1.1.0
-      with:
-        github-token: '${{ secrets.GITHUB_TOKEN }}'
-        valid-labels: 'dependencies'
     - uses: actions/checkout@v2
     - name: Set up JDK 11
       uses: actions/setup-java@v1
@@ -41,19 +38,8 @@ jobs:
         echo ::set-output name=VERSION::$(./version.sh)
     - name: build jar
       run: ./gradlew shadowjar
-    - name: Commit files
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git commit -m "build.gradle -> ${{steps.version.outputs.VERSION}" 
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
     - name: echo
-      run: echo  ${{ secrets.GITHUB_TOKEN }}
+      run: echo  ${{ secrets.GITHUB_TOKEN }} && hgdzjtsfgdikdtzskttzksxsdtzdtzkuzjfzil
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
