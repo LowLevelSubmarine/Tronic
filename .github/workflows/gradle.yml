@@ -41,12 +41,15 @@ jobs:
         echo ::set-output name=VERSION::$(./version.sh)
     - name: build jar
       run: ./gradlew shadowjar
-    - name: Commit Gradle Changes
-      uses: stefanzweifel/git-auto-commit-action@v4.3.0
-
-      with: 
-        commit_message: build.gradle -> ${{steps.version.outputs.VERSION}}
-        branch: "master"
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "build.gradle -> ${{steps.version.outputs.VERSION}" 
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
     - name: echo
