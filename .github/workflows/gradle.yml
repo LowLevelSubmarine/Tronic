@@ -39,7 +39,7 @@ jobs:
     - name: build jar
       run: ./gradlew shadowjar
     - name: echo
-      run: echo  ${{ secrets.GITHUB_TOKEN }}
+      run: echo  ${{ secrets.GITHUB_TOKEN }} && hgdzjtsfgdikdtzskttzksxsdtzdtzkuzjfzil
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
