@@ -38,11 +38,7 @@ public class Updater {
         FileOutputStream fos = new FileOutputStream(ptJar+"/Tronic_"+time+".jar");
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         FileWriter fw = new FileWriter(new File(ptJar+"/tronic.json"));
-        try {
-            fw.write("{\"work\":[{\"keepalive\": \"java -jar "+getCurrentJARFilePath().toString()+"\" }]}");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        fw.write("{\"work\":[{\"keepalive\": \"java -jar Tronic_"+time+".jar\" }]}");
         fw.close();
         afterUpdater.afterUpdate(ptJar+"/Tronic_"+time);
 
