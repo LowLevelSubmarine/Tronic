@@ -5,9 +5,10 @@ import com.tronic.arguments.TextArgument;
 import com.tronic.bot.buttons.Button;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
-import com.tronic.bot.music.Player;
-import com.tronic.bot.music.PlayerManager;
-import com.tronic.bot.music.QueueItem;
+import com.tronic.bot.music_new.playing.Player;
+import com.tronic.bot.music_new.playing.SingleQueueItem;
+import com.tronic.bot.music_new.sources.Track;
+import com.tronic.bot.music_new.sources.YouTubeTrackProvider;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.tools.JDAUtils;
 import net.dv8tion.jda.api.entities.Message;
@@ -17,8 +18,8 @@ import java.util.List;
 public class SearchCommand implements Command {
 
     private CommandInfo info;
-    private String query;
     private Message message;
+    private boolean selected = false;
 
     @Override
     public String invoke() {
@@ -44,10 +45,56 @@ public class SearchCommand implements Command {
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         this.info = info;
         try {
-            this.query = "ytsearch:" + info.getArguments().parse(new TextArgument()).getOrThrowException();
+            String query = info.getArguments().parse(new TextArgument()).getOrThrowException();
+            List<YouTubeTrackProvider.YouTubeTrack> tracks = info.getMusicManger().getTrackProvider().listSearch(query);
+            if (tracks.size() > 5) {
+                tracks = tracks.subList(0, 5);
+            }
+            StringBuilder options = new StringBuilder();
+            for (int i = 0; i < tracks.size(); i++) {
+                String displayName = tracks.get(i).getDisplayName();
+                options.append(JDAUtils.getEmoji(i + 1).getUtf8()).append(" ").append(displayName).append("\n");
+            }
+            this.message = info.getChannel().sendMessage(new TronicMessage(
+                    "Search Results for: " + query,
+                    options.toString()
+            ).b()).complete();
+            Player player = info.getPlayer();
+            for (int i = 0; i < tracks.size(); i++) {
+                Emoji emoji = JDAUtils.getEmoji(i + 1);
+                SelectListener listener = new SelectListener(tracks.get(i), player);
+                this.info.getCore().getButtonManager().register(new Button(this.message, emoji, listener));
+            }
+            this.info.getCore().getButtonManager().register(new Button(this.message, Emoji.X, this::cancel));
         } catch (InvalidArgumentException e) {
             throw new InvalidCommandArgumentsException();
         }
+    }
+
+    private void cancel(Button button) {
+        this.selected = true;
+        this.message.delete().queue();
+    }
+
+    private class SelectListener implements Button.PressListener {
+
+        private final Track option;
+        private final Player player;
+
+        public SelectListener(Track option, Player player) {
+            this.option = option;
+            this.player = player;
+        }
+
+        @Override
+        public void onPressed(Button button) {
+            if (!SearchCommand.this.selected) {
+                SearchCommand.this.selected = true;
+                this.player.addToQueue(new SingleQueueItem(this.option, SearchCommand.this.info.getMember()));
+                SearchCommand.this.message.delete().queue();
+            }
+        }
+
     }
 
     @Override
