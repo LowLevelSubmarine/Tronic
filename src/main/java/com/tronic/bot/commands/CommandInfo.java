@@ -1,11 +1,10 @@
 package com.tronic.bot.commands;
 
 import com.tronic.arguments.Arguments;
+import com.tronic.bot.buttons.ButtonHandler;
 import com.tronic.bot.core.Core;
-import com.tronic.bot.buttons.Button;
 import com.tronic.bot.music_new.MusicManager;
 import com.tronic.bot.music_new.playing.Player;
-import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.storage.GuildStorage;
 import com.tronic.bot.storage.StaticStorage;
 import com.tronic.bot.storage.UserStorage;
@@ -23,10 +22,6 @@ public class CommandInfo {
         this.core = core;
         this.arguments = arguments;
         this.event = event;
-    }
-
-    public void createButton(Message message, Emoji emoji, Button.PressListener listener) {
-        this.core.getButtonManager().register(new Button(message, emoji, listener));
     }
 
     public Core getCore() {
@@ -69,12 +64,12 @@ public class CommandInfo {
         return this.core.getMusicManager();
     }
 
-    public com.tronic.bot.music.Player getOldPlayer() {
-        return this.core.getPlayerManager().getPlayer(this.event.getGuild());
-    }
-
     public Player getPlayer() {
         return this.core.getMusicManager().getPlayer(this.event.getGuild());
+    }
+
+    public ButtonHandler getButtonHandler() {
+        return this.core.getButtonHandler();
     }
 
     public User getAuthor() {

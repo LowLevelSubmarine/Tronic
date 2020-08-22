@@ -6,10 +6,12 @@ import com.tronic.bot.buttons.Button;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
-import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;  
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.util.LinkedList;
 
 public class BroadcastCommand implements Command {
 
@@ -42,21 +44,23 @@ public class BroadcastCommand implements Command {
         this.info = info;
         try {
             String text = info.getArguments().parse(new TextArgument()).getOrThrowException();
-            this.draft = new TronicMessage(Emoji.WARNING.getUtf8() + "  " + info.getAuthor().getAsTag() + ":", text).b();
+            this.draft = new TronicMessage(Emoji.WARNING.getUtf8() + "  " + info.getAuthor().getAsTag(), text).b();
             this.message = info.getChannel().sendMessage(this.draft).complete();
-            this.info.createButton(message, Emoji.WHITE_CHECK_MARK, this::onConfirm);
-            this.info.createButton(message, Emoji.X, this::onDiscard);
+            Button confirmButton = new Button(Emoji.WHITE_CHECK_MARK, this::onConfirm);
+            Button discardButton = new Button(Emoji.X, this::onDiscard);
+            info.getButtonHandler().register(confirmButton, this.message).queue();
+            info.getButtonHandler().register(discardButton, this.message).queue();
         } catch (InvalidArgumentException e) {
             throw new InvalidCommandArgumentsException();
         }
     }
 
-    private void onConfirm(Button button) {
+    private void onConfirm() {
         this.message.clearReactions().queue();
         broadcast();
     }
 
-    private void onDiscard(Button button) {
+    private void onDiscard() {
         this.message.delete().queue();
     }
 
@@ -66,12 +70,12 @@ public class BroadcastCommand implements Command {
     }
 
     private void broadcast() {
-        for (Guild guild : this.info.getJDA().getGuilds()) {
-            if (!guild.equals(this.info.getGuild())) {
-                TextChannel channel = guild.getDefaultChannel();
-                if (channel != null) {
-                    guild.getDefaultChannel().sendMessage(this.draft).queue();
-                }
+        LinkedList<Guild> guilds = new LinkedList<>(this.info.getJDA().getGuilds());
+        guilds.remove(this.info.getGuild());
+        for (Guild guild : guilds) {
+            TextChannel channel = guild.getDefaultChannel();
+            if (channel != null) {
+                guild.getDefaultChannel().sendMessage(this.draft).queue();
             }
         }
     }

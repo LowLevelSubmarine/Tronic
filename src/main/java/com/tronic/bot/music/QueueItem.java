@@ -1,7 +1,5 @@
 package com.tronic.bot.music;
 
-import com.tronic.bot.buttons.Button;
-import com.tronic.bot.statics.Emoji;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;

@@ -1,84 +1,59 @@
 package com.tronic.bot.buttons;
 
-import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
+import net.dv8tion.jda.api.requests.RestAction;
 
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.Set;
 
 public class ButtonHandler {
 
-    private final Core core;
     private final HashMap<ButtonKey, Button> buttons = new HashMap<>();
-
-    public ButtonHandler(Core core) {
-        this.core = core;
-    }
 
     public void handle(GenericMessageReactionEvent event) {
         ButtonKey key = new ButtonKey(event);
         if (this.buttons.containsKey(key)) {
-            this.buttons.get(key).onPressed(event);
+            this.buttons.get(key).onPress(event);
         }
     }
 
-    public void register(Button button) {
-        this.buttons.put(new ButtonKey(button), button);
+    public RestAction<Void> register(Button button, Message message) {
+        register(button, message.getId());
+        return message.addReaction(button.getEmoji().getUtf8());
     }
 
-    public void unregister(Button button) {
-        this.buttons.remove(new ButtonKey(button));
-    }
-
-    public void unregisterAll(Message message) {
-        Set<ButtonKey> keys = this.buttons.keySet();
-        for (ButtonKey key : keys) {
-            if (key.messageId.equals(message.getId())) {
-                this.buttons.remove(key);
-            }
-        }
+    public void register(Button button, String messageId) {
+        this.buttons.put(new ButtonKey(button, messageId), button);
     }
 
     private static class ButtonKey {
 
-        private final String messageId;
         private final String emoji;
+        private final String messageId;
 
-        public ButtonKey(Button button) {
-            this(button.getMessageId(), button.getEmoji().getUtf8());
+        public ButtonKey(Button button, String messageId) {
+            this.emoji = button.getEmoji().getUtf8();
+            this.messageId = messageId;
         }
 
         public ButtonKey(GenericMessageReactionEvent event) {
-            this(event.getMessageId(), event.getReactionEmote().getEmoji());
-        }
-
-        public ButtonKey(String messageId, String emoji) {
-            this.messageId = messageId;
-            this.emoji = emoji;
-        }
-
-        public String getMessageId() {
-            return this.messageId;
-        }
-
-        public String getEmojie() {
-            return this.emoji;
+            this.emoji = event.getReactionEmote().getEmoji();
+            this.messageId = event.getMessageId();
         }
 
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof ButtonKey) {
                 ButtonKey other = (ButtonKey) obj;
-                return this.messageId.equals(other.messageId) && this.emoji.equals(other.emoji);
+                return this.emoji.equals(other.emoji) && this.messageId.equals(other.messageId);
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(this.messageId, this.emoji);
+            return Objects.hash(this.emoji, this.messageId);
         }
 
     }

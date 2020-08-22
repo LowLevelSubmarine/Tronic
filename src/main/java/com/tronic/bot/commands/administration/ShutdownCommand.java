@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class ShutdownCommand implements Command {
 
-    private Message deleteMessage;
+    private Message message;
     private CommandInfo info;
 
     @Override
@@ -37,24 +37,26 @@ public class ShutdownCommand implements Command {
     public void run(CommandInfo info) {
         this.info = info;
         MessageEmbed embed = new TronicMessage("Do you really want to shut me down?").b();
-        this.deleteMessage = info.getEvent().getChannel().sendMessage(embed).complete();
+        this.message = info.getEvent().getChannel().sendMessage(embed).complete();
         Logger.log(this, Emoji.WHITE_CHECK_MARK.getUtf8());
-        info.createButton(this.deleteMessage, Emoji.WHITE_CHECK_MARK, this::onConfirm);
-        info.createButton(this.deleteMessage, Emoji.X, this::onDiscard);
+        Button confirmButton = new Button(Emoji.WHITE_CHECK_MARK, this::onConfirm);
+        Button discardButton = new Button(Emoji.X, this::onDiscard);
+        info.getButtonHandler().register(confirmButton, this.message).queue();
+        info.getButtonHandler().register(discardButton, this.message).queue();
     }
 
-    private void onConfirm(Button button) {
-        this.deleteMessage.delete().complete();
+    private void onConfirm() {
+        this.message.delete().complete();
         this.info.getCore().shutdown();
     }
 
-    private void onDiscard(Button button) {
-        this.deleteMessage.delete().queue();
+    private void onDiscard() {
+        this.message.delete().queue();
     }
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("shutdown","shut the bot down","shutdown");
+        return new HelpInfo("shutdown","Shuts Tronic down","shutdown");
     }
 
 }

@@ -23,14 +23,10 @@ import com.tronic.updater.Updater;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.tetraowl.watcher.toolbox.JavaTools;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.xml.XmlConfiguration;
 
 import javax.security.auth.login.LoginException;
-import java.io.FileInputStream;
 
 public class Core {
 
@@ -39,8 +35,7 @@ public class Core {
     private final JDA jda;
     private final Storage storage = new Storage();
     private final CommandHandler commandHandler = new CommandHandler(this);
-    private final ButtonHandler buttonHandler = new ButtonHandler(this);
-    private final com.tronic.bot.buttons_new.ButtonHandler newButtonHandler = new com.tronic.bot.buttons_new.ButtonHandler();
+    private final ButtonHandler buttonHandler = new ButtonHandler();
     private final PlayerManager playerManager = new PlayerManager(this);
     private final MusicManager musicManager = new MusicManager(this);
     private final String hostToken;
@@ -99,8 +94,8 @@ public class Core {
         return this.buttonHandler;
     }
 
-    public com.tronic.bot.buttons_new.ButtonHandler getNewButtonHandler() {
-        return this.newButtonHandler;
+    public com.tronic.bot.buttons.ButtonHandler getButtonHandler() {
+        return this.buttonHandler;
     }
 
     public PlayerManager getPlayerManager() {

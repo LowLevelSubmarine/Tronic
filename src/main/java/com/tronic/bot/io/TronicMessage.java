@@ -1,6 +1,5 @@
 package com.tronic.bot.io;
 
-import com.tronic.bot.core.Tronic;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 

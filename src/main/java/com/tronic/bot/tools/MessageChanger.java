@@ -1,15 +1,11 @@
 package com.tronic.bot.tools;
 
-import com.lowlevelsubmarine.ytml.actions.RestAction;
-import com.tronic.bot.buttons_new.Button;
-import com.tronic.bot.buttons_new.ButtonHandler;
+import com.tronic.bot.buttons.Button;
+import com.tronic.bot.buttons.ButtonHandler;
 import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
-
-import java.util.LinkedList;
 
 public class MessageChanger implements Runnable {
 
@@ -25,7 +21,7 @@ public class MessageChanger implements Runnable {
     }
 
     public void change(MessageEmbed embed, Button... buttons) {
-        this.nextMessageChangeAction = new MessageChangeAction(embed, buttons, this.core.getNewButtonHandler());
+        this.nextMessageChangeAction = new MessageChangeAction(embed, buttons, this.core.getButtonHandler());
         new Thread(this).start();
     }
 

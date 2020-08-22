@@ -2,7 +2,7 @@ package com.tronic.bot.commands.settings;
 
 import com.tronic.arguments.InvalidArgumentException;
 import com.tronic.arguments.SingleArgument;
-import com.tronic.bot.buttons_new.Button;
+import com.tronic.bot.buttons.Button;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;

@@ -63,15 +63,17 @@ public class SearchCommand implements Command {
             for (int i = 0; i < tracks.size(); i++) {
                 Emoji emoji = JDAUtils.getEmoji(i + 1);
                 SelectListener listener = new SelectListener(tracks.get(i), player);
-                this.info.getCore().getButtonManager().register(new Button(this.message, emoji, listener));
+                Button selectionButton = new Button(emoji, listener);
+                info.getButtonHandler().register(selectionButton, this.message).queue();
             }
-            this.info.getCore().getButtonManager().register(new Button(this.message, Emoji.X, this::cancel));
+            Button deleteButton = new Button(Emoji.X, this::cancel);
+            info.getButtonHandler().register(deleteButton, this.message).queue();
         } catch (InvalidArgumentException e) {
             throw new InvalidCommandArgumentsException();
         }
     }
 
-    private void cancel(Button button) {
+    private void cancel() {
         this.selected = true;
         this.message.delete().queue();
     }
@@ -87,7 +89,7 @@ public class SearchCommand implements Command {
         }
 
         @Override
-        public void onPressed(Button button) {
+        public void onPress() {
             if (!SearchCommand.this.selected) {
                 SearchCommand.this.selected = true;
                 this.player.addToQueue(new SingleQueueItem(this.option, SearchCommand.this.info.getMember()));

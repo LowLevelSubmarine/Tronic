@@ -4,6 +4,7 @@ import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public class ButtonListener extends Listener  {
 
@@ -13,9 +14,8 @@ public class ButtonListener extends Listener  {
 
     @Override
     public void onGenericMessageReaction(@Nonnull GenericMessageReactionEvent event) {
-        if (!event.getUser().equals(event.getJDA().getSelfUser())) {
+        if (!Objects.requireNonNull(event.getUser()).isBot()) {
             getCore().getButtonManager().handle(event);
-            getCore().getNewButtonHandler().handle(event);
         }
     }
 

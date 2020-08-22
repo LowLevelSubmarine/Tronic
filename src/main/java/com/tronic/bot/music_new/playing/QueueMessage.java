@@ -1,6 +1,6 @@
 package com.tronic.bot.music_new.playing;
 
-import com.tronic.bot.buttons_new.Button;
+import com.tronic.bot.buttons.Button;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.tools.Markdown;

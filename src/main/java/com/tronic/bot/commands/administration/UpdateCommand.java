@@ -5,19 +5,23 @@ import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.statics.Info;
+import com.tronic.bot.tools.MessageChanger;
 import com.tronic.updater.Updater;
-import net.dv8tion.jda.api.entities.Message;
-import net.tetraowl.watcher.toolbox.JavaTools;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import toolbox.os.OSTools;
 import toolbox.process.OSnotDetectedException;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.net.URL;
 
 public class UpdateCommand implements Command {
-    Logger logger = LogManager.getLogger(Updater.class);
+
+    private final Updater updater = new Updater();
+    private CommandInfo info;
+    private MessageChanger messageChanger;
+    private URL updateUrl;
+    private final Logger logger = LogManager.getLogger(Updater.class);
 
     @Override
     public String invoke() {
@@ -41,51 +45,72 @@ public class UpdateCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        Updater updater = new Updater();
-        String build = Info.VERSION;
-        updater.getOnlineVersion((version, download) -> {
-            if (Updater.isBigger(build,version)) {
-                Message m = info.getChannel().sendMessage(new TronicMessage("Do you want to update Tronic to version "+version+"?").b()).complete();
-                info.createButton(m,  Emoji.WHITE_CHECK_MARK,(Button button)->{
-                    try {
-                        updater.doUpgrade(download,(String file)->{
-                            m.editMessage(new TronicMessage("Download successful. Restarting!\n").b()).queue();
-                            String ptJar = JavaTools.getJarUrl(Updater.class);
-                            int os = 7777;
-                            try {
-                                os = OSTools.getOS();
-                            } catch (OSnotDetectedException e) {
-                                logger.warn("OS not detected!");
-                            }
-                            if (os == OSTools.OS_WINDOWS) {
-                                try {
-                                    Updater.selfDestructWindowsJARFile();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            } else if (os ==OSTools.OS_LINUX || os==OSTools.OS_MAC) {
-                                try {
-                                    Updater.selfDestructLinuxFile();
-                                } catch (URISyntaxException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            info.getCore().shutdown();
-                            System.exit(0);
-                        });
-                    } catch (IOException e) {
-                        info.getChannel().sendMessage(new TronicMessage("An error occurred while downloading!").b()).queue();
-                    }
-                });
-                info.createButton(m,Emoji.X,(Button button) -> {
+        this.info = info;
+        this.messageChanger = new MessageChanger(info.getCore(), info.getChannel());
+        this.updater.getOnlineVersion(this::onVersionReceived, this::onVersionReceiveFail);
+    }
 
-                });
-            } else {
-                info.getChannel().sendMessage(new TronicMessage("There are currently no updates available").b()).queue();
+    private void onVersionReceived(String updateVersion, URL updateUrl) {
+        String currentVersion = Info.VERSION;
+        this.updateUrl = updateUrl;
+        if (Updater.isBigger(currentVersion, updateVersion)) {
+            Button acceptButton = new Button(Emoji.WHITE_CHECK_MARK, this::onAccept);
+            Button declineButton = new Button(Emoji.X, this::onDecline);
+            this.messageChanger.change(
+                    new TronicMessage("Do you want to update Tronic to version " + updateVersion + "?").b(),
+                    acceptButton,
+                    declineButton
+            );
+        } else {
+            this.messageChanger.delete();
+        }
+    }
+
+    private void onVersionReceiveFail(String version, Exception e) {
+        this.messageChanger.change(new TronicMessage("A problem occurred while contacting the update server!").b());
+    }
+
+    private void onAccept() {
+        this.messageChanger.change(new TronicMessage("Downloading update ...").b());
+        downloadUpdate();
+    }
+
+    private void onDecline() {
+        this.messageChanger.delete();
+    }
+
+    private void downloadUpdate() {
+        try {
+            this.updater.doUpgrade(this.updateUrl, this::onDownloadFinished);
+        } catch (IOException e) {
+            this.messageChanger.change(new TronicMessage("An error occurred while downloading!").b());
+        }
+    }
+
+    private void onDownloadFinished(String updateFilePath) {
+        this.messageChanger.change(new TronicMessage("Download successful. Restarting!").b());
+        update();
+    }
+
+    private void update() {
+        selfDestructFile();
+        info.getCore().shutdown();
+        System.exit(0);
+    }
+
+    private void selfDestructFile() {
+        try {
+            int os = OSTools.getOS();
+            if (os == OSTools.OS_WINDOWS) {
+                Updater.selfDestructWindowsJARFile();
+            } else if (os == OSTools.OS_LINUX || os == OSTools.OS_MAC) {
+                Updater.selfDestructLinuxFile();
             }
-        },(String version,Exception e)->{
-            info.getChannel().sendMessage(new TronicMessage("An error occurred").b()).queue();
-        });
+        } catch (OSnotDetectedException e) {
+            logger.warn("OS could not be detected!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
