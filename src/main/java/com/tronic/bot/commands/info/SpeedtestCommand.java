@@ -4,12 +4,12 @@ import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.tools.DoubleToolkit;
+import com.tronic.bot.tools.MessageChanger;
 import fr.bmartel.speedtest.SpeedTestReport;
 import fr.bmartel.speedtest.SpeedTestSocket;
 import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
 import fr.bmartel.speedtest.model.SpeedTestMode;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ public class SpeedtestCommand implements Command {
     private static final int UPLOAD_INTERVAL = 1000000;
     private String downloadSpeed = Emoji.CLOCK1.getUtf8();
     private String uploadSpeed = Emoji.CLOCK1.getUtf8();
-    private Message message;
+    private MessageChanger messageChanger;
 
 
     @Override
@@ -47,9 +47,10 @@ public class SpeedtestCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
+        this.messageChanger=  new MessageChanger(info.getCore(), info.getChannel());
+        this.messageChanger.change(createMessage().b());
         this.speedTestSocket.addSpeedTestListener(new Speedtest(info.getEvent()));
         this.speedTestSocket.startDownload(DOWNLOAD_URI);
-        this.message = info.getEvent().getChannel().sendMessage(createMessage().b()).complete();
     }
 
     @Override
@@ -58,7 +59,7 @@ public class SpeedtestCommand implements Command {
     }
 
     private void updateMessage() {
-        this.message.editMessage(createMessage().b()).queue();
+        this.messageChanger.change(createMessage().b());
     }
     private  TronicMessage createMessage() {
         TronicMessage message = new TronicMessage("Speedtest","");
@@ -91,12 +92,12 @@ public class SpeedtestCommand implements Command {
 
         @Override
         public void onProgress(float percent, SpeedTestReport report) {
-
+            //
         }
 
         @Override
         public void onError(SpeedTestError speedTestError, String errorMessage) {
-
+            //
         }
 
         private String getMbits(BigDecimal decimal) {
