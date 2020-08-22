@@ -45,7 +45,6 @@ public class CommandHandler {
         }
         ArrayList<CommandHandler.DifferencesObj> differences = new ArrayList<>();
         for (Command command : this.commands) {
-            CommandHandler.DifferencesObj obj = new DifferencesObj(new Levenshtein().compare(invoke, command.invoke()), command);
             differences.add(new DifferencesObj(new Levenshtein().compare(invoke, command.invoke()), command));
         }
         if (differences.size()>=1 ) {
