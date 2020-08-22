@@ -1,4 +1,4 @@
-package com.tronic.bot.music_new.sources;
+package com.tronic.bot.music.sources;
 
 import com.lowlevelsubmarine.ytml.library.Song;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;

@@ -3,9 +3,9 @@ package com.tronic.bot.commands.music;
 import com.tronic.arguments.InvalidArgumentException;
 import com.tronic.arguments.TextArgument;
 import com.tronic.bot.commands.*;
-import com.tronic.bot.music_new.MusicManager;
-import com.tronic.bot.music_new.playing.QueueItem;
-import com.tronic.bot.music_new.playing.SingleQueueItem;
+import com.tronic.bot.music.MusicManager;
+import com.tronic.bot.music.playing.QueueItem;
+import com.tronic.bot.music.playing.SingleQueueItem;
 
 public class PlayCommand implements Command, MusicManager.QueueItemResultListener {
 

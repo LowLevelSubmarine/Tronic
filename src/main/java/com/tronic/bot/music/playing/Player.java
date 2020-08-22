@@ -1,4 +1,4 @@
-package com.tronic.bot.music_new.playing;
+package com.tronic.bot.music.playing;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;

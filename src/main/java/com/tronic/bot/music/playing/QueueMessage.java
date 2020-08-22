@@ -1,4 +1,4 @@
-package com.tronic.bot.music_new.playing;
+package com.tronic.bot.music.playing;
 
 import com.tronic.bot.buttons.Button;
 import com.tronic.bot.io.TronicMessage;

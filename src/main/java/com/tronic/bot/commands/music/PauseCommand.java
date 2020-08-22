@@ -1,7 +1,7 @@
 package com.tronic.bot.commands.music;
 
 import com.tronic.bot.commands.*;
-import com.tronic.bot.music_new.playing.Player;
+import com.tronic.bot.music.playing.Player;
 
 public class PauseCommand implements Command {
 

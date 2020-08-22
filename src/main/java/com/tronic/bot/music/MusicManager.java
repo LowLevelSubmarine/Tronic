@@ -1,4 +1,4 @@
-package com.tronic.bot.music_new;
+package com.tronic.bot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -8,12 +8,12 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.tronic.bot.core.Core;
-import com.tronic.bot.music_new.playing.Player;
-import com.tronic.bot.music_new.playing.PlaylistQueueItem;
-import com.tronic.bot.music_new.playing.QueueItem;
-import com.tronic.bot.music_new.playing.SingleQueueItem;
-import com.tronic.bot.music_new.sources.Track;
-import com.tronic.bot.music_new.sources.TrackProvider;
+import com.tronic.bot.music.playing.Player;
+import com.tronic.bot.music.playing.PlaylistQueueItem;
+import com.tronic.bot.music.playing.QueueItem;
+import com.tronic.bot.music.playing.SingleQueueItem;
+import com.tronic.bot.music.sources.Track;
+import com.tronic.bot.music.sources.TrackProvider;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 

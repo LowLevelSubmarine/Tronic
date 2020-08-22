@@ -1,6 +1,6 @@
-package com.tronic.bot.music_new.playing;
+package com.tronic.bot.music.playing;
 
-import com.tronic.bot.music_new.sources.Track;
+import com.tronic.bot.music.sources.Track;
 import net.dv8tion.jda.api.entities.Member;
 
 import java.util.Collection;

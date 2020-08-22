@@ -1,4 +1,4 @@
-package com.tronic.bot.music_new.playing;
+package com.tronic.bot.music.playing;
 
 import java.util.Collection;
 import java.util.LinkedList;

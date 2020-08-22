@@ -6,7 +6,7 @@ import com.tronic.bot.buttons.Button;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
-import net.dv8tion.jda.api.entities.Guild;  
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;

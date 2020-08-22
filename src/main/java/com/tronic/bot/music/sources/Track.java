@@ -1,4 +1,4 @@
-package com.tronic.bot.music_new.sources;
+package com.tronic.bot.music.sources;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 

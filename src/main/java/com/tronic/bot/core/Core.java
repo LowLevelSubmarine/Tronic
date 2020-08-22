@@ -14,8 +14,7 @@ import com.tronic.bot.commands.music.SkipCommand;
 import com.tronic.bot.commands.settings.*;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
-import com.tronic.bot.music.PlayerManager;
-import com.tronic.bot.music_new.MusicManager;
+import com.tronic.bot.music.MusicManager;
 import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
@@ -36,7 +35,6 @@ public class Core {
     private final Storage storage = new Storage();
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler();
-    private final PlayerManager playerManager = new PlayerManager(this);
     private final MusicManager musicManager = new MusicManager(this);
     private final String hostToken;
     Logger logger = LogManager.getLogger(Tronic.class);
@@ -96,10 +94,6 @@ public class Core {
 
     public com.tronic.bot.buttons.ButtonHandler getButtonHandler() {
         return this.buttonHandler;
-    }
-
-    public PlayerManager getPlayerManager() {
-        return this.playerManager;
     }
 
     public MusicManager getMusicManager() {
