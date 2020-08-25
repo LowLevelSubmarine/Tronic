@@ -30,7 +30,7 @@ dependencies {
     implementation 'com.sedmelluq:jda-nas:1.1.0'
     implementation 'com.toddway.shelf:shelf-jvm:2.0.6'
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'net.dv8tion:JDA:4.2.0_180'
+    implementation 'net.dv8tion:JDA:4.2.0_198'
     implementation 'com.github.Jonbeckas:watcher.toolbox:1.1.1'
     implementation 'com.github.Jonbeckas:Updater:v1.1.0'
     implementation 'com.github.LowLevelSubmarine:YouTubeMusicLibrary:b1.1.1'
