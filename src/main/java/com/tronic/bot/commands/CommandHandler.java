@@ -1,15 +1,17 @@
 package com.tronic.bot.commands;
 
 import com.tronic.arguments.Arguments;
+import com.tronic.bot.buttons.Button;
 import com.tronic.bot.core.Core;
 import com.tronic.bot.io.TronicMessage;
+import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.tools.StatisticsSaver;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import org.simmetrics.StringMetric;
 import org.simmetrics.metrics.Levenshtein;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -32,59 +34,58 @@ public class CommandHandler {
     }
 
     public void handle(String string, MessageReceivedEvent event) {
-        String separator = " ";
-        int separatorIndex = string.indexOf(separator);
-        String invoke;
-        String arguments;
-        if (separatorIndex != -1) {
-            invoke = string.substring(0, separatorIndex).toLowerCase();
-            arguments = string.substring(separatorIndex + separator.length());
-        } else {
-            invoke = string;
-            arguments = "";
-        }
-        ArrayList<CommandHandler.DifferencesObj> differences = new ArrayList<>();
+        CommandSeparator commandSeparator = new CommandSeparator(string);
+        LinkedList<CommandInvokeProximityComparable> proximities = new LinkedList<>();
         for (Command command : this.commands) {
-            differences.add(new DifferencesObj(new Levenshtein().compare(invoke, command.invoke()), command));
+            proximities.add(new CommandInvokeProximityComparable(command, commandSeparator.getInvoke()));
         }
-        if (differences.size()>=1 ) {
-            Collections.sort(differences);
-            DifferencesObj obj = differences.get(differences.size()-1);
-            if (obj.getFl()== 1f) {
-                this.core.getStorage().getUser(event.getAuthor()).storeSatistic(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor().getId(),false));
-                runChecked(obj.getCommand(),arguments,event);
-            } else if (obj.getFl()>= 0.7f) {
-                this.core.getStorage().getUser(event.getAuthor()).storeSatistic(new StatisticsSaver.StatisticElement(string,new Date(System.currentTimeMillis()),event.getAuthor().getId(),true));
-                runChecked(obj.getCommand(),arguments,event);
-            } else if (obj.getFl()>= 0.3f) {
-                event.getChannel().sendMessage(new TronicMessage("Do you mean `"+obj.getCommand().invoke()+"` ?").b()).queue();
+        Collections.sort(proximities);
+        CommandInvokeProximityComparable bestMatch = proximities.getFirst();
+        new CommandThread(bestMatch, commandSeparator.getArguments(), event).start();
+    }
+
+    private static final class CommandSeparator {
+
+        private static final String SEPARATOR_STRING = " ";
+
+        private final String invoke;
+        private final String arguments;
+
+        public CommandSeparator(String raw) {
+            int separatorIndex = raw.indexOf(SEPARATOR_STRING);
+            if (separatorIndex < 0) {
+                this.invoke = raw;
+                this.arguments = null;
+            } else {
+                this.invoke = raw.substring(0, separatorIndex).toLowerCase();
+                this.arguments = raw.substring(separatorIndex + SEPARATOR_STRING.length());
             }
         }
+
+        public String getInvoke() {
+            return this.invoke;
+        }
+
+        public String getArguments() {
+            return this.arguments;
+        }
+
     }
 
-    private void runChecked(Command command, String string, MessageReceivedEvent event) {
-        if (command.silent()) {
-            event.getMessage().delete().queue();
-        }
-        if (command.getPermission().isValid(event,this.core)) {
-            new CommandThread(command, string, event).start();
-        } else {
-            event.getChannel().sendMessage(new TronicMessage("You are not allowed to do this").b()).queue();
-        }
-    }
+    private static final class CommandInvokeProximityComparable implements Comparable<Object> {
 
-    private static class DifferencesObj implements Comparable<Object> {
+        private static final StringMetric COMPARATOR = new Levenshtein();
 
-        Float fl;
+        float proximity;
         Command command;
 
-        public DifferencesObj(Float fl, Command command) {
-            this.fl =fl;
+        public CommandInvokeProximityComparable(Command command, String invoke) {
+            this.proximity = COMPARATOR.compare(command.invoke(), invoke);
             this.command = command;
         }
 
-        public Float getFl() {
-            return fl;
+        public Float getProximity() {
+            return proximity;
         }
 
         public Command getCommand() {
@@ -92,33 +93,78 @@ public class CommandHandler {
         }
 
         @Override
-        public int compareTo(@NotNull Object o) {
-            DifferencesObj diff = (DifferencesObj) o;
-            return this.fl.compareTo(diff.getFl());
+        public int compareTo(@NotNull Object obj) {
+            if (obj instanceof CommandInvokeProximityComparable) {
+                CommandInvokeProximityComparable other = (CommandInvokeProximityComparable) obj;
+                return Float.compare(other.proximity, this.proximity);
+            }
+            return 0;
         }
 
     }
 
-    private class CommandThread extends Thread {
+    private final class CommandThread extends Thread {
 
         private final Command command;
+        private final float commandInvokeProximity;
         private final CommandInfo commandInfo;
+        private Message confirmCorrectionMessage;
 
-        private CommandThread(Command command, String string, MessageReceivedEvent event) {
-            this.command = command;
-            this.commandInfo = new CommandInfo(CommandHandler.this.core, new Arguments(string), event);
+        private CommandThread(CommandInvokeProximityComparable comparable, String rawArguments, MessageReceivedEvent event) {
+            this.command = comparable.getCommand();
+            this.commandInvokeProximity = comparable.getProximity();
+            this.commandInfo = new CommandInfo(CommandHandler.this.core, new Arguments(rawArguments), event);
         }
 
         @Override
         public void run() {
-            try {
-                this.command.getClass().getDeclaredConstructor().newInstance().run(this.commandInfo);
-            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (InvalidCommandArgumentsException e) {
-                //this.commandInfo.getEvent().getChannel().sendMessage(e.getErrorMessage()).queue();
-                this.commandInfo.getEvent().getChannel().sendMessage("Correct Syntax: "+this.command.getHelpInfo().getSyntax()).queue();
+            if (this.commandInvokeProximity > 0.3F) {
+                checkAndRun();
+            } else if (this.commandInvokeProximity > 0.05F) {
+                this.confirmCorrectionMessage = this.commandInfo.getChannel().sendMessage(
+                        new TronicMessage("Did you mean `" + this.command.invoke() + "` ?").b()
+                ).complete();
+                Button noButton = new Button(Emoji.X, this::onPressNo);
+                Button yesButton = new Button(Emoji.WHITE_CHECK_MARK, this::onPressYes);
+                CommandHandler.this.core.getButtonHandler().register(noButton, this.confirmCorrectionMessage).queue();
+                CommandHandler.this.core.getButtonHandler().register(yesButton, this.confirmCorrectionMessage).queue();
             }
+        }
+
+        private void onPressNo() {
+            this.confirmCorrectionMessage.delete().queue();
+        }
+
+        private void onPressYes() {
+            this.confirmCorrectionMessage.delete().queue();
+            checkAndRun();
+        }
+
+        private void checkAndRun() {
+            saveCommandStatistic();
+            if (this.command.silent()) {
+                this.commandInfo.getEvent().getMessage().delete().queue();
+            }
+            if (!command.getPermission().isValid(this.commandInfo.getEvent(), CommandHandler.this.core)) {
+                this.commandInfo.getEvent().getChannel().sendMessage(new TronicMessage("You are not allowed to do this").b()).queue();
+            } else {
+                try {
+                    this.command.getClass().getDeclaredConstructor().newInstance().run(this.commandInfo);
+                } catch (InvalidCommandArgumentsException e) {
+                    this.commandInfo.getEvent().getChannel().sendMessage("Correct Syntax: "+this.command.getHelpInfo().getSyntax()).queue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        private void saveCommandStatistic() {
+            CommandHandler.this.core.getStorage().getUser(this.commandInfo.getAuthor()).storeSatistic(new StatisticsSaver.StatisticElement(
+                    this.commandInfo.getEvent().getMessage().getContentRaw(),
+                    new Date(System.currentTimeMillis()),
+                    this.commandInfo.getAuthor().getId(),
+                    this.commandInvokeProximity < 1F
+            ));
         }
 
     }
