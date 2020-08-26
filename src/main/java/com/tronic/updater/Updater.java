@@ -1,21 +1,14 @@
 package com.tronic.updater;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.tronic.bot.tools.FileUtils;
+
 import net.tetraowl.watcher.toolbox.JavaTools;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import toolbox.os.OSTools;
-import toolbox.process.OSnotDetectedException;
 import updater.UpdaterSettings;
-
-import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.Channels;
