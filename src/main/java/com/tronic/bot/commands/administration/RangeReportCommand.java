@@ -43,7 +43,7 @@ public class RangeReportCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Range Report", "Shows info about Tronics range", "");
+        return new HelpInfo("Range Report", "Shows info about Tronics range", "rangereport");
     }
 
 }

@@ -38,6 +38,6 @@ public class BotVolumeCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Bot Volume","Set general Bot Volume","setBotVolume 1-200");
+        return new HelpInfo("Bot Volume","Set general Bot Volume","setBotVolume <1-200>");
     }
 }
