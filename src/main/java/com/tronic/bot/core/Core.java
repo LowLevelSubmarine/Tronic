@@ -15,6 +15,7 @@ import com.tronic.bot.commands.settings.*;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.MusicManager;
+import com.tronic.bot.questions.QuestionHandler;
 import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
@@ -36,6 +37,7 @@ public class Core {
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler();
     private final MusicManager musicManager = new MusicManager(this);
+    private final QuestionHandler questionHandler = new QuestionHandler(this);
     private final String hostToken;
     Logger logger = LogManager.getLogger(Tronic.class);
     private HyperchannelManager hyperchannelManager;
@@ -100,6 +102,10 @@ public class Core {
         return this.musicManager;
     }
 
+    public QuestionHandler getQuestionHandler() {
+        return this.questionHandler;
+    }
+
     public Listeners getListeners() {
         return this.listeners;
     }
@@ -155,18 +161,24 @@ public class Core {
 
         public final ButtonListener button = new ButtonListener(Core.this);
         public final CommandListener command = new CommandListener(Core.this);
+        public final ExperimentStartupListener experimentStartup = new ExperimentStartupListener(Core.this);
+        public final JoinListener join = new JoinListener(Core.this);
+        public final LeaveListener leave = new LeaveListener(Core.this);
         public final MessageLoggerListener messageLogger = new MessageLoggerListener(Core.this);
-        public final ReadyListener startup = new ReadyListener(Core.this);
+        public final MoveListener move = new MoveListener(Core.this);
+        public final ReadyListener ready = new ReadyListener(Core.this);
+        public final QuestionListener question = new QuestionListener(Core.this);
 
         public void addAll(JDABuilder builder) {
             builder.addEventListeners(this.button);
             builder.addEventListeners(this.command);
-            builder.addEventListeners(new ExperimentStartupListener(Core.this));
+            builder.addEventListeners(this.experimentStartup);
+            builder.addEventListeners(this.join);
+            builder.addEventListeners(this.leave);
             builder.addEventListeners(this.messageLogger);
-            builder.addEventListeners(this.startup);
-            builder.addEventListeners(new JoinListener(Core.this));
-            builder.addEventListeners(new LeaveListener(Core.this));
-            builder.addEventListeners(new MoveListener(Core.this));
+            builder.addEventListeners(this.move);
+            builder.addEventListeners(this.ready);
+            builder.addEventListeners(this.question);
         }
 
     }
