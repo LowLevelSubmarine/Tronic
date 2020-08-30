@@ -15,7 +15,7 @@ The planets dopest Discord Bot
 ## Install to host
 1.  Clone the repo with ``` git clone https://github.com/LowLevelSubmarine/Tronic.git ```
 2.  Compile the repo with ``` gradle shadowJar ``` (You could use the gradlew or gradlew.bat scripts as well)
-3.  Just start the buildet jar in build/libs
+3.  Just start the built jar in build/libs
 4.  Configure the bot by filling your Discord Bot-Token and your Discord user id as a host in the generated config.json
 5.  Have fun & enjoy!
 
