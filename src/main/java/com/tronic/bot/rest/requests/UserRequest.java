@@ -23,8 +23,8 @@ public class UserRequest implements Route {
     public Object handle(Request request, Response response) throws Exception {
         String jwt = request.queryParams("token");
         try {
-            if (this.core.getJwtStore().isJWTValid(jwt)) {
-                Claims claims = this.core.getJwtStore().getClaims(jwt);
+            if (this.core.getRestServer().getJwtStore().isJWTValid(jwt)) {
+                Claims claims = this.core.getRestServer().getJwtStore().getClaims(jwt);
                 User user = this.core.getJDA().getUserById((Long) claims.get("user"));
                 RestUser ru = new RestUser(user.getName(), user.getId(), user.getAvatarUrl());
                 response.header("Content-Type","application/json");

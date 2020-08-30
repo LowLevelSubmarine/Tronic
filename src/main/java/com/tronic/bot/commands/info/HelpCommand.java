@@ -34,7 +34,7 @@ public class HelpCommand implements Command {
         HashMap<String,String> args = new HashMap<>();
         args.put("guild",info.getGuild().getId());
         try {
-            info.getAuthor().openPrivateChannel().queue((channel)-> channel.sendMessage(new TronicMessage("Help at "+URL+info.getCore().getJwtStore().createJWT(info.getAuthor().getIdLong(),args)).b()).queue());
+            info.getAuthor().openPrivateChannel().queue((channel)-> channel.sendMessage(new TronicMessage("Help at "+URL+info.getCore().getRestServer().getJwtStore().createJWT(info.getAuthor().getIdLong(),args)).b()).queue());
         } catch (Exception e) {
             info.getChannel().sendMessage(new TronicMessage(info.getAuthor().getAsMention()+" Please allow directMessages from Tronic to you and try it again").b()).queue();
         }

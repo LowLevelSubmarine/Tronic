@@ -26,8 +26,8 @@ public class GuildRequest implements Route {
     public Object handle(Request request, Response response) throws Exception {
         String jwt = request.queryParams("token");
         try {
-            if (this.core.getJwtStore().isJWTValid(jwt)) {
-                Claims claims = this.core.getJwtStore().getClaims(jwt);
+            if (this.core.getRestServer().getJwtStore().isJWTValid(jwt)) {
+                Claims claims = this.core.getRestServer().getJwtStore().getClaims(jwt);
                 Guild guild = this.core.getJDA().getGuildById((String) claims.get("guild"));
                 ArrayList<String> members = new ArrayList<>();
                 for(Member user:guild.getMembers()) {

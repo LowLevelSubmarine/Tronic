@@ -39,9 +39,9 @@ public class Core {
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler();
     private final MusicManager musicManager = new MusicManager(this);
-    private final JWTStore jwtStore = new JWTStore(this.storage);
     private final QuestionHandler questionHandler = new QuestionHandler(this);
     private final String hostToken;
+    private RestServer restServer;
     Logger logger = LogManager.getLogger(Tronic.class);
     private HyperchannelManager hyperchannelManager;
 
@@ -58,7 +58,7 @@ public class Core {
             Updater.initialError();
             this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
             if (tronic.getConfigProvider().getActivateApi()) {
-                new RestServer(this);
+                this.restServer = new RestServer(this);
             }
             System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!"+ColorisedSout.ANSI_RESET);
         } catch (InterruptedException e) {
@@ -82,14 +82,14 @@ public class Core {
         return this.jda;
     }
 
-    public JWTStore getJwtStore() {
-        return jwtStore;
-    }
-
     public void shutdown() {
         this.jda.shutdown();
         System.out.println(ColorisedSout.ANSI_GREEN+"Bot shutdowned!"+ColorisedSout.ANSI_RESET);
         System.exit(0);
+    }
+
+    public RestServer getRestServer() {
+        return this.restServer;
     }
 
     public Storage getStorage() {

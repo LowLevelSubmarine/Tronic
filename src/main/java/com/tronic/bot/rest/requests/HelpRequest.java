@@ -30,8 +30,8 @@ public class HelpRequest implements Route {
         Gson gson = new Gson();
         try {
             if (token != null) {
-                if (this.core.getJwtStore().isJWTValid(token)) {
-                    Claims claims = this.core.getJwtStore().getClaims(token);
+                if (this.core.getRestServer().getJwtStore().isJWTValid(token)) {
+                    Claims claims = this.core.getRestServer().getJwtStore().getClaims(token);
                     User user = User.fromId((Long) claims.get("user"));
                     Guild guild = this.core.getJDA().getGuildById((String) claims.get("guild"));
                     response.type("application/json");
@@ -50,31 +50,14 @@ public class HelpRequest implements Route {
 
 
     private HashMap<String,LinkedList<HelpJsonElement>> getHelp(Permission permission) {
-        LinkedList<HelpJsonElement> administrationCommand = new LinkedList<>();
-        LinkedList<HelpJsonElement> infoCommand = new LinkedList<>();
-        LinkedList<HelpJsonElement> funCommand = new LinkedList<>();
-        LinkedList<HelpJsonElement> settingsCommand = new LinkedList<>();
-        LinkedList<HelpJsonElement> musicCommand = new LinkedList<>();
-        LinkedList<Command> commands = this.core.getCommandHandler().getCommands();
-        for (Command c:commands) {
-            if (c.getType() == CommandType.ADMINISTRATION) {
-                if (testPem(permission,c)) administrationCommand.add(new HelpJsonElement(c));
-            } else if (c.getType() == CommandType.INFO) {
-                if (testPem(permission,c)) infoCommand.add(new HelpJsonElement(c));
-            } else if (c.getType() == CommandType.FUN) {
-                if (testPem(permission,c)) funCommand.add(new HelpJsonElement(c));
-            } else if (c.getType() == CommandType.SETTINGS) {
-                if (testPem(permission,c)) settingsCommand.add(new HelpJsonElement(c));
-            } else if (c.getType() == CommandType.MUSIC) {
-                if (testPem(permission,c)) musicCommand.add(new HelpJsonElement(c));
-            }
-        }
         HashMap<String,LinkedList<HelpJsonElement>> all = new HashMap<>();
-        all.put("administration",administrationCommand);
-        all.put("info",infoCommand);
-        all.put("fun",funCommand);
-        all.put("settings",settingsCommand);
-        all.put("music",musicCommand);
+        LinkedList<Command> commands = this.core.getCommandHandler().getCommands();
+        for (Command command:commands) {
+            if (testPem(permission,command)) continue;
+            LinkedList<HelpJsonElement> tmpList = all.getOrDefault(command.getType().name().toLowerCase(),new LinkedList<>());
+            tmpList.add(new HelpJsonElement(command));
+            all.put(command.getType().name().toLowerCase(),tmpList);
+        }
         return all;
     }
 
