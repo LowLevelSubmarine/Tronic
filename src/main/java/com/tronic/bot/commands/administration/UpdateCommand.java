@@ -62,7 +62,7 @@ public class UpdateCommand implements Command {
                     declineButton
             );
         } else {
-            this.info.getChannel().sendMessage(new TronicMessage("Tronic is already up to date!").b()).queue();
+            this.messageChanger.change(new TronicMessage("Tronic is already up to date!").b());
         }
     }
 
