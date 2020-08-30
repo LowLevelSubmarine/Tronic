@@ -15,6 +15,8 @@ import com.tronic.bot.commands.settings.*;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.MusicManager;
+import com.tronic.bot.rest.JWTStore;
+import com.tronic.bot.rest.RestServer;
 import com.tronic.bot.questions.QuestionHandler;
 import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
@@ -37,6 +39,7 @@ public class Core {
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler();
     private final MusicManager musicManager = new MusicManager(this);
+    private final JWTStore jwtStore = new JWTStore(this.storage);
     private final QuestionHandler questionHandler = new QuestionHandler(this);
     private final String hostToken;
     Logger logger = LogManager.getLogger(Tronic.class);
@@ -54,6 +57,9 @@ public class Core {
             Updater.initialJson();
             Updater.initialError();
             this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
+            if (tronic.getConfigProvider().getActivateApi()) {
+                new RestServer(this);
+            }
             System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!"+ColorisedSout.ANSI_RESET);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -74,6 +80,10 @@ public class Core {
 
     public JDA getJDA() {
         return this.jda;
+    }
+
+    public JWTStore getJwtStore() {
+        return jwtStore;
     }
 
     public void shutdown() {
