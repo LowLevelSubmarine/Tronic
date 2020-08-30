@@ -29,7 +29,7 @@ public class InfoCommand implements Command {
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         TronicMessage tm = new TronicMessage("Info","Tronic is a Discord Bot for Music and Hyperchannel");
         //TODO: Write a serious description Text
-        tm.addField("Try Tronic/ Invide Tronic ",info.getJDA().getInviteUrl(net.dv8tion.jda.api.Permission.ADMINISTRATOR),false);
+        tm.addField("Try Tronic/ Invite Tronic ",info.getJDA().getInviteUrl(net.dv8tion.jda.api.Permission.ADMINISTRATOR),false);
         tm.addField("GitHub Repository", "https://github.com/LowLevelSubmarine/Tronic",false);
         info.getChannel().sendMessage(tm.b()).queue();
     }

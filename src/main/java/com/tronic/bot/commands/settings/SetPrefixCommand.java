@@ -67,7 +67,7 @@ public class SetPrefixCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Prefix","Set the prefix of the bot in a guils","setprefix");
+        return new HelpInfo("Prefix","Set the prefix of the bot in a guilds","setprefix");
     }
 
 }
