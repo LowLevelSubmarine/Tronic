@@ -35,10 +35,10 @@ public enum Permission {
             return false;
         }
     }
-    public static Permission getUserPermission(MessageReceivedEvent event, Core core) {
-        boolean isCoHost =core.getStorage().getStatic().isCoHoster(event.getAuthor());
-        boolean isHost = event.getAuthor().equals(core.getJDA().getUserById(core.getHostToken()));
-        boolean isAdmin = event.getGuild().getMember(event.getAuthor()).hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
+    public static Permission getUserPermission(User user,Guild guild, Core core) {
+        boolean isCoHost =core.getStorage().getStatic().isCoHoster(user);
+        boolean isHost = user.equals(core.getJDA().getUserById(core.getHostToken()));
+        boolean isAdmin = guild.getMember(user).hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
         if (isHost) {
             return HOST;
         } else if (isCoHost) {

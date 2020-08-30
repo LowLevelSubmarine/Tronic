@@ -5,5 +5,6 @@ public interface ConfigProvider {
     String getToken();
     boolean getDebugMode();
     String getHost();
+    boolean getActivateApi();
 
 }
