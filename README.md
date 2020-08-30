@@ -21,4 +21,4 @@ The planets dopest Discord Bot
 
 ### Activate Tronics Rest API
 1. Add ```"activateApi": true``` to the tronic.conf file
-2. If you want to https create a KeyStore.jks in tronics jar path, by running ``` keytool -genkey -alias localhost -keyalg RSA -keystore KeyStore.jks -validity 365 -keysize 2048``` in a console
+2. If you want to https, create a KeyStore.jks in tronic.jar path, by running ``` keytool -genkey -alias localhost -keyalg RSA -keystore KeyStore.jks -validity 365 -keysize 2048``` in a console
