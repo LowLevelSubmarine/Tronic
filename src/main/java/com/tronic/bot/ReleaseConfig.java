@@ -77,4 +77,17 @@ public class ReleaseConfig implements ConfigProvider {
             return null;
         }
     }
+
+    @Override
+    public boolean getActivateApi() {
+        File file;
+        try {
+            FileReader fr = new FileReader(CONF_FILE);
+            BotConfig bc = gson.fromJson(fr,BotConfig.class);
+            return bc.getActivateApi();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

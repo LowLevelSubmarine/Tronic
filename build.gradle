@@ -1,7 +1,8 @@
 
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
+
 }
 
 group 'com.tronic'
@@ -30,7 +31,7 @@ dependencies {
     implementation 'com.sedmelluq:jda-nas:1.1.0'
     implementation 'com.toddway.shelf:shelf-jvm:2.0.6'
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'net.dv8tion:JDA:4.2.0_180'
+    implementation 'net.dv8tion:JDA:4.2.0_198'
     implementation 'com.github.Jonbeckas:watcher.toolbox:1.1.1'
     implementation 'com.github.Jonbeckas:Updater:v1.1.0'
     implementation 'com.github.LowLevelSubmarine:YouTubeMusicLibrary:b1.1.1'
@@ -42,4 +43,8 @@ dependencies {
     implementation 'gui.ava:html2image:2.0.1'
     implementation 'org.json:json:20200518'
     implementation 'com.squareup.okhttp:okhttp:2.5.0'
+    implementation "com.sparkjava:spark-core:2.9.2"
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    runtime 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 }

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class BotConfig {
     private String token;
     private String host;
+    private boolean activateApi = false;
 
     public String getToken() {
         return token;
@@ -20,5 +21,13 @@ public class BotConfig {
 
     public void setHost(String host) {
         this.host = host;
+    }
+
+    public boolean getActivateApi() {
+        return activateApi;
+    }
+
+    public void setActivateApi(boolean activateApi) {
+        this.activateApi = activateApi;
     }
 }
