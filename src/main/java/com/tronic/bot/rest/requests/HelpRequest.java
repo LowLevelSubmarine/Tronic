@@ -63,7 +63,6 @@ public class HelpRequest implements Route {
     }
 
     private boolean testPem(Permission pem, Command c) {
-        Permission dbg = c.getPermission();
         if (c.getPermission() == Permission.NONE) {
             return true;
         } else if (c.getPermission()==Permission.ADMIN && pem == Permission.ADMIN) {
