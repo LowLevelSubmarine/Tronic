@@ -6,5 +6,6 @@ public interface ConfigProvider {
     boolean getDebugMode();
     String getHost();
     boolean getActivateApi();
+    boolean isOriginal();
 
 }

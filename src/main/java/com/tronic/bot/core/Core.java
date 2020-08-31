@@ -82,6 +82,10 @@ public class Core {
         return this.jda;
     }
 
+    public ConfigProvider getConfig() {
+        return this.tronic.getConfigProvider();
+    }
+
     public void shutdown() {
         this.jda.shutdown();
         System.out.println(ColorisedSout.ANSI_GREEN+"Bot shutdowned!"+ColorisedSout.ANSI_RESET);

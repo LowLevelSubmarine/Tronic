@@ -28,11 +28,6 @@ public class RestServer  {
       this.jwtStore = new JWTStore(core.getStorage());
       String ptJar = JavaTools.getJarUrl(RestServer.class);
       port(PORT);
-      if (new File(ptJar+"/KeyStore.jks").exists()) {
-          secure(ptJar+"/KeyStore.jks","6qiczV44HzzO",null,null);
-      } else {
-          logger.error("No KeyStore.jks found! Running API in http fallback mode!");
-      }
       new CORSFilter().apply();
       get("/ping",this::ping);
       get("/help",new HelpRequest(this.core));

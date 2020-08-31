@@ -90,4 +90,17 @@ public class ReleaseConfig implements ConfigProvider {
             return false;
         }
     }
+
+    @Override
+    public boolean isOriginal() {
+        File file;
+        try {
+            FileReader fr = new FileReader(CONF_FILE);
+            BotConfig bc = gson.fromJson(fr,BotConfig.class);
+            return bc.isOriginal();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

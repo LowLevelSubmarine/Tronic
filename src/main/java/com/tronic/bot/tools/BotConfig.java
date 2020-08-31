@@ -6,6 +6,7 @@ public class BotConfig {
     private String token;
     private String host;
     private boolean activateApi = false;
+    private boolean isOriginal = false;
 
     public String getToken() {
         return token;
@@ -29,5 +30,13 @@ public class BotConfig {
 
     public void setActivateApi(boolean activateApi) {
         this.activateApi = activateApi;
+    }
+
+    public boolean isOriginal() {
+        return this.isOriginal;
+    }
+
+    public void setOriginal(boolean activateApi) {
+        this.isOriginal = activateApi;
     }
 }
