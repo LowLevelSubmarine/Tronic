@@ -46,6 +46,8 @@ public class UpdateCommand implements Command {
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         this.info = info;
+        this.messageChanger = new MessageChanger(this.info.getCore(), this.info.getChannel());
+        messageChanger.change(new TronicMessage("Scan for new releases...").b());
         this.updater.getOnlineVersion(this::onVersionReceived, this::onVersionReceiveFail);
     }
 
@@ -55,7 +57,6 @@ public class UpdateCommand implements Command {
         if (Updater.isBigger(currentVersion, updateVersion)) {
             Button acceptButton = new Button(Emoji.WHITE_CHECK_MARK, this::onAccept);
             Button declineButton = new Button(Emoji.X, this::onDecline);
-            this.messageChanger = new MessageChanger(this.info.getCore(), this.info.getChannel());
             this.messageChanger.change(
                     new TronicMessage("Do you want to update Tronic to version " + updateVersion + "?").b(),
                     acceptButton,
