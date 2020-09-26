@@ -5,7 +5,8 @@ import com.tronic.bot.buttons.Button;
 import com.tronic.bot.core.Core;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
-import com.tronic.bot.tools.StatisticsSaver;
+import com.tronic.bot.stats.CommandStatisticsElement;
+import com.tronic.bot.stats.StatisticsHandler;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +14,6 @@ import org.simmetrics.StringMetric;
 import org.simmetrics.metrics.Levenshtein;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 
 public class CommandHandler {
@@ -159,12 +159,11 @@ public class CommandHandler {
         }
 
         private void saveCommandStatistic() {
-            CommandHandler.this.core.getStorage().getUser(this.commandInfo.getAuthor()).storeSatistic(new StatisticsSaver.StatisticElement(
+            StatisticsHandler.storeCommandStatistics(new CommandStatisticsElement(
                     this.commandInfo.getEvent().getMessage().getContentRaw(),
-                    new Date(System.currentTimeMillis()),
                     this.commandInfo.getAuthor().getId(),
                     this.commandInvokeProximity < 1F
-            ));
+            ),this.commandInfo.getAuthor());
         }
 
     }
