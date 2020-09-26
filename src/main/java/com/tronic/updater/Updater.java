@@ -31,7 +31,7 @@ public class Updater {
         FileOutputStream fos = new FileOutputStream(ptJar+"/Tronic_"+time+".jar");
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         FileWriter fw = new FileWriter(new File(ptJar+"/tronic.json"));
-        fw.write("{\"work\":[{\"keepalive\": \"java -jar "+ptJar+"/Tronic_"+time+".jar\" }]}");
+        fw.write("{\"work\":[{\"process\": \"java\",\"arguments\":[\"-jar\",\""+ptJar+"/Tronic_"+time+".jar\"], \"id\":\"tronic\" }]}");
         fw.close();
         afterUpdater.afterUpdate(ptJar+"/Tronic_"+time);
 
@@ -44,7 +44,7 @@ public class Updater {
         String ptJar = JavaTools.getJarUrl(Updater.class);
         try {
             FileWriter fw = new FileWriter(ptJar+"/tronic.json");
-            fw.write("{\"work\":[{\"keepalive\": \"java -jar "+getCurrentJARFilePath().toString()+"\" }]}");
+            fw.write("{\"work\":[{\"process\": \"java\",\"arguments\":[\"-jar\",\""+getCurrentJARFilePath().toString()+"\"], \"id\":\"tronic\" }]}");
             fw.close();
         } catch (URISyntaxException e) {
             e.printStackTrace();

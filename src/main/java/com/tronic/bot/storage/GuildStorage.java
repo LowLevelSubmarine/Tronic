@@ -1,12 +1,9 @@
 package com.tronic.bot.storage;
 
 import com.toddway.shelf.Shelf;
-import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.statics.Presets;
-import com.tronic.bot.tools.StatisticsSaver;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.LinkedList;
 import java.util.List;
