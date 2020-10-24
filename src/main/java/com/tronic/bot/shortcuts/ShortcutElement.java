@@ -29,5 +29,13 @@ public class ShortcutElement {
     private String description;
     private String commands;
 
+    public static ShortcutElement builder(String name,String commands)  {
+        ShortcutElement se = new ShortcutElement();
+        se.setName(name);
+        se.setDescription("Shortcut for Tronic");
+        se.setCommands(commands);
+        return se;
+    }
+
 
 }

@@ -1,9 +1,9 @@
 package com.tronic.bot.stats;
 
-import jdk.internal.jline.internal.Nullable;
 import net.dv8tion.jda.api.entities.User;
 import net.tetraowl.watcher.toolbox.JavaTools;
 import org.apache.commons.lang.SerializationException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.ArrayList;

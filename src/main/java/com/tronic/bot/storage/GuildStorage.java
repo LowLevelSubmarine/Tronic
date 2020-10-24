@@ -102,7 +102,7 @@ public class GuildStorage extends StorageElement {
 
     public void addShortcut(ShortcutElement shortcut) throws ObjectExistsException{
         LinkedList<ShortcutElement> shortcuts = getShortcuts();
-        if (containsShortcutName(shortcuts,shortcut)) {
+        if (containsShortcutName(shortcuts,shortcut.getName())) {
             throw new ObjectExistsException();
         } else {
             shortcuts.add(shortcut);
@@ -110,13 +110,16 @@ public class GuildStorage extends StorageElement {
         }
     }
 
-    public void removeShortcut(ShortcutElement shortcut) throws NoSuchElementException {
+    public void removeShortcut(String name) throws NoSuchElementException {
         LinkedList<ShortcutElement> shortcuts = getShortcuts();
-        if (!containsShortcutName(shortcuts,shortcut)) {
+        if (!containsShortcutName(shortcuts,name)) {
             throw new NoSuchElementException();
         } else {
-            shortcuts.remove(shortcut);
-            setShortcuts(shortcuts);
+            LinkedList<ShortcutElement> l = new LinkedList<>();
+            for (ShortcutElement shortcut : shortcuts) {
+                if (!shortcut.getName().equals(name)) l.add(shortcut);
+            }
+            setShortcuts(l);
         }
     }
 
@@ -124,10 +127,10 @@ public class GuildStorage extends StorageElement {
         super.set("shortcuts",s);
     }
 
-    private boolean containsShortcutName(List<ShortcutElement> shortcuts, ShortcutElement shortcut) {
+    private boolean containsShortcutName(List<ShortcutElement> shortcuts, String name) {
         boolean in = false;
         for (ShortcutElement s: shortcuts) {
-            if (s.getName().equals(shortcut.getName())) {
+            if (s.getName().equals(name)) {
                 in = true;
                 break;
             }

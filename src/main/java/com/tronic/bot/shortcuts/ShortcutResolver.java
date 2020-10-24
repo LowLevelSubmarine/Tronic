@@ -9,7 +9,7 @@ public class ShortcutResolver {
     public ShortcutResolver(Core c) {
         this.core = c;
     }
-    public void resolveShortcut(String name, MessageReceivedEvent e) {
+    public boolean resolveShortcut(String name, MessageReceivedEvent e) {
         ShortcutElement shortcut=null;
         for(ShortcutElement s:this.core.getStorage().getGuild(e.getGuild()).getShortcuts()) {
             if (s.getName().equals(name)) {
@@ -17,8 +17,13 @@ public class ShortcutResolver {
                 break;
             }
         }
-        if (shortcut== null) return;
-        
-
+        if (shortcut!= null) {
+            String[] commands = shortcut.getCommands().split("\\\\");
+            for (String command : commands) {
+                core.getCommandHandler().handle(command,e);
+            }
+            return true;
+        }
+        return false;
     }
 }

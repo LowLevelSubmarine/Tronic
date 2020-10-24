@@ -4,6 +4,7 @@ import com.tronic.arguments.Arguments;
 import com.tronic.bot.buttons.Button;
 import com.tronic.bot.core.Core;
 import com.tronic.bot.io.TronicMessage;
+import com.tronic.bot.shortcuts.ShortcutResolver;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.stats.CommandStatisticsElement;
 import com.tronic.bot.stats.StatisticsHandler;
@@ -20,9 +21,10 @@ public class CommandHandler {
 
     private final Core core;
     private final LinkedList<Command> commands = new LinkedList<>();
-
+    private ShortcutResolver shortcutResolver;
     public CommandHandler(Core core) {
         this.core = core;
+        this.shortcutResolver = new ShortcutResolver(core);
     }
 
     public void addCommand(Command command) {
@@ -35,6 +37,7 @@ public class CommandHandler {
 
     public void handle(String string, MessageReceivedEvent event) {
         CommandSeparator commandSeparator = new CommandSeparator(string);
+        if (shortcutResolver.resolveShortcut(commandSeparator.getInvoke(),event)) return;
         LinkedList<CommandInvokeProximityComparable> proximities = new LinkedList<>();
         for (Command command : this.commands) {
             proximities.add(new CommandInvokeProximityComparable(command, commandSeparator.getInvoke()));
