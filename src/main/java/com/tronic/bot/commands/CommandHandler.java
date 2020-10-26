@@ -11,6 +11,7 @@ import com.tronic.bot.stats.StatisticsHandler;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.simmetrics.StringMetric;
 import org.simmetrics.metrics.Levenshtein;
 
@@ -32,7 +33,17 @@ public class CommandHandler {
     }
 
     public LinkedList<Command> getCommands() {
-        return commands;
+        return this.commands;
+    }
+
+    @Nullable
+    public Command getCommand(String invoke) {
+        for (Command command: this.commands) {
+            if (command.invoke().equals(invoke)) {
+                return command;
+            }
+        }
+        return null;
     }
 
     public void handle(String string, MessageReceivedEvent event) {

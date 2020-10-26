@@ -31,6 +31,8 @@ public class ShortcutCommand implements Command {
         return CommandType.ADMINISTRATION;
     }
 
+
+    //Monstermethode I know, take some cat video https://www.youtube.com/watch?v=dQw4w9WgXcQ
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         try {
@@ -44,6 +46,20 @@ public class ShortcutCommand implements Command {
                     }
                     String commands = info.getArguments().getString();
                     try {
+                        String[]cs = commands.split("\\\\");
+                        for(String c:cs) {
+                            String invoke = c.contains(" ")? c.split(" ")[0]: c;
+                            Command command = info.getCore().getCommandHandler().getCommand(invoke);
+                            if (command== null) {
+                                info.getChannel().sendMessage(new TronicMessage("Syntax error! Command '"+invoke+"' not found").b()).queue();
+                                return;
+                            }else {
+                                if (command.getPermission() != Permission.NONE) {
+                                    info.getChannel().sendMessage(new TronicMessage("Syntax error! Command '"+c+"' has a permission level over NONE.").b()).queue();
+                                    return;
+                                }
+                            }
+                        }
                         info.getCore().getStorage().getGuild(info.getGuild()).addShortcut(ShortcutElement.builder(name,commands));
                         info.getChannel().sendMessage(new TronicMessage("Created shortcut '"+name+"'").b()).queue();
                     }catch (GuildStorage.ObjectExistsException e) {
