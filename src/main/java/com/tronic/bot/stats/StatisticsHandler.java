@@ -19,12 +19,15 @@ public class StatisticsHandler {
      }
      try {
          File file = new File(BASEUSERDIR+user.getIdLong()+"/statistics");
+         if (file.getParentFile().exists()) {
+             file.getParentFile().mkdirs();
+         }
          FileWriter fw = new FileWriter(file,true);
          fw.write(serialized);
          fw.write("\n");
          fw.close();
      } catch (IOException e) {
-         e.printStackTrace();
+         //e.printStackTrace();
      }
     }
 

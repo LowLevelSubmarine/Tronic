@@ -129,8 +129,7 @@ public class Core {
     }
 
     private JDA buildJDA(String token) throws LoginException {
-        JDABuilder builder = new JDABuilder();
-        builder.setToken(token);
+        JDABuilder builder = JDABuilder.createDefault(token);
         builder.setAudioSendFactory(new NativeAudioSendFactory());
         this.listeners.addAll(builder);
         return builder.build();
