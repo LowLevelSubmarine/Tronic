@@ -1,8 +1,8 @@
 package com.tronic.bot.stats;
 
 
-import jdk.internal.jline.internal.Nullable;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

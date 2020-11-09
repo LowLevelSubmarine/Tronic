@@ -4,12 +4,14 @@ import com.tronic.arguments.Arguments;
 import com.tronic.bot.buttons.Button;
 import com.tronic.bot.core.Core;
 import com.tronic.bot.io.TronicMessage;
+import com.tronic.bot.shortcuts.ShortcutResolver;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.stats.CommandStatisticsElement;
 import com.tronic.bot.stats.StatisticsHandler;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.simmetrics.StringMetric;
 import org.simmetrics.metrics.Levenshtein;
 
@@ -20,9 +22,10 @@ public class CommandHandler {
 
     private final Core core;
     private final LinkedList<Command> commands = new LinkedList<>();
-
+    private ShortcutResolver shortcutResolver;
     public CommandHandler(Core core) {
         this.core = core;
+        this.shortcutResolver = new ShortcutResolver(core);
     }
 
     public void addCommand(Command command) {
@@ -30,11 +33,22 @@ public class CommandHandler {
     }
 
     public LinkedList<Command> getCommands() {
-        return commands;
+        return this.commands;
+    }
+
+    @Nullable
+    public Command getCommand(String invoke) {
+        for (Command command: this.commands) {
+            if (command.invoke().equals(invoke)) {
+                return command;
+            }
+        }
+        return null;
     }
 
     public void handle(String string, MessageReceivedEvent event) {
         CommandSeparator commandSeparator = new CommandSeparator(string);
+        if (shortcutResolver.resolveShortcut(commandSeparator.getInvoke(),event)) return;
         LinkedList<CommandInvokeProximityComparable> proximities = new LinkedList<>();
         for (Command command : this.commands) {
             proximities.add(new CommandInvokeProximityComparable(command, commandSeparator.getInvoke()));

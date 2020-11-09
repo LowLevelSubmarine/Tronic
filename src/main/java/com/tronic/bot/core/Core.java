@@ -144,6 +144,7 @@ public class Core {
         this.commandHandler.addCommand(new SpeedtestCommand());
         this.commandHandler.addCommand(new UpdateCommand());
         this.commandHandler.addCommand(new SetCoHosterCommand());
+        this.commandHandler.addCommand(new ShortcutCommand());
         //Fun
         this.commandHandler.addCommand(new DiceCommand());
         this.commandHandler.addCommand(new SayCommand());
