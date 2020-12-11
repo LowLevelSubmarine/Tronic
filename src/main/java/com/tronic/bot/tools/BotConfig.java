@@ -1,8 +1,7 @@
 package com.tronic.bot.tools;
 
-import com.google.gson.annotations.SerializedName;
-
 public class BotConfig {
+
     private String token;
     private String host;
     private boolean activateApi = false;
@@ -27,7 +26,4 @@ public class BotConfig {
         return activateApi;
     }
 
-    public void setActivateApi(boolean activateApi) {
-        this.activateApi = activateApi;
-    }
 }

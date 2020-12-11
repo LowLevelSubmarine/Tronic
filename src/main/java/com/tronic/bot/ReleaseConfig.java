@@ -12,16 +12,19 @@ import java.io.*;
 
 public class ReleaseConfig implements ConfigProvider {
 
+    private static final File CONF_FILE = new File(JavaTools.getJarUrl(ReleaseConfig.class)+"/config.json");
+    private static final String DEFAULT_TOKEN = "Bot Token";
+    private static final String DEFAULT_HOST_ID = "HostId";
+
     public static void main(String[] args) {
         new Tronic(new ReleaseConfig());
     }
-    final static File CONF_FILE = new File(JavaTools.getJarUrl(ReleaseConfig.class)+"/config.json");
-    final static String DEFAULT_TOKEN = "Bot Token";
-    final static String DEFAULT_HOST_ID = "HostId";
-    Gson gson = new Gson();
+
+    private final Gson gson = new Gson();
+
     public ReleaseConfig() {
         LoggerContext context = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
-        File file = new File(JavaTools.getJarUrl(Tronic.class)+"/log4j2.xml");
+        File file = new File(JavaTools.getJarUrl(Tronic.class) + "/log4j2.xml");
         context.setConfigLocation(file.toURI());
         try {
             FileReader fr = new FileReader(CONF_FILE);
@@ -49,7 +52,6 @@ public class ReleaseConfig implements ConfigProvider {
 
     @Override
     public String getToken() {
-        File file;
         try {
             FileReader fr = new FileReader(CONF_FILE);
             BotConfig bc = gson.fromJson(fr,BotConfig.class);
@@ -67,7 +69,6 @@ public class ReleaseConfig implements ConfigProvider {
 
     @Override
     public String getHost() {
-        File file;
         try {
             FileReader fr = new FileReader(CONF_FILE);
             BotConfig bc = gson.fromJson(fr,BotConfig.class);
@@ -80,7 +81,6 @@ public class ReleaseConfig implements ConfigProvider {
 
     @Override
     public boolean getActivateApi() {
-        File file;
         try {
             FileReader fr = new FileReader(CONF_FILE);
             BotConfig bc = gson.fromJson(fr,BotConfig.class);
