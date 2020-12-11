@@ -1,10 +1,12 @@
 package com.tronic.bot.tools;
 
-public class BotConfig {
+import com.google.gson.annotations.SerializedName;
 
+public class BotConfig {
     private String token;
     private String host;
     private boolean activateApi = false;
+    private boolean isOriginal = false;
 
     public String getToken() {
         return token;
@@ -26,4 +28,15 @@ public class BotConfig {
         return activateApi;
     }
 
+    public void setActivateApi(boolean activateApi) {
+        this.activateApi = activateApi;
+    }
+
+    public boolean isOriginal() {
+        return this.isOriginal;
+    }
+
+    public void setOriginal(boolean activateApi) {
+        this.isOriginal = activateApi;
+    }
 }

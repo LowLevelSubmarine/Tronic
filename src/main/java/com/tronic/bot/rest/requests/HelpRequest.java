@@ -53,10 +53,11 @@ public class HelpRequest implements Route {
         HashMap<String,LinkedList<HelpJsonElement>> all = new HashMap<>();
         LinkedList<Command> commands = this.core.getCommandHandler().getCommands();
         for (Command command:commands) {
-            if (testPem(permission,command)) continue;
-            LinkedList<HelpJsonElement> tmpList = all.getOrDefault(command.getType().name().toLowerCase(),new LinkedList<>());
-            tmpList.add(new HelpJsonElement(command));
-            all.put(command.getType().name().toLowerCase(),tmpList);
+            if (testPem(permission,command)) {
+                LinkedList<HelpJsonElement> tmpList = all.getOrDefault(command.getType().name().toLowerCase(),new LinkedList<>());
+                tmpList.add(new HelpJsonElement(command));
+                all.put(command.getType().name().toLowerCase(),tmpList);
+            }
         }
         return all;
     }
@@ -68,7 +69,7 @@ public class HelpRequest implements Route {
             return true;
         } else if (c.getPermission()==Permission.CO_HOST && pem == Permission.CO_HOST ||c.getPermission()==Permission.CO_HOST && pem == Permission.HOST) {
             return true;
-        } else if (c.getPermission() == Permission.HOST && pem == Permission.HOST) {
+        } else if (pem == Permission.HOST) {
             return true;
         } else {
             return false;

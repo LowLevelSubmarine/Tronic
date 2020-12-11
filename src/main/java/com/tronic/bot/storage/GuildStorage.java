@@ -1,22 +1,21 @@
 package com.tronic.bot.storage;
 
 import com.toddway.shelf.Shelf;
-import com.tronic.bot.hyperchannel.HyperchannelManager;
+import com.tronic.bot.shortcuts.ShortcutElement;
 import com.tronic.bot.statics.Presets;
-import com.tronic.bot.tools.StatisticsSaver;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class GuildStorage extends StorageElement {
-    public static final String DEFAULT_HYPERNAME ="New Channel";
-
     GuildStorage(Shelf shelf) {
         super(shelf);
     }
+
+    //PREFIX
 
     public String getPrefix() {
         String prefix = (String) super.get("prefix",String.class);
@@ -26,6 +25,8 @@ public class GuildStorage extends StorageElement {
     public void setPrefix(String prefix) {
         super.set("prefix",prefix);
     }
+
+    //HYPERCHANNELL
 
     public String getNewChannel() {
         return (String) super.get("hyperchannel", String.class);
@@ -85,4 +86,57 @@ public class GuildStorage extends StorageElement {
             super.set("hypercategory","");
         }
     }
+
+    // SHORTCUTS
+
+    public LinkedList<ShortcutElement> getShortcuts() {
+        LinkedList<ShortcutElement> ll = new LinkedList<>();
+        List<Object> list = super.getList("shortcuts",ShortcutElement.class);
+        if (list!=null) {
+            for (Object shortcut :list) {
+                ll.add((ShortcutElement) shortcut);
+            }
+        }
+        return ll;
+    }
+
+    public void addShortcut(ShortcutElement shortcut) throws ObjectExistsException{
+        LinkedList<ShortcutElement> shortcuts = getShortcuts();
+        if (containsShortcutName(shortcuts,shortcut.getName())) {
+            throw new ObjectExistsException();
+        } else {
+            shortcuts.add(shortcut);
+            setShortcuts(shortcuts);
+        }
+    }
+
+    public void removeShortcut(String name) throws NoSuchElementException {
+        LinkedList<ShortcutElement> shortcuts = getShortcuts();
+        if (!containsShortcutName(shortcuts,name)) {
+            throw new NoSuchElementException();
+        } else {
+            LinkedList<ShortcutElement> l = new LinkedList<>();
+            for (ShortcutElement shortcut : shortcuts) {
+                if (!shortcut.getName().equals(name)) l.add(shortcut);
+            }
+            setShortcuts(l);
+        }
+    }
+
+    private void setShortcuts(List<ShortcutElement> s) {
+        super.set("shortcuts",s);
+    }
+
+    private boolean containsShortcutName(List<ShortcutElement> shortcuts, String name) {
+        boolean in = false;
+        for (ShortcutElement s: shortcuts) {
+            if (s.getName().equals(name)) {
+                in = true;
+                break;
+            }
+        }
+        return  in;
+    }
+
+    public static class ObjectExistsException extends Exception {}
 }

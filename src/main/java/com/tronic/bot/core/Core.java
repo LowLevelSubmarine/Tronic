@@ -82,6 +82,10 @@ public class Core {
         return this.jda;
     }
 
+    public ConfigProvider getConfig() {
+        return this.tronic.getConfigProvider();
+    }
+
     public void shutdown() {
         this.jda.shutdown();
         System.out.println(ColorisedSout.ANSI_GREEN+"Bot shutdowned!"+ColorisedSout.ANSI_RESET);
@@ -125,8 +129,7 @@ public class Core {
     }
 
     private JDA buildJDA(String token) throws LoginException {
-        JDABuilder builder = new JDABuilder();
-        builder.setToken(token);
+        JDABuilder builder = JDABuilder.createDefault(token);
         builder.setAudioSendFactory(new NativeAudioSendFactory());
         this.listeners.addAll(builder);
         return builder.build();
@@ -141,6 +144,7 @@ public class Core {
         this.commandHandler.addCommand(new SpeedtestCommand());
         this.commandHandler.addCommand(new UpdateCommand());
         this.commandHandler.addCommand(new SetCoHosterCommand());
+        this.commandHandler.addCommand(new ShortcutCommand());
         //Fun
         this.commandHandler.addCommand(new DiceCommand());
         this.commandHandler.addCommand(new SayCommand());
