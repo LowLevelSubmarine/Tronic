@@ -20,7 +20,7 @@ public class ShutdownCommand implements Command {
 
     @Override
     public Permission getPermission() {
-        return Permission.HOST;
+        return Permission.CO_HOST;
     }
 
     @Override
