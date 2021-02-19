@@ -34,7 +34,7 @@ dependencies {
     implementation 'net.dv8tion:JDA:4.2.0_224'
     implementation 'com.github.Jonbeckas:watcher.toolbox:1.1.1'
     implementation 'com.github.Jonbeckas:Updater:v1.1.0'
-    implementation 'com.github.LowLevelSubmarine:YoutubeMusicLibrary:b2.0.0'
+    implementation 'com.github.LowLevelSubmarine:YoutubeMusicLibrary:b2.0.1'
     implementation 'com.github.LowLevelSubmarine:GoogleAnswersAPI:v1.0.1'
     implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
     implementation 'fr.bmartel:jspeedtest:1.32.1'
