@@ -1,6 +1,5 @@
 package com.tronic.bot.core;
 
-import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
 import com.tronic.bot.buttons.ButtonHandler;
 import com.tronic.bot.commands.CommandHandler;
 import com.tronic.bot.commands.administration.*;
@@ -15,7 +14,6 @@ import com.tronic.bot.commands.settings.*;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.MusicManager;
-import com.tronic.bot.rest.JWTStore;
 import com.tronic.bot.rest.RestServer;
 import com.tronic.bot.questions.QuestionHandler;
 import com.tronic.bot.statics.Presets;
@@ -130,7 +128,6 @@ public class Core {
 
     private JDA buildJDA(String token) throws LoginException {
         JDABuilder builder = JDABuilder.createDefault(token);
-        builder.setAudioSendFactory(new NativeAudioSendFactory());
         this.listeners.addAll(builder);
         return builder.build();
     }
