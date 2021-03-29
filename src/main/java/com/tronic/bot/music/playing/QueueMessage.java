@@ -66,31 +66,35 @@ public class QueueMessage implements Player.EventListener {
     }
 
     public void setQueued() {
-        changeMessage(Emoji.ARROW_HEADING_DOWN, this.deleteButton);
+        changeMessage(Emoji.ARROW_HEADING_DOWN, true, this.deleteButton);
     }
 
     public void setPaused() {
-        changeMessage(Emoji.PAUSE_BUTTON, this.skipButton, this.resumeButton);
+        changeMessage(Emoji.PAUSE_BUTTON, true, this.skipButton, this.resumeButton);
     }
 
     public void setPlaying() {
         if (!queueItem.isMultiTrack()) {
-            changeMessage(Emoji.ARROW_FORWARD, this.skipButton, this.pauseButton);
+            changeMessage(Emoji.ARROW_FORWARD, true, this.skipButton, this.pauseButton);
         } else {
-            changeMessage(Emoji.ARROW_FORWARD, this.skipButton, this.skipPlaylistButton, this.pauseButton);
+            changeMessage(Emoji.ARROW_FORWARD, true, this.skipButton, this.skipPlaylistButton, this.pauseButton);
         }
     }
 
     public void setSkipped() {
-        changeMessage(Emoji.FAST_FORWARD);
+        changeMessage(Emoji.FAST_FORWARD, true);
     }
 
     public void setPlayed() {
-        changeMessage(Emoji.STOP_BUTTON);
+        changeMessage(Emoji.STOP_BUTTON, true);
     }
 
-    private void changeMessage(Emoji emoji, Button... buttons) {
-        String content = emoji.getUtf8() + "  | " + Markdown.uri(this.queueItem.getName(), this.queueItem.getUrl());
+    private void changeMessage(Emoji emoji, boolean showOwner, Button... buttons) {
+        String content = emoji.getUtf8() + "  | ";
+        if (showOwner) {
+            content += queueItem.getOwner().getAsMention() + ": ";
+        }
+        content += Markdown.uri(this.queueItem.getName(), this.queueItem.getUrl());
         this.messageChanger.change(new TronicMessage(content).b(), buttons);
     }
 
