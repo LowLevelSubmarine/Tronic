@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.tronic'
-version 'test'
+version 'dasdsad'
 
 sourceCompatibility = 1.8
 jar {
