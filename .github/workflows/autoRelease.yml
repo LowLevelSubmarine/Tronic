@@ -27,7 +27,7 @@ jobs:
       run: |
         echo "VERSION=$(./version.sh  ${{ env.RELEASE_VERSION }})" >> $GITHUB_ENV
     - name: Build Jar
-      run: ./gradlew shadowjar
+      run: ./gradlew shadowJar
     - name: Set jarFile
       run: echo "JARFILE=$(ls ./build/libs/*.jar| head -1)" >> $GITHUB_ENV
     - name: debug
