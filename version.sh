@@ -9,3 +9,5 @@ patch=$((patch+1));
 NEW=$major\.$minor\.$patch;
 sed -i -- "s/$OLD/$NEW/g" build.gradle;
 echo $NEW;
+
+# NEVER GONNA GIVE YOU AUP
