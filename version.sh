@@ -7,7 +7,7 @@ patch=$(echo $TMP | cut -d. -f3);
 OLD=$major\.$minor\.$patch
 patch=$((patch+1));
 NEW=$major\.$minor\.$patch;
-sed -i -- "s/$OLD/$NEW/g" build.gradle;
-echo $NEW;
+sed -i -- "s/$OLD/$1/g" build.gradle;
+echo $1;
 
 # NEVER GONNA GIVE YOU AUP
