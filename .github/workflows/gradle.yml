@@ -1,19 +1,16 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-
 name: Java CI with Gradle
 
 on:
-  pull_request:
-    branches: [ master ]
-    types: [opened, reopened, labeled, unlabeled, synchronize]
+  push: {
+
+  }
+  create:
+    tags:
+      - '*'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'dependencies')
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -24,43 +21,41 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Integration check
-      uses: squalrus/merge-bot@v0.4.1
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        reviewers: false
-        labels: dependencies
+    - name: Get Tag
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     - name: prepare version.sh
       run: chmod a+x version.sh
     - name: upgrade Version
       id: version
       run: |
-        echo ::set-output name=VERSION::$(./version.sh)
-    - name: build jar
+        echo "VERSION=$(./version.sh  ${{ env.RELEASE_VERSION }})" >> $GITHUB_ENV
+    - name: Build Jar
       run: ./gradlew shadowjar
-    - name: echo
-      run: echo  ${{ secrets.GITHUB_TOKEN }} && hgdzjtsfgdikdtzskttzksxsdtzdtzkuzjfzil
+    - name: Set jarFile
+      run: echo "JARFILE=$(ls ./build/libs/*.jar| head -1)" >> $GITHUB_ENV
+    - name: debug
+      run: echo "env.$VERSION env.$JARFILE"
+    - name: push
+    - run: git add -A && git commit -m "[Auto] build.gradle -> {{env.VERSION}}" && git push origin HEAD:ci
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{steps.version.outputs.VERSION}}
-        release_name: Version ${{steps.version.outputs.VERSION}}
+        tag_name: ${{ env.RELEASE_VERSION }}
+        release_name: Version ${{ env.RELEASE_VERSION }}
         body: |
-          - Updated dependencies
+          For changes see commits
         draft: false
         prerelease: true
-    - name: Upload Release Asset
-      id: upload-release-asset 
+    - name: Upload Release Asset Jar
+      id: upload-release-asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./build/libs/bot-${{steps.version.outputs.VERSION}}-all.jar
-        asset_name: bot-${{steps.version.outputs.VERSION}}-all.jar
-        asset_content_type:  application/java-archive
-    - name: Cleanup 
-      run: rm -rf ./build
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        asset_path: ${{env.JARFILE}}
+        asset_name: processWatcher.jar
+        asset_content_type: application/java-archive
