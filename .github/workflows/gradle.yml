@@ -36,7 +36,11 @@ jobs:
     - name: debug
       run: echo "env.$VERSION env.$JARFILE"
     - name: push
-      run: git add -A && git commit -m "[Auto] build.gradle -> {{env.VERSION}}" && git push origin HEAD:ci
+      run: |
+          git config --global user.name "Tronicbot"
+          git config --global user.email "push@tronicbot.com"
+          git add -A && git commit -m "[Auto] build.gradle -> {{env.VERSION}}" && git push origin HEAD:ci
+        
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
