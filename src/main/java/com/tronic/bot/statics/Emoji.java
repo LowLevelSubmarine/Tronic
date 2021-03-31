@@ -1328,6 +1328,11 @@ public enum Emoji {
         return utf8;
     }
 
+    @Override
+    public String toString() {
+        return getUtf8();
+    }
+
     /**
      *
      * @return Category. Not null
