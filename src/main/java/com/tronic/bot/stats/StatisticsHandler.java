@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class StatisticsHandler {
     private final static String BASEUSERDIR = JavaTools.getJarUrl(StatisticsHandler.class)+"/data/users/";
+
     public static void  storeCommandStatistics(CommandStatisticsElement element, User user) {
      StatisticsSerializer serializer = new StatisticsSerializer();
      String serialized = serializer.serialize(element);
@@ -19,7 +20,7 @@ public class StatisticsHandler {
      }
      try {
          File file = new File(BASEUSERDIR+user.getIdLong()+"/statistics");
-         if (file.getParentFile().exists()) {
+         if (!file.getParentFile().exists()) {
              file.getParentFile().mkdirs();
          }
          FileWriter fw = new FileWriter(file,true);
@@ -27,7 +28,7 @@ public class StatisticsHandler {
          fw.write("\n");
          fw.close();
      } catch (IOException e) {
-         //e.printStackTrace();
+         e.printStackTrace();
      }
     }
 

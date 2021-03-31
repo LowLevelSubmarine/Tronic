@@ -82,7 +82,7 @@ public class ShortcutCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Shortcut","Manages shortcuts on server","create <name> <commands> , delete <name>");
+        return new HelpInfo("Shortcut","Manages shortcuts on the server","shortcut create/delete <name> <commands>");
     }
 
     private boolean isNameBlocked(String name, Core core) {

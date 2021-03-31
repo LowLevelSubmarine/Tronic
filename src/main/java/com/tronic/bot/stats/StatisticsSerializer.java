@@ -16,7 +16,6 @@ public class StatisticsSerializer  {
         try {
             Field[] fields = s.getClass().getDeclaredFields();
             StringBuilder serialize = new StringBuilder();
-            serialize.append(s.getClass().getSimpleName()).append(" ");
             for (Field f:fields) {
                 f.setAccessible(true);
                 if (f.getType() == String.class) {

@@ -558,7 +558,7 @@ public enum Emoji {
     VIDEO_GAME(new int[]{127918}, "\uD83C\uDFAE", Category.ACTIVITIES, "https://discordapp.com/assets/7d600babcd1bddfd7a7d35acc1ed4cd3.svg"),
     SPACE_INVADER(new int[]{128126}, "\uD83D\uDC7E", Category.ACTIVITIES, "https://discordapp.com/assets/42696bf24081bd55a03e15d4e4cc084a.svg"),
     DART(new int[]{127919}, "\uD83C\uDFAF", Category.ACTIVITIES, "https://discordapp.com/assets/43df7da20ea936e1016d1ea5d79a2c6c.svg"),
-    GAME_DIE(new int[]{127922}, "\uD83C\uDFB2", Category.ACTIVITIES, "https://discordapp.com/assets/1adc9faf91526bb7a2c1d0b7b3516cae.svg"),
+    GAME_DICE(new int[]{127922}, "\uD83C\uDFB2", Category.ACTIVITIES, "https://discordapp.com/assets/1adc9faf91526bb7a2c1d0b7b3516cae.svg"),
     SLOT_MACHINE(new int[]{127920}, "\uD83C\uDFB0", Category.ACTIVITIES, "https://discordapp.com/assets/e6ec28237dfa28af53d648bdec0a3d0d.svg"),
     BOWLING(new int[]{127923}, "\uD83C\uDFB3", Category.ACTIVITIES, "https://discordapp.com/assets/242bfc0589b06e155df9b58b6dcd73e9.svg"),
     CARTWHEEL(new int[]{129336}, "\uD83E\uDD38", Category.ACTIVITIES, "https://discordapp.com/assets/e1994fb3ab91a3c99cde68c979a558ee.svg"),

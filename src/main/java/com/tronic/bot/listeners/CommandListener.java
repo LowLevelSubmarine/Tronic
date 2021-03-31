@@ -13,11 +13,13 @@ public class CommandListener extends Listener {
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        String prefix = getCore().getStorage().getGuild(event.getGuild()).getPrefix();
-        String messageContent = event.getMessage().getContentRaw();
-        if (messageContent.startsWith(prefix)) {
-            String string = messageContent.substring(prefix.length());
-            getCore().getCommandHandler().handle(string, event);
+        if (event.isFromGuild()) {
+            String prefix = getCore().getStorage().getGuild(event.getGuild()).getPrefix();
+            String messageContent = event.getMessage().getContentRaw();
+            if (messageContent.startsWith(prefix)) {
+                String string = messageContent.substring(prefix.length());
+                getCore().getCommandHandler().handle(string, event);
+            }
         }
     }
 

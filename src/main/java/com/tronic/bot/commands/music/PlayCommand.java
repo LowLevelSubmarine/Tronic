@@ -53,7 +53,7 @@ public class PlayCommand implements Command, MusicManager.QueueItemResultListene
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Play","plays music","play <song>");
+        return new HelpInfo("Play","Plays a given song","play <song/ Youtube url>");
     }
 
     @Override

@@ -36,7 +36,7 @@ public class UptimeCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Uptime","shows the uptime of the bot","uptime");
+        return new HelpInfo("Uptime","Shows the uptime of the bot","uptime");
     }
 
     private String uptimeMessage() {

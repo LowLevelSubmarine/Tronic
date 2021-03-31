@@ -160,7 +160,12 @@ public class CommandHandler {
                 this.commandInfo.getEvent().getMessage().delete().queue();
             }
             if (!command.getPermission().isValid(this.commandInfo.getEvent(), CommandHandler.this.core)) {
-                this.commandInfo.getEvent().getChannel().sendMessage(new TronicMessage("You are not allowed to do this").b()).queue();
+                String s = Emoji.WARNING.getUtf8()+"You are not allowed to do this!";
+
+                if (command.getPermission() == Permission.ADMIN) {
+                    s += "\nTry asking your server owner for Permission.";
+                }
+                this.commandInfo.getEvent().getChannel().sendMessage(new TronicMessage(s).b()).queue();
             } else {
                 try {
                     this.command.getClass().getDeclaredConstructor().newInstance().run(this.commandInfo);

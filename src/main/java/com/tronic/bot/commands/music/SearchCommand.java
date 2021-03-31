@@ -101,7 +101,7 @@ public class SearchCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Search","Shows different results for a song","search");
+        return new HelpInfo("Search","Shows different results for a song search","search <song>");
     }
 
 }

@@ -66,7 +66,7 @@ public class BroadcastCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return new HelpInfo("Broadcast a Message","Sends a message to all guilds","broadcast");
+        return new HelpInfo("Broadcast a Message","Sends a message to all guilds","broadcast <message>");
     }
 
     private void broadcast() {
