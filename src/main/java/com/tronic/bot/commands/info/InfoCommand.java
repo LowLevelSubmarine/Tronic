@@ -2,6 +2,9 @@ package com.tronic.bot.commands.info;
 
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
+import com.tronic.bot.statics.GitHub;
+import com.tronic.bot.statics.Info;
+import com.tronic.bot.tools.Markdown;
 
 public class InfoCommand implements Command {
 
@@ -27,10 +30,10 @@ public class InfoCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        TronicMessage tm = new TronicMessage("Info","Tronic is a Discord Bot for Music and Hyperchannel");
-        //TODO: Write a serious description Text
-        tm.addField("Try Tronic/ Invite Tronic ",info.getJDA().getInviteUrl(net.dv8tion.jda.api.Permission.ADMINISTRATOR),false);
-        tm.addField("GitHub Repository", "https://github.com/LowLevelSubmarine/Tronic",false);
+        String inviteUrl = info.getJDA().getInviteUrl(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
+        TronicMessage tm = new TronicMessage("Info","Tronic is currently running on version " + Info.VERSION + ".\n" +
+                "You can " + Markdown.uri("invite Tronic here", inviteUrl) + ".\n" +
+                "View the " + Markdown.uri("official Tronic GitHub repo", GitHub.REPO_URL) + ".");
         info.getChannel().sendMessage(tm.b()).queue();
     }
 

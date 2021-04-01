@@ -151,7 +151,6 @@ public class Core {
         this.commandHandler.addCommand(new StatisticsCommand());
         this.commandHandler.addCommand(new UptimeCommand());
         this.commandHandler.addCommand(new InfoCommand());
-        this.commandHandler.addCommand(new NerdInfoCommands());
         this.commandHandler.addCommand(new HelpCommand());
         this.commandHandler.addCommand(new InviteCommand());
         this.commandHandler.addCommand(new WhoAmICommand());
