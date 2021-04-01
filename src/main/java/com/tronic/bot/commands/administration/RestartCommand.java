@@ -26,7 +26,7 @@ public class RestartCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        info.getCore().restart();
+        info.getCore().restartTronic();
     }
 
     @Override

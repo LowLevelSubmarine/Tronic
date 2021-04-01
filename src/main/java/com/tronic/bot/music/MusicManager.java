@@ -30,6 +30,13 @@ public class MusicManager {
     public MusicManager(Core core) {
         this.core = core;
         this.trackProvider = new TrackProvider();
+        core.addShutdownHook(this::onCoreShutdown);
+    }
+
+    private void onCoreShutdown(boolean restart) {
+        for (Player player : this.players.values()) {
+            player.stop();
+        }
     }
 
     public TrackProvider getTrackProvider() {

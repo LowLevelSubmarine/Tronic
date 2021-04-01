@@ -15,7 +15,7 @@ public class ButtonListener extends Listener  {
     @Override
     public void onGenericMessageReaction(@Nonnull GenericMessageReactionEvent event) {
         if (!Objects.requireNonNull(event.getUser()).isBot()) {
-            getCore().getButtonManager().handle(event);
+            getCore().getButtonHandler().handle(event);
         }
     }
 

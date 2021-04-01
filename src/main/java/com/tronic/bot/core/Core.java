@@ -18,18 +18,18 @@ import com.tronic.bot.questions.QuestionHandler;
 import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
-import com.tronic.updater.Updater;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
+import java.util.LinkedList;
 
 public class Core {
 
     private final Tronic tronic;
+    private final LinkedList<ShutdownHook> shutdownHooks = new LinkedList<>();
+    private final LinkedList<BootupHook> bootupHooks = new LinkedList<BootupHook>();
     private final Listeners listeners = new Listeners();
     private final JDA jda;
     private final Storage storage = new Storage();
@@ -37,30 +37,38 @@ public class Core {
     private final ButtonHandler buttonHandler = new ButtonHandler();
     private final MusicManager musicManager = new MusicManager(this);
     private final QuestionHandler questionHandler = new QuestionHandler(this);
+    private final HyperchannelManager hyperchannelManager;
     private final String hostToken;
-    Logger logger = LogManager.getLogger(Tronic.class);
-    private HyperchannelManager hyperchannelManager;
 
 
-    public Core(Tronic tronic) throws LoginException {
+    public Core(Tronic tronic) throws LoginException, InterruptedException {
         this.tronic = tronic;
         this.hostToken = tronic.getConfigProvider().getHost();
         this.jda = buildJDA(tronic.getConfigProvider().getToken());
-        try {
-            this.jda.awaitReady();
-            addCommands();
-            hyperchannelManager = new HyperchannelManager(this);
-            Updater.initialJson();
-            Updater.initialError();
-            this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
-            System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!"+ColorisedSout.ANSI_RESET);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        this.jda.awaitReady();
+        addCommands();
+        hyperchannelManager = new HyperchannelManager(this);
+        this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
+        System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!" + ColorisedSout.ANSI_RESET);
+        for (BootupHook hook : bootupHooks) {
+            hook.onBootup();
         }
     }
 
-    public void restart() {
+    public void addShutdownHook(ShutdownHook hook) {
+        this.shutdownHooks.add(hook);
+    }
+
+    public void removeShutdownHook(ShutdownHook hook) {
+        this.shutdownHooks.remove(hook);
+    }
+
+    public void restartTronic() {
         this.tronic.restart();
+    }
+
+    public void shutdownTronic() {
+        this.tronic.shutdown();
     }
 
     public boolean getDebugMode() {
@@ -79,10 +87,12 @@ public class Core {
         return this.tronic.getConfigProvider();
     }
 
-    public void shutdown() {
+    public void prepareShutdown(boolean restart) {
+        for (ShutdownHook hook : this.shutdownHooks) {
+            hook.onShutdown(restart);
+        }
         this.jda.shutdown();
-        System.out.println(ColorisedSout.ANSI_GREEN+"Bot shutdowned!"+ColorisedSout.ANSI_RESET);
-        System.exit(0);
+        System.out.println(ColorisedSout.ANSI_GREEN + "Bot shutdown successfully!" + ColorisedSout.ANSI_RESET);
     }
 
     public Storage getStorage() {
@@ -93,11 +103,7 @@ public class Core {
         return this.commandHandler;
     }
 
-    public ButtonHandler getButtonManager() {
-        return this.buttonHandler;
-    }
-
-    public com.tronic.bot.buttons.ButtonHandler getButtonHandler() {
+    public ButtonHandler getButtonHandler() {
         return this.buttonHandler;
     }
 
@@ -115,6 +121,10 @@ public class Core {
 
     public HyperchannelManager getHyperchannelManager() {
         return hyperchannelManager;
+    }
+
+    public Updater getTronicUpdater() {
+        return this.tronic.getUpdater();
     }
 
     private JDA buildJDA(String token) throws LoginException {
@@ -141,7 +151,6 @@ public class Core {
         this.commandHandler.addCommand(new StatisticsCommand());
         this.commandHandler.addCommand(new UptimeCommand());
         this.commandHandler.addCommand(new InfoCommand());
-        this.commandHandler.addCommand(new NerdInfoCommands());
         this.commandHandler.addCommand(new HelpCommand());
         this.commandHandler.addCommand(new InviteCommand());
         this.commandHandler.addCommand(new WhoAmICommand());
@@ -180,6 +189,14 @@ public class Core {
             builder.addEventListeners(this.question);
         }
 
+    }
+
+    public interface ShutdownHook {
+        void onShutdown(boolean restart);
+    }
+
+    public interface BootupHook {
+        void onBootup();
     }
 
 }
