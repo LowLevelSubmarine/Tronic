@@ -170,7 +170,7 @@ public class CommandHandler {
                 try {
                     this.command.getClass().getDeclaredConstructor().newInstance().run(this.commandInfo);
                 } catch (InvalidCommandArgumentsException e) {
-                    this.commandInfo.getEvent().getChannel().sendMessage("Correct Syntax: "+this.command.getHelpInfo().getSyntax()).queue();
+                    this.commandInfo.getEvent().getChannel().sendMessage(new TronicMessage("Correct Syntax: "+this.command.getHelpInfo().getSyntax()).b()).queue();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

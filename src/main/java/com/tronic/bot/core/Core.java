@@ -131,8 +131,8 @@ public class Core {
         this.commandHandler.addCommand(new ShutdownCommand());
         this.commandHandler.addCommand(new SpeedtestCommand());
         this.commandHandler.addCommand(new UpdateCommand());
-        this.commandHandler.addCommand(new SetCoHosterCommand());
         this.commandHandler.addCommand(new ShortcutCommand());
+        this.commandHandler.addCommand(new CoHosterCommand());
         //Fun
         this.commandHandler.addCommand(new DiceCommand());
         this.commandHandler.addCommand(new SayCommand());
@@ -154,7 +154,6 @@ public class Core {
         this.commandHandler.addCommand(new SetPrefixCommand());
         this.commandHandler.addCommand(new HyperchannelCommand());
         this.commandHandler.addCommand(new BotVolumeCommand());
-        this.commandHandler.addCommand(new RemoveCoHosterCommand());
     }
 
     public class Listeners {
