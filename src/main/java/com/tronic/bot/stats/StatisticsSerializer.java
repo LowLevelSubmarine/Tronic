@@ -1,15 +1,12 @@
 package com.tronic.bot.stats;
 
 
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 
 public class StatisticsSerializer  {
     public String serialize(Serializable s) {

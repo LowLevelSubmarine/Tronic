@@ -1,35 +1,36 @@
 package com.tronic.bot.stats;
 
+import com.tronic.bot.statics.Files;
 import net.dv8tion.jda.api.entities.User;
-import net.tetraowl.watcher.toolbox.JavaTools;
-import org.apache.commons.lang.SerializationException;
 import org.jetbrains.annotations.Nullable;
+import org.jsoup.SerializationException;
 
 import java.io.*;
 import java.util.ArrayList;
 
 public class StatisticsHandler {
-    private final static String BASEUSERDIR = JavaTools.getJarUrl(StatisticsHandler.class)+"/data/users/";
+
+    private final static String BASEUSERDIR = new File(Files.ROOT_FOLDER, "data/users/").getAbsolutePath();
 
     public static void  storeCommandStatistics(CommandStatisticsElement element, User user) {
-     StatisticsSerializer serializer = new StatisticsSerializer();
-     String serialized = serializer.serialize(element);
-     if (serialized == null) {
-         new SerializationException().printStackTrace();
-         return;
-     }
-     try {
-         File file = new File(BASEUSERDIR+user.getIdLong()+"/statistics");
-         if (!file.getParentFile().exists()) {
-             file.getParentFile().mkdirs();
-         }
-         FileWriter fw = new FileWriter(file,true);
-         fw.write(serialized);
-         fw.write("\n");
-         fw.close();
-     } catch (IOException e) {
-         e.printStackTrace();
-     }
+        StatisticsSerializer serializer = new StatisticsSerializer();
+        String serialized = serializer.serialize(element);
+        if (serialized == null) {
+            new SerializationException().printStackTrace();
+            return;
+        }
+        try {
+            File file = new File(BASEUSERDIR+user.getIdLong()+"/statistics");
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            FileWriter fw = new FileWriter(file,true);
+            fw.write(serialized);
+            fw.write("\n");
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Nullable

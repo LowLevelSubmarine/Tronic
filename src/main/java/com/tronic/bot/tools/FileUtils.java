@@ -1,7 +1,5 @@
 package com.tronic.bot.tools;
 
-import net.tetraowl.watcher.toolbox.JavaTools;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.regex.Pattern;
@@ -38,10 +36,6 @@ public class FileUtils {
             e.printStackTrace();
         }
         return new File[0];
-    }
-
-    public static File getJarFolder() {
-        return new File(JavaTools.getJarUrl(FileUtils.class));
     }
 
     private static class PatternFilenameFilter implements FilenameFilter {

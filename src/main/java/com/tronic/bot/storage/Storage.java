@@ -3,6 +3,7 @@ package com.tronic.bot.storage;
 import com.toddway.shelf.Clock;
 import com.toddway.shelf.FileStorage;
 import com.toddway.shelf.Shelf;
+import com.tronic.bot.statics.Files;
 import com.tronic.bot.tools.FileUtils;
 import com.tronic.bot.tools.JDAUtils;
 import net.dv8tion.jda.api.entities.Guild;
@@ -13,11 +14,11 @@ import java.util.HashMap;
 
 public class Storage {
 
-    private static final File FILE_ROOT = FileUtils.getFile(FileUtils.getJarFolder(), "data");
-    private static final File FILE_STATIC = FileUtils.getFile(FILE_ROOT, "static");
-    private static final File FILE_GUILDS = FileUtils.getFile(FILE_ROOT, "guilds");
-    private static final File FILE_USERS = FileUtils.getFile(FILE_ROOT, "users");
-    private static final File FILE_VOLUME = FileUtils.getFile(FILE_ROOT, "volume");
+    private static final File DATA_FILE_ROOT = FileUtils.getFile(Files.ROOT_FOLDER, "data");
+    private static final File FILE_STATIC = FileUtils.getFile(DATA_FILE_ROOT, "static");
+    private static final File FILE_GUILDS = FileUtils.getFile(DATA_FILE_ROOT, "guilds");
+    private static final File FILE_USERS = FileUtils.getFile(DATA_FILE_ROOT, "users");
+    private static final File FILE_VOLUME = FileUtils.getFile(DATA_FILE_ROOT, "volume");
 
     private final StaticStorage staticStorage;
     private final HashMap<String, GuildStorage> guildStorages;

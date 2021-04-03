@@ -1,10 +1,10 @@
 package com.tronic.bot;
 
 import com.google.gson.Gson;
+import com.lowlevelsubmarine.envelope.util.FileBrowser;
 import com.tronic.bot.core.ConfigProvider;
 import com.tronic.bot.core.Tronic;
 import com.tronic.bot.tools.BotConfig;
-import net.tetraowl.watcher.toolbox.JavaTools;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 
@@ -12,7 +12,7 @@ import java.io.*;
 
 public class ReleaseConfig implements ConfigProvider {
 
-    private static final File CONF_FILE = new File(JavaTools.getJarUrl(ReleaseConfig.class)+"/config.json");
+    private static final File CONF_FILE = new File(FileBrowser.getJARFile().getFile().getAbsolutePath(),"config.json");
     private static final String DEFAULT_TOKEN = "Bot Token";
     private static final String DEFAULT_HOST_ID = "HostId";
 
@@ -24,7 +24,7 @@ public class ReleaseConfig implements ConfigProvider {
 
     public ReleaseConfig() {
         LoggerContext context = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
-        File file = new File(JavaTools.getJarUrl(Tronic.class) + "/log4j2.xml");
+        File file = new File(FileBrowser.getJARFile().getFile().getAbsolutePath(), "log4j2.xml");
         context.setConfigLocation(file.toURI());
         try {
             FileReader fr = new FileReader(CONF_FILE);
