@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.lowlevelsubmarine.envelope.util.FileBrowser;
 import com.tronic.bot.core.ConfigProvider;
 import com.tronic.bot.core.Tronic;
+import com.tronic.bot.statics.Files;
 import com.tronic.bot.tools.BotConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -12,7 +13,7 @@ import java.io.*;
 
 public class ReleaseConfig implements ConfigProvider {
 
-    private static final File CONF_FILE = new File(FileBrowser.getJARFile().getFile().getAbsolutePath(),"config.json");
+    private static final File CONF_FILE = new File(Files.ROOT_FOLDER,"config.json");
     private static final String DEFAULT_TOKEN = "Bot Token";
     private static final String DEFAULT_HOST_ID = "HostId";
 
