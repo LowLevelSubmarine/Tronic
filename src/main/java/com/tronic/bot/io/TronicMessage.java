@@ -35,6 +35,11 @@ public class TronicMessage {
         this.builder.setColor(COLOR);
     }
 
+    public TronicMessage setImage(String url) {
+        this.builder.setImage(url);
+        return this;
+    }
+
     public MessageEmbed build() {
         return this.builder.build();
     }

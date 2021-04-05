@@ -15,16 +15,15 @@ import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.MusicManager;
 import com.tronic.bot.questions.QuestionHandler;
-import com.tronic.bot.statics.Files;
 import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
-import java.io.File;
 import java.util.LinkedList;
 
 public class Core {
@@ -131,7 +130,8 @@ public class Core {
 
     private JDA buildJDA(String token) throws LoginException {
         JDABuilder builder = JDABuilder.createDefault(token);
-        this.listeners.addAll(builder);
+        builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
+        this.listeners.attachToBuilder(builder);
         return builder.build();
     }
 
@@ -179,7 +179,7 @@ public class Core {
         public final ReadyListener ready = new ReadyListener(Core.this);
         public final QuestionListener question = new QuestionListener(Core.this);
 
-        public void addAll(JDABuilder builder) {
+        public void attachToBuilder(JDABuilder builder) {
             builder.addEventListeners(this.button);
             builder.addEventListeners(this.command);
             builder.addEventListeners(this.experimentStartup);
