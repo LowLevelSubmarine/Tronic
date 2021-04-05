@@ -141,7 +141,7 @@ public class Core {
         this.commandHandler.addCommand(new RangeReportCommand());
         this.commandHandler.addCommand(new RestartCommand());
         this.commandHandler.addCommand(new ShutdownCommand());
-        this.commandHandler.addCommand(new SpeedtestCommand());
+        this.commandHandler.addCommand(new SpeedTestCommand());
         this.commandHandler.addCommand(new UpdateCommand());
         this.commandHandler.addCommand(new ShortcutCommand());
         this.commandHandler.addCommand(new CoHosterCommand());
