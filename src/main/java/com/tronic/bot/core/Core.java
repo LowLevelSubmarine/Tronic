@@ -15,6 +15,7 @@ import com.tronic.bot.hyperchannel.HyperchannelManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.MusicManager;
 import com.tronic.bot.questions.QuestionHandler;
+import com.tronic.bot.statics.Files;
 import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
@@ -23,6 +24,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 
 import javax.security.auth.login.LoginException;
+import java.io.File;
 import java.util.LinkedList;
 
 public class Core {

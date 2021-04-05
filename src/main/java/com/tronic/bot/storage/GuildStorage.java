@@ -49,8 +49,7 @@ public class GuildStorage extends StorageElement {
         try {
             boolean state = (boolean) super.get("hyperstate",boolean.class);
             return state;
-        } catch (Exception e) {
-            setHyperchannelState(false);
+        } catch (NullPointerException e) {
             return false;
         }
     }

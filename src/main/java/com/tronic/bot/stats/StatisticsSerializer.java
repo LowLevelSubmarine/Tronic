@@ -1,15 +1,12 @@
 package com.tronic.bot.stats;
 
 
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 
 public class StatisticsSerializer  {
     public String serialize(Serializable s) {
@@ -68,15 +65,23 @@ public class StatisticsSerializer  {
     }
     private ArrayList<String> getFilteredFields(String s) {
         ArrayList<String> fields = new ArrayList<>();
-        int maxSemi = StringUtils.countMatches(s,";");
+        long maxSemi = s.chars().filter(ch -> ch == ';').count();
         int lastValid = 0;
         for (int i=1;i<=maxSemi;i++) {
-            String sub = s.substring(lastValid,StringUtils.ordinalIndexOf(s,";",i));
-            if (StringUtils.countMatches(sub,"\"") % 2 == 0) {
+            String sub = s.substring(ordinalIndexOf(s,";",i));
+            if (s.chars().filter(ch -> ch == '\"').count() % 2 == 0) {
                 fields.add(sub.replace("\"",""));
-                lastValid = StringUtils.ordinalIndexOf(s,";",i)+1;
+                lastValid = ordinalIndexOf(s,";",i)+1;
             }
         }
         return fields;
+    }
+
+    // https://stackoverflow.com/questions/3976616/how-to-find-nth-occurrence-of-character-in-a-string
+    public static int ordinalIndexOf(String str, String substr, long n) {
+        int pos = str.indexOf(substr);
+        while (--n > 0 && pos != -1)
+            pos = str.indexOf(substr, pos + 1);
+        return pos;
     }
 }
