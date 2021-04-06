@@ -49,7 +49,8 @@ public class CoHosterCommand implements Command {
                 }
             }
             String action = option.equals("add")? "Added":"Removed";
-            info.getChannel().sendMessage(new TronicMessage(action+": "+users+" from the Cohoster list").b()).queue();
+            String word = option.equals("add")? "to":"from";
+            info.getChannel().sendMessage(new TronicMessage(action+": "+users+" "+word+" the Cohoster list").b()).queue();
         } catch (InvalidArgumentException|NullPointerException e) {
             throw new InvalidCommandArgumentsException();
         }
