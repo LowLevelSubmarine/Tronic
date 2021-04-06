@@ -80,4 +80,8 @@ public class CommandInfo {
         return this.event;
     }
 
+    public boolean isGuildContext() {
+        return this.getGuild() != null;
+    }
+
 }

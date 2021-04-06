@@ -10,18 +10,17 @@ import fr.bmartel.speedtest.SpeedTestSocket;
 import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
 import fr.bmartel.speedtest.model.SpeedTestMode;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.math.BigDecimal;
 
-public class SpeedtestCommand implements Command {
+public class SpeedTestCommand implements Command {
 
     SpeedTestSocket speedTestSocket = new SpeedTestSocket();
     private static final String DOWNLOAD_URI = "http://scaleway.testdebit.info/5M/5M.iso";
     private static final String UPLOAD_URI = "https://scaleway.testdebit.info";
     private static final int UPLOAD_INTERVAL = 1000000;
-    private String downloadSpeed = Emoji.CLOCK1.getUtf8();
-    private String uploadSpeed = Emoji.CLOCK1.getUtf8();
+    private String downloadSpeed = Emoji.HOURGLASS.toString();
+    private String uploadSpeed = Emoji.HOURGLASS.toString();
     private MessageChanger messageChanger;
 
 
@@ -47,9 +46,9 @@ public class SpeedtestCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        this.messageChanger=  new MessageChanger(info.getCore(), info.getChannel());
+        this.messageChanger = new MessageChanger(info.getCore(), info.getChannel());
         this.messageChanger.change(createMessage().b());
-        this.speedTestSocket.addSpeedTestListener(new Speedtest(info.getEvent()));
+        this.speedTestSocket.addSpeedTestListener(new Speedtest());
         this.speedTestSocket.startDownload(DOWNLOAD_URI);
     }
 
@@ -71,22 +70,16 @@ public class SpeedtestCommand implements Command {
 
     private class Speedtest implements ISpeedTestListener {
 
-        private final MessageReceivedEvent event;
-
-        Speedtest(MessageReceivedEvent event) {
-            this.event = event;
-        }
-
         @Override
         public void onCompletion(SpeedTestReport report) {
             if (report.getSpeedTestMode() == SpeedTestMode.DOWNLOAD) {
-                SpeedtestCommand.this.downloadSpeed = getMbits(report.getTransferRateBit());
-                SpeedtestCommand.this.speedTestSocket.startUpload(UPLOAD_URI, UPLOAD_INTERVAL);
-                SpeedtestCommand.this.updateMessage();
+                SpeedTestCommand.this.downloadSpeed = getMbits(report.getTransferRateBit());
+                SpeedTestCommand.this.speedTestSocket.startUpload(UPLOAD_URI, UPLOAD_INTERVAL);
+                SpeedTestCommand.this.updateMessage();
             }
             if (report.getSpeedTestMode() == SpeedTestMode.UPLOAD) {
-                SpeedtestCommand.this.uploadSpeed = getMbits(report.getTransferRateBit());
-                SpeedtestCommand.this.updateMessage();
+                SpeedTestCommand.this.uploadSpeed = getMbits(report.getTransferRateBit());
+                SpeedTestCommand.this.updateMessage();
             }
         }
 
