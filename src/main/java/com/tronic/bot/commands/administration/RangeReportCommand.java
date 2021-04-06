@@ -68,7 +68,7 @@ public class RangeReportCommand implements Command {
         ).addField(
                 "Unique users", uniqueUserCount + "", false
         ).addField(
-                "Top 20 guild ", guildInfo, false
+                "Top guilds ", guildInfo, false
         ).b());
     }
 
