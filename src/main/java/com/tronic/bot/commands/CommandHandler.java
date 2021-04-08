@@ -180,6 +180,7 @@ public class CommandHandler {
         private void saveCommandStatistic() {
             StatisticsHandler.storeCommandStatistics(new CommandStatisticsElement(
                     this.commandInfo.getEvent().getMessage().getContentRaw(),
+                    this.command.invoke(),
                     this.commandInfo.getAuthor().getId(),
                     this.commandInvokeProximity < 1F
             ),this.commandInfo.getAuthor());
