@@ -110,7 +110,7 @@ public class RangeReportCommand implements Command {
 
         private void setGuildFetched(Guild guild) {
             this.map.put(guild, true);
-            if (this.map.values().stream().allMatch(bool -> true)) {
+            if (this.map.values().stream().allMatch(bool -> bool)) {
                 this.hook.onSuccess(this.map.keySet(), this.uniqueUsers.size(), System.currentTimeMillis() - this.startTime);
             }
         }
