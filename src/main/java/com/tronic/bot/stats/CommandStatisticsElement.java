@@ -5,17 +5,15 @@ import java.io.Serializable;
 public class CommandStatisticsElement implements Serializable {
     public String text;
     private long date;
-    private String userId;
-    private boolean isAutocompleted;
+    private int isAutocompleted;
     private String command;
 
     public CommandStatisticsElement () {}
-    public CommandStatisticsElement(String text,String command, String userId, boolean isAutocompleted) {
+    public CommandStatisticsElement(String text,String command, boolean isAutocompleted) {
         this.text = text;
         this.command = command;
         this.date = System.currentTimeMillis();
-        this.userId = userId;
-        this.isAutocompleted = isAutocompleted;
+        this.isAutocompleted = isAutocompleted?1:0;
 
     }
 
@@ -31,12 +29,9 @@ public class CommandStatisticsElement implements Serializable {
         return date;
     }
 
-    public String getUserId() {
-        return userId;
-    }
 
     public boolean isAutocompleted() {
-        return isAutocompleted;
+        return isAutocompleted == 1;
     }
 
 

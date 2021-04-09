@@ -39,7 +39,7 @@ public class StatisticsSerializer  {
             try {
                 Object newClass = c.getConstructor().newInstance();
                 ArrayList<String> fields = getFilteredFields(s.substring(s.indexOf(" ")+1));
-                for (int i =0;i< fields.size()-1;i++) {
+                for (int i =0;i< fields.size();i++) {
                     String f = fields.get(i);
                     String parts[] = f.split(":");
                     Field declared = newClass.getClass().getDeclaredField(parts[0].replace(";",""));
