@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public enum Permission {
 
-    HOST(3), CO_HOST(2), ADMIN(1), NONE(0);
+    HOST(3), CO_HOST(2), ADMIN(1), NONE(0),INTERN(1000);
 
     private final int level;
 
@@ -23,7 +23,7 @@ public enum Permission {
     @SuppressWarnings("DuplicateCondition")
     public boolean isValid (MessageReceivedEvent event, Core tronic) {
         boolean isCoHost =tronic.getStorage().getStatic().isCoHoster(event.getAuthor());
-        boolean isHost = event.getAuthor().equals(tronic.getJDA().getUserById(tronic.getHostToken()));
+        boolean isHost = event.getAuthor().getId().equals(tronic.getHostToken());
         Member author = event.getGuild().getMember(event.getAuthor());
         boolean isAdmin = author != null && author.hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
         if (this.level == HOST.level) {
@@ -41,7 +41,7 @@ public enum Permission {
     }
     public static Permission getUserPermission(User user,Guild guild, Core core) {
         boolean isCoHost =core.getStorage().getStatic().isCoHoster(user);
-        boolean isHost = user.equals(core.getJDA().getUserById(core.getHostToken()));
+        boolean isHost = user.getId().equals(core.getHostToken());
         Member author = guild.getMember(user);
         boolean isAdmin = author != null && author.hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
         if (isHost) {
