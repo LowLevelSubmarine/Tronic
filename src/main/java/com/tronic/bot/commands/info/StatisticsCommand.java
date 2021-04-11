@@ -1,11 +1,8 @@
 package com.tronic.bot.commands.info;
 
-
 import com.tronic.bot.commands.*;
-import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.stats.CommandStatisticsElement;
 import com.tronic.bot.stats.StatisticsHandler;
-import net.dv8tion.jda.api.utils.AttachmentOption;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,7 +49,7 @@ public class StatisticsCommand implements Command {
     }
 
     public String getDDMMYYY(Long timestamp) {
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         Date date = new Date(timestamp);
         return format.format(date);
     }
