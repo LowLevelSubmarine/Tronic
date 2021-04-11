@@ -3,6 +3,7 @@ package com.tronic.bot.commands.settings;
 import com.tronic.arguments.InvalidArgumentException;
 import com.tronic.arguments.SingleArgument;
 import com.tronic.bot.buttons.Button;
+import com.tronic.bot.buttons.UserButtonValidator;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
@@ -41,13 +42,14 @@ public class SetPrefixCommand implements Command {
             this.newPrefix = info.getArguments().parse(new SingleArgument()).getOrThrowException();
             this.oldPrefix = info.getGuildStorage(info.getGuild()).getPrefix();
             this.info = info;
-            Button declineButton = new Button(Emoji.X, this::onDecline);
-            Button acceptButton = new Button(Emoji.WHITE_CHECK_MARK, this::onAccept);
             this.messageChanger = new MessageChanger(info.getCore(), info.getChannel());
-            this.messageChanger.change(new TronicMessage(
-                    "PREFIX",
-                    "Would you like to change this guilds prefix from '" + this.oldPrefix + "' to '" + this.newPrefix + "'?"
-            ).b(), declineButton, acceptButton);
+            this.messageChanger.change(
+                    new TronicMessage(
+                            "PREFIX",
+                            "Would you like to change this guilds prefix from '" + this.oldPrefix + "' to '" + this.newPrefix + "'?").b(),
+                    new Button(Emoji.X, this.messageChanger::delete, new UserButtonValidator(info)),
+                    new Button(Emoji.WHITE_CHECK_MARK, this::onAccept, new UserButtonValidator(info))
+            );
         } catch (InvalidArgumentException e) {
             throw new InvalidCommandArgumentsException();
         }

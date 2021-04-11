@@ -44,7 +44,7 @@ public class UptimeCommand implements Command {
         long millisec = rb.getUptime();
         long days = TimeUnit.MILLISECONDS.toDays(millisec);
         long hours = TimeUnit.MILLISECONDS.toHours(millisec) - (days*24);
-        long minute = TimeUnit.MILLISECONDS.toMinutes(millisec) -( TimeUnit.MILLISECONDS.toHours(millisec)*60);
+        long minute = TimeUnit.MILLISECONDS.toMinutes(millisec) - (TimeUnit.MILLISECONDS.toHours(millisec)*60);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millisec) - (TimeUnit.MILLISECONDS.toMinutes(millisec) *60);
         StringBuilder builder = new StringBuilder();
         builder.append("Tronic runs now for ");
