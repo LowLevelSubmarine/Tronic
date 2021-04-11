@@ -5,6 +5,7 @@ import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.stats.CommandStatisticsElement;
 import com.tronic.bot.stats.StatisticsHandler;
+import net.dv8tion.jda.api.utils.AttachmentOption;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class StatisticsCommand implements Command {
     @Override
     public Permission getPermission() {
         //TODO: Should be CO_HOST but Set to Intern to Lock Command
-        return Permission.INTERN;
+        return Permission.HOST;
 
     }
 
@@ -41,20 +42,19 @@ public class StatisticsCommand implements Command {
         String message ="";
         HashMap<Long,ArrayList<CommandStatisticsElement>> a = StatisticsHandler.getStatisticsForUsers();
         for (Long l:a.keySet()) {
-            message += "Commands for User: "+l+":\n\n";
+            message += "Commands for User: "+info.getJDA().getUserById(l).getName()+"("+l+"):\n";
             ArrayList<CommandStatisticsElement> ac = a.get(l);
             for (CommandStatisticsElement c:ac) {
-                message+="text:"+c.text+" command:"+c.getCommand()+" isAutocompleted:"+c.isAutocompleted()+" date:"+getDDMMYYY(c.getDate());
-                info.getChannel().sendMessage(new TronicMessage(message).b()).complete();
-                message = "";
+                message+="\ttext:"+c.text+" command:"+c.getCommand()+" isAutocompleted:"+c.isAutocompleted()+" date:"+getDDMMYYY(c.getDate())+"\n";
             }
         }
+        info.getChannel().sendFile(message.getBytes(),"Statistics.txt").complete();
     }
 
     public String getDDMMYYY(Long timestamp) {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.YYYY HH:mm");
-        Date fechaNueva = new Date(timestamp);
-        return format.format(fechaNueva);
+        Date date = new Date(timestamp);
+        return format.format(date);
     }
 
     @Override

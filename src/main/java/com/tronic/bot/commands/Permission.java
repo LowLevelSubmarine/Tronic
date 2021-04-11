@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public enum Permission {
 
-    HOST(3), CO_HOST(2), ADMIN(1), NONE(0),INTERN(1000);
+    HOST(3), CO_HOST(2), ADMIN(1), NONE(0),INTERN(Integer.MAX_VALUE);
 
     private final int level;
 
