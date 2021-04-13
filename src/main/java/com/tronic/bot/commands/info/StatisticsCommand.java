@@ -1,11 +1,15 @@
 package com.tronic.bot.commands.info;
 
+import com.lowlevelsubmarine.subsconsole.graphs.ListGraphRenderer;
+import com.lowlevelsubmarine.subsconsole.graphs.Vertex;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.stats.CommandStatisticsElement;
+import com.tronic.bot.stats.StatisticsGraphRenderer;
 import com.tronic.bot.stats.StatisticsHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -36,16 +40,19 @@ public class StatisticsCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        String message ="";
         HashMap<Long,ArrayList<CommandStatisticsElement>> a = StatisticsHandler.getStatisticsForUsers();
+        HashMap<String, Integer> commandAmount = new HashMap<>();
         for (Long l:a.keySet()) {
-            message += "Commands for User: "+info.getJDA().getUserById(l).getName()+"("+l+"):\n";
-            ArrayList<CommandStatisticsElement> ac = a.get(l);
-            for (CommandStatisticsElement c:ac) {
-                message+="\ttext:"+c.text+" command:"+c.getCommand()+" isAutocompleted:"+c.isAutocompleted()+" date:"+getDDMMYYY(c.getDate())+"\n";
+            for (CommandStatisticsElement cs: a.get(l)) {
+                commandAmount.put(cs.getCommand(),commandAmount.getOrDefault(cs.getCommand(),0)+1);
             }
         }
-        info.getChannel().sendFile(message.getBytes(),"Statistics.txt").complete();
+        int maxValue = commandAmount.values().stream().max(Comparator.comparingInt(Integer::intValue)).get();
+        StatisticsGraphRenderer<Integer> lg = new StatisticsGraphRenderer<>(40,maxValue+1);
+        for (String s:commandAmount.keySet()) {
+            lg.addVertex(new Vertex<>(s,commandAmount.get(s)));
+        }
+        info.getChannel().sendFile(lg.render().getBytes(),"Statistics.txt").submit();
     }
 
     public String getDDMMYYY(Long timestamp) {
