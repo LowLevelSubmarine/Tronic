@@ -123,6 +123,7 @@ public class CommandHandler {
         private final float commandInvokeProximity;
         private final CommandInfo commandInfo;
         private Message confirmCorrectionMessage;
+        private boolean isAutoCompleted;
 
         private CommandThread(CommandInvokeProximityComparable comparable, String rawArguments, MessageReceivedEvent event) {
             this.command = comparable.getCommand();
@@ -133,6 +134,7 @@ public class CommandHandler {
         @Override
         public void run() {
             if (this.commandInvokeProximity > 0.3F) {
+                this.isAutoCompleted = true;
                 checkAndRun();
             } else if (this.commandInvokeProximity > 0.05F) {
                 this.confirmCorrectionMessage = this.commandInfo.getChannel().sendMessage(
@@ -151,6 +153,7 @@ public class CommandHandler {
 
         private void onPressYes() {
             this.confirmCorrectionMessage.delete().queue();
+            this.isAutoCompleted = true;
             checkAndRun();
         }
 
@@ -181,8 +184,7 @@ public class CommandHandler {
             StatisticsHandler.storeCommandStatistics(new CommandStatisticsElement(
                     this.commandInfo.getEvent().getMessage().getContentRaw(),
                     this.command.invoke(),
-                    this.commandInfo.getAuthor().getId(),
-                    this.commandInvokeProximity < 1F
+                    this.isAutoCompleted
             ),this.commandInfo.getAuthor());
         }
 

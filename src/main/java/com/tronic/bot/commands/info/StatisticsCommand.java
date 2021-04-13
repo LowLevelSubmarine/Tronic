@@ -1,28 +1,21 @@
 package com.tronic.bot.commands.info;
 
+import com.lowlevelsubmarine.subsconsole.graphs.ListGraphRenderer;
+import com.lowlevelsubmarine.subsconsole.graphs.Vertex;
 import com.tronic.bot.commands.*;
-import com.tronic.bot.io.TronicMessage;
-import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.stats.CommandStatisticsElement;
+import com.tronic.bot.stats.StatisticsGraphRenderer;
 import com.tronic.bot.stats.StatisticsHandler;
-import com.tronic.bot.stats.StatisticsSerializer;
-import com.tronic.bot.tools.StatisticsTool;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.PrivateChannel;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.requests.RestAction;
 
-import javax.swing.*;
-import javax.swing.table.JTableHeader;
-import java.awt.*;
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 
-import static com.tronic.bot.tools.StatisticsTool.createTableJPanel;
 
 public class StatisticsCommand implements Command {
+
     @Override
     public String invoke() {
         return "statistics";
@@ -30,7 +23,9 @@ public class StatisticsCommand implements Command {
 
     @Override
     public Permission getPermission() {
-        return Permission.ADMIN;
+        //TODO: Should be CO_HOST but Set to Intern to Lock Command
+        return Permission.HOST;
+
     }
 
     @Override
@@ -45,8 +40,25 @@ public class StatisticsCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        Object l = StatisticsHandler.getAll(CommandStatisticsElement.class,info.getAuthor());
-        System.out.println(StatisticsHandler.getFirst(CommandStatisticsElement.class,info.getAuthor()));
+        HashMap<Long,ArrayList<CommandStatisticsElement>> a = StatisticsHandler.getStatisticsForUsers();
+        HashMap<String, Integer> commandAmount = new HashMap<>();
+        for (Long l:a.keySet()) {
+            for (CommandStatisticsElement cs: a.get(l)) {
+                commandAmount.put(cs.getCommand(),commandAmount.getOrDefault(cs.getCommand(),0)+1);
+            }
+        }
+        int maxValue = commandAmount.values().stream().max(Comparator.comparingInt(Integer::intValue)).get();
+        StatisticsGraphRenderer<Integer> lg = new StatisticsGraphRenderer<>(40,maxValue+1);
+        for (String s:commandAmount.keySet()) {
+            lg.addVertex(new Vertex<>(s,commandAmount.get(s)));
+        }
+        info.getChannel().sendFile(lg.render().getBytes(),"Statistics.txt").submit();
+    }
+
+    public String getDDMMYYY(Long timestamp) {
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        Date date = new Date(timestamp);
+        return format.format(date);
     }
 
     @Override

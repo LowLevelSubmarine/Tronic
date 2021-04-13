@@ -39,4 +39,5 @@ dependencies {
     implementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.3.72'
     implementation 'org.apache.logging.log4j:log4j-core:2.12.1'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
+    implementation 'com.github.LowLevelSubmarine:SubsConsole:0.0.1'
 }

@@ -7,6 +7,7 @@ import org.jsoup.SerializationException;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class StatisticsHandler {
 
@@ -20,7 +21,7 @@ public class StatisticsHandler {
             return;
         }
         try {
-            File file = new File(BASEUSERDIR+user.getIdLong()+"/statistics");
+            File file = new File(BASEUSERDIR+"/"+user.getIdLong()+"/statistics");
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }
@@ -34,10 +35,10 @@ public class StatisticsHandler {
     }
 
     @Nullable
-    public static <T> Object getFirst(Class<T> clazz,User user) {
+    public static <T> Object getFirst(Class<T> clazz,Long user) {
         StatisticsSerializer serializer = new StatisticsSerializer();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(BASEUSERDIR+user.getIdLong()+"/statistics"));
+            BufferedReader reader = new BufferedReader(new FileReader(BASEUSERDIR+"/"+user+"/statistics"));
             Object o = serializer.deserializeLine(reader.readLine(),clazz);
             while (o== null) {
                 o = serializer.deserializeLine(reader.readLine(),clazz);
@@ -51,10 +52,10 @@ public class StatisticsHandler {
     }
 
     @Nullable
-    public static <T>ArrayList<Object> getAll(Class<T> clazz,User user) {
+    public static <T>ArrayList<Object> getAll(Class<T> clazz,Long user) {
         StatisticsSerializer serializer = new StatisticsSerializer();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(BASEUSERDIR+user.getIdLong()+"/statistics"));
+            BufferedReader reader = new BufferedReader(new FileReader(BASEUSERDIR+"/"+user+"/statistics"));
             String line = reader.readLine();
             ArrayList<Object> all = new ArrayList<>();
             while (line!= null) {
@@ -69,5 +70,22 @@ public class StatisticsHandler {
             e.printStackTrace();
             return null;
         }
+    }
+
+    static public HashMap<Long,ArrayList<CommandStatisticsElement>> getStatisticsForUsers() {
+        HashMap<Long,ArrayList<CommandStatisticsElement>> map = new HashMap<>();
+        File dir = new File(BASEUSERDIR);
+        File[] files = dir.listFiles();
+        for (File file: files) {
+            if (file.isDirectory() && new File(file,"statistics").exists()) {
+                ArrayList<Object> o = getAll(CommandStatisticsElement.class,Long.parseLong(file.getName()));
+                ArrayList<CommandStatisticsElement> a = new ArrayList<>();
+                for (Object c: o) {
+                    a.add((CommandStatisticsElement) c);
+                }
+                map.put(Long.parseLong(file.getName()),a);
+            }
+        }
+        return map;
     }
 }
