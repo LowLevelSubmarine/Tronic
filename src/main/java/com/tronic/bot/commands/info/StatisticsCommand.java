@@ -23,8 +23,7 @@ public class StatisticsCommand implements Command {
 
     @Override
     public Permission getPermission() {
-        //TODO: Should be CO_HOST but Set to Intern to Lock Command
-        return Permission.HOST;
+        return Permission.CO_HOST;
 
     }
 
