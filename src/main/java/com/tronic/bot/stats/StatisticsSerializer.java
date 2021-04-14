@@ -19,7 +19,7 @@ public class StatisticsSerializer  {
             for (Field f:fields) {
                 f.setAccessible(true);
                 if (f.getType() == String.class) {
-                    serialize.append(f.getName()).append(":").append("\"").append(f.get(s).toString()).append("\"").append(";");
+                    serialize.append(f.getName()).append(":").append(f.get(s).toString()).append(";");
                 } else {
                     serialize.append(f.getName()).append(":").append(f.get(s).toString()).append(";");
                 }
