@@ -11,6 +11,7 @@ import com.tronic.bot.storage.GuildStorage;
 import java.util.NoSuchElementException;
 
 public class ShortcutCommand implements Command {
+
     @Override
     public String invoke() {
         return "shortcut";

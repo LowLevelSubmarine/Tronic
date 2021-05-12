@@ -138,13 +138,14 @@ public class Core {
     private void addCommands() {
         //Administration
         this.commandHandler.addCommand(new BroadcastCommand());
+        this.commandHandler.addCommand(new CoHosterCommand());
         this.commandHandler.addCommand(new RangeReportCommand());
         this.commandHandler.addCommand(new RestartCommand());
+        this.commandHandler.addCommand(new ServerInfoCommand());
+        this.commandHandler.addCommand(new ShortcutCommand());
         this.commandHandler.addCommand(new ShutdownCommand());
         this.commandHandler.addCommand(new SpeedTestCommand());
         this.commandHandler.addCommand(new UpdateCommand());
-        this.commandHandler.addCommand(new ShortcutCommand());
-        this.commandHandler.addCommand(new CoHosterCommand());
         //Fun
         this.commandHandler.addCommand(new DiceCommand());
         this.commandHandler.addCommand(new SayCommand());

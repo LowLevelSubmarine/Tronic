@@ -7,6 +7,7 @@ import com.tronic.bot.io.TronicMessage;
 import net.dv8tion.jda.api.entities.Member;
 
 public class CoHosterCommand implements Command {
+
     @Override
     public String invoke() {
         return "cohoster";

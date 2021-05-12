@@ -1,4 +1,4 @@
-package com.tronic.bot.commands.info;
+package com.tronic.bot.commands.administration;
 
 import com.tronic.bot.commands.*;
 import com.tronic.bot.io.TronicMessage;
@@ -31,7 +31,7 @@ public class SpeedTestCommand implements Command {
 
     @Override
     public Permission getPermission() {
-        return Permission.NONE;
+        return Permission.CO_HOST;
     }
 
     @Override

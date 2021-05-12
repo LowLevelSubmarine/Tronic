@@ -44,6 +44,7 @@ public class RestartCommand implements Command {
                     new Button(Emoji.X, this.messageChanger::delete, new UserButtonValidator(info)));
         }
     }
+
     private void onConfirm() {
         this.messageChanger.delete();
         this.info.getCore().restartTronic();

@@ -1,14 +1,10 @@
 package com.tronic.bot.commands;
 
 import com.tronic.bot.core.Core;
-import com.tronic.bot.core.Tronic;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.Objects;
 
 public enum Permission {
 
@@ -22,7 +18,7 @@ public enum Permission {
 
     @SuppressWarnings("DuplicateCondition")
     public boolean isValid (MessageReceivedEvent event, Core tronic) {
-        boolean isCoHost =tronic.getStorage().getStatic().isCoHoster(event.getAuthor());
+        boolean isCoHost = tronic.getStorage().getStatic().isCoHoster(event.getAuthor());
         boolean isHost = event.getAuthor().getId().equals(tronic.getHostToken());
         Member author = event.getGuild().getMember(event.getAuthor());
         boolean isAdmin = author != null && author.hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
@@ -35,7 +31,6 @@ public enum Permission {
         } else if (this.level ==NONE.level){
             return true;
         } else {
-
             return false;
         }
     }

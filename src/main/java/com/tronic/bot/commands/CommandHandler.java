@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.simmetrics.StringMetric;
 import org.simmetrics.metrics.Levenshtein;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -23,6 +24,7 @@ public class CommandHandler {
     private final Core core;
     private final LinkedList<Command> commands = new LinkedList<>();
     private ShortcutResolver shortcutResolver;
+
     public CommandHandler(Core core) {
         this.core = core;
         this.shortcutResolver = new ShortcutResolver(core);

@@ -1,4 +1,4 @@
-package com.tronic.bot.commands.info;
+package com.tronic.bot.commands.administration;
 
 import com.lowlevelsubmarine.subsconsole.graphs.ListGraphRenderer;
 import com.lowlevelsubmarine.subsconsole.graphs.Vertex;
@@ -24,7 +24,6 @@ public class StatisticsCommand implements Command {
     @Override
     public Permission getPermission() {
         return Permission.CO_HOST;
-
     }
 
     @Override
