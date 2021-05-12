@@ -3,7 +3,6 @@ package com.tronic.bot.stats;
 import com.tronic.bot.statics.Files;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.Nullable;
-import org.jsoup.SerializationException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class StatisticsHandler {
         StatisticsSerializer serializer = new StatisticsSerializer();
         String serialized = serializer.serialize(element);
         if (serialized == null) {
-            new SerializationException().printStackTrace();
+            new IOException().printStackTrace();
             return;
         }
         try {
