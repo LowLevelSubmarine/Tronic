@@ -13,10 +13,6 @@ import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.tools.MessageChanger;
 import net.dv8tion.jda.api.entities.Guild;
-import org.graalvm.compiler.graph.Graph;
-
-import java.nio.charset.StandardCharsets;
-import java.util.*;
 
 public class ServerInfoCommand implements Command {
 
@@ -109,7 +105,7 @@ public class ServerInfoCommand implements Command {
 
     @Override
     public HelpInfo getHelpInfo() {
-        return null;
+        return new HelpInfo("serverinfo", "Shows Info about servers", "serverinfo");
     }
 
 }
