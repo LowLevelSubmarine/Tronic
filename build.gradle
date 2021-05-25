@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.github.LowLevelSubmarine:Envelope:v0.1.5'
     implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
     implementation 'fr.bmartel:jspeedtest:1.32.1'
-    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.5.0'
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.5.10'
     implementation 'org.apache.logging.log4j:log4j-core:2.12.1'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
     implementation 'com.github.LowLevelSubmarine:SubsConsole:0.0.1'
