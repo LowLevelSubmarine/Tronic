@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import org.simmetrics.StringMetric;
 import org.simmetrics.metrics.Levenshtein;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 

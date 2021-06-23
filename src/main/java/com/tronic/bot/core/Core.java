@@ -12,6 +12,7 @@ import com.tronic.bot.commands.music.SearchCommand;
 import com.tronic.bot.commands.music.SkipCommand;
 import com.tronic.bot.commands.settings.*;
 import com.tronic.bot.hyperchannel.HyperchannelManager;
+import com.tronic.bot.interaction_commands.ICommandManager;
 import com.tronic.bot.listeners.*;
 import com.tronic.bot.music.MusicManager;
 import com.tronic.bot.questions.QuestionHandler;
@@ -30,10 +31,11 @@ public class Core {
 
     private final Tronic tronic;
     private final LinkedList<ShutdownHook> shutdownHooks = new LinkedList<>();
-    private final LinkedList<BootupHook> bootupHooks = new LinkedList<BootupHook>();
+    private final LinkedList<BootUpHook> bootUpHooks = new LinkedList<>();
     private final Listeners listeners = new Listeners();
     private final JDA jda;
     private final Storage storage = new Storage();
+    private final ICommandManager iCommandManager = new ICommandManager(this);
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler();
     private final MusicManager musicManager = new MusicManager(this);
@@ -51,9 +53,15 @@ public class Core {
         hyperchannelManager = new HyperchannelManager(this);
         this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
         System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!" + ColorisedSout.ANSI_RESET);
-        for (BootupHook hook : bootupHooks) {
-            hook.onBootup();
-        }
+        bootUpHooks.forEach(BootUpHook::onBootUp);
+    }
+
+    public void addBootUpHook(BootUpHook hook) {
+        this.bootUpHooks.add(hook);
+    }
+
+    public void removeBootUpHooks(BootUpHook hook) {
+        this.bootUpHooks.remove(hook);
     }
 
     public void addShutdownHook(ShutdownHook hook) {
@@ -98,6 +106,10 @@ public class Core {
 
     public Storage getStorage() {
         return this.storage;
+    }
+
+    public ICommandManager getICommandManager() {
+        return this.iCommandManager;
     }
 
     public CommandHandler getCommandHandler() {
@@ -198,8 +210,8 @@ public class Core {
         void onShutdown(boolean restart);
     }
 
-    public interface BootupHook {
-        void onBootup();
+    public interface BootUpHook {
+        void onBootUp();
     }
 
 }

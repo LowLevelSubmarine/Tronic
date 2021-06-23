@@ -1324,6 +1324,10 @@ public enum Emoji {
         return codePoints;
     }
 
+    public net.dv8tion.jda.api.entities.Emoji getJDAEmoji() {
+        return net.dv8tion.jda.api.entities.Emoji.fromUnicode(getUtf8());
+    }
+
     public String getUtf8() {
         return utf8;
     }
