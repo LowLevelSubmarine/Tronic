@@ -25,6 +25,10 @@ public interface ICommand {
             this.core = core;
         }
 
+        public IButtonManager getIButtonManager() {
+            return this.core.getICommandManager().getIButtonManager();
+        }
+
         public TrackProvider getTrackProvider() {
             return this.core.getMusicManager().getTrackProvider();
         }

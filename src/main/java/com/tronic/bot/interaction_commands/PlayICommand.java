@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 public class PlayICommand implements ICommand {
 
     private static final OptionData OPTION_SEARCH_QUERY =
-            new OptionData(OptionType.STRING, "search-query", "A song name, an artist or a video title");
+            new OptionData(OptionType.STRING, "search_query", "A song name, an artist or a video title", true);
 
     @Override
     public String getName() {
