@@ -163,9 +163,10 @@ public class Core {
         this.commandHandler.addCommand(new SearchCommand());
         this.commandHandler.addCommand(new SkipCommand());
         //Settings
-        this.commandHandler.addCommand(new SetPrefixCommand());
-        this.commandHandler.addCommand(new HyperchannelCommand());
         this.commandHandler.addCommand(new BotVolumeCommand());
+        this.commandHandler.addCommand(new HyperchannelCommand());
+        this.commandHandler.addCommand(new SetBroadcastsCommand());
+        this.commandHandler.addCommand(new SetPrefixCommand());
     }
 
     public class Listeners {

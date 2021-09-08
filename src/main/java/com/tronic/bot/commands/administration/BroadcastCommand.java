@@ -3,9 +3,13 @@ package com.tronic.bot.commands.administration;
 import com.tronic.arguments.InvalidArgumentException;
 import com.tronic.arguments.TextArgument;
 import com.tronic.bot.buttons.Button;
+import com.tronic.bot.buttons.PermissionButtonValidator;
+import com.tronic.bot.buttons.UserButtonValidator;
 import com.tronic.bot.commands.*;
+import com.tronic.bot.commands.settings.SetBroadcastsCommand;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
+import com.tronic.bot.tools.Markdown;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -44,10 +48,12 @@ public class BroadcastCommand implements Command {
         this.info = info;
         try {
             String text = info.getArguments().parse(new TextArgument()).getOrThrowException();
-            this.draft = new TronicMessage(Emoji.WARNING.getUtf8() + "  " + info.getAuthor().getAsTag(), text).b();
-            this.message = info.getChannel().sendMessage(this.draft).complete();
-            Button confirmButton = new Button(Emoji.WHITE_CHECK_MARK, this::onConfirm);
-            Button discardButton = new Button(Emoji.X, this::onDiscard);
+            TronicMessage tronicMessage = new TronicMessage(Emoji.WARNING.getUtf8() + "  " + info.getAuthor().getAsTag(), text);
+            tronicMessage.setFooter("Disable broadcasts with " + Emoji.NO_BELL);
+            this.draft = tronicMessage.b();
+            this.message = info.getChannel().sendMessageEmbeds(this.draft).complete();
+            Button confirmButton = new Button(Emoji.WHITE_CHECK_MARK, this::onConfirm, new UserButtonValidator(info.getAuthor()));
+            Button discardButton = new Button(Emoji.X, this::onDiscard, new UserButtonValidator(info.getAuthor()));
             info.getButtonHandler().register(confirmButton, this.message).queue();
             info.getButtonHandler().register(discardButton, this.message).queue();
         } catch (InvalidArgumentException e) {
@@ -56,7 +62,7 @@ public class BroadcastCommand implements Command {
     }
 
     private void onConfirm() {
-        this.message.clearReactions().queue();
+        this.message.delete().queue();
         broadcast();
     }
 
@@ -71,12 +77,24 @@ public class BroadcastCommand implements Command {
 
     private void broadcast() {
         LinkedList<Guild> guilds = new LinkedList<>(this.info.getJDA().getGuilds());
-        guilds.remove(this.info.getGuild());
+        SetBroadcastsCommand broadcastCommand = new SetBroadcastsCommand();
         for (Guild guild : guilds) {
-            TextChannel channel = guild.getDefaultChannel();
-            if (channel != null) {
-                guild.getDefaultChannel().sendMessage(this.draft).queue();
-            }
+            new Thread(() -> {
+                TextChannel channel = guild.getDefaultChannel();
+                if (channel != null && !this.info.getGuildStorage(guild).getBroadcastMuted()) {
+                    Button muteButton = new Button(Emoji.NO_BELL, () -> {
+                        this.info.getGuildStorage(guild).setBroadcastMuted(true);
+                        channel.sendMessageEmbeds(new TronicMessage(
+                                Emoji.WHITE_CHECK_MARK + " Muted broadcast.",
+                                "Revert this change with "
+                                        + Markdown.codeblock(info.getGuildStorage(guild).getPrefix() + broadcastCommand.invoke())
+                                        + "."
+                        ).b()).complete();
+                    }, new PermissionButtonValidator(info.getCore(), broadcastCommand.getPermission()));
+                    Message message = guild.getDefaultChannel().sendMessageEmbeds(this.draft).complete();
+                    info.getButtonHandler().register(muteButton, message).complete();
+                }
+            }).start();
         }
     }
 

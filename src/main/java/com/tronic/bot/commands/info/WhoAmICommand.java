@@ -27,7 +27,7 @@ public class WhoAmICommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        info.getChannel().sendMessage(new TronicMessage(info.getAuthor().getAsMention()+" you have the role "+Permission.getUserPermission(info.getAuthor(),info.getGuild(),info.getCore())).b()).queue();
+        info.getChannel().sendMessage(new TronicMessage(info.getAuthor().getAsMention()+" you have the role "+Permission.getPermission(info.getAuthor(),info.getGuild(),info.getCore())).b()).queue();
     }
 
     @Override

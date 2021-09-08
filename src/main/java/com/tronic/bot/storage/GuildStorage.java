@@ -11,40 +11,43 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class GuildStorage extends StorageElement {
+
     GuildStorage(Shelf shelf) {
         super(shelf);
     }
 
-    //PREFIX
+    //MUTED BROADCAST
+    public void setBroadcastMuted(Boolean broadcastMuted) {
+        super.set("broadcast_muted", broadcastMuted);
+    }
+    public boolean getBroadcastMuted() {
+        Boolean broadcastMuted = (Boolean) super.get("broadcast_muted", Boolean.class);
+        return broadcastMuted != null? broadcastMuted : false;
+    }
 
+    //PREFIX
     public String getPrefix() {
         String prefix = (String) super.get("prefix",String.class);
         return  prefix!=null ? prefix : Presets.PREFIX;
     }
-
     public void setPrefix(String prefix) {
         super.set("prefix",prefix);
     }
 
     //HYPERCHANNELL
-
     public String getNewChannel() {
         return (String) super.get("hyperchannel", String.class);
     }
-
     public void setNewChannel(String channel) {
         super.set("hyperchannel", channel);
     }
-
     public String getHyperName() {
         String name = (String) super.get("hypername",String.class);
         return  name != null ? name : Presets.NEW_CHANNEL;
     }
-
     public void setHyperName(String hyperName) {
         super.set("hypername",hyperName);
     }
-
     public boolean getHyperchannelState() {
         try {
             boolean state = (boolean) super.get("hyperstate",boolean.class);
@@ -53,7 +56,6 @@ public class GuildStorage extends StorageElement {
             return false;
         }
     }
-
     public void setHyperchannelState(boolean state) {
         super.set("hyperstate", state);
     }
@@ -87,7 +89,6 @@ public class GuildStorage extends StorageElement {
     }
 
     // SHORTCUTS
-
     public LinkedList<ShortcutElement> getShortcuts() {
         LinkedList<ShortcutElement> ll = new LinkedList<>();
         List<Object> list = super.getList("shortcuts",ShortcutElement.class);
@@ -98,7 +99,6 @@ public class GuildStorage extends StorageElement {
         }
         return ll;
     }
-
     public void addShortcut(ShortcutElement shortcut) throws ObjectExistsException{
         LinkedList<ShortcutElement> shortcuts = getShortcuts();
         if (containsShortcutName(shortcuts,shortcut.getName())) {
@@ -123,9 +123,8 @@ public class GuildStorage extends StorageElement {
     }
 
     private void setShortcuts(List<ShortcutElement> s) {
-        super.set("shortcuts",s);
+        super.set("shortcuts", s);
     }
-
     private boolean containsShortcutName(List<ShortcutElement> shortcuts, String name) {
         boolean in = false;
         for (ShortcutElement s: shortcuts) {

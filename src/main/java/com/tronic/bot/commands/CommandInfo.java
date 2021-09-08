@@ -40,8 +40,16 @@ public class CommandInfo {
         return this.core.getStorage().getStatic();
     }
 
+    public GuildStorage getGuildStorage() {
+        return getGuildStorage(this.getGuild());
+    }
+
     public GuildStorage getGuildStorage(Guild guild) {
         return this.core.getStorage().getGuild(guild);
+    }
+
+    public UserStorage getUserStorage() {
+        return getUserStorage(this.getAuthor());
     }
 
     public UserStorage getUserStorage(User user) {

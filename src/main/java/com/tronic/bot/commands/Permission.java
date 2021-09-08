@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public enum Permission {
 
-    HOST(3), CO_HOST(2), ADMIN(1), NONE(0),INTERN(Integer.MAX_VALUE);
+    HOST(3), CO_HOST(2), ADMIN(1), NONE(0), INTERN(Integer.MAX_VALUE);
 
     private final int level;
 
@@ -16,29 +16,19 @@ public enum Permission {
         this.level = level;
     }
 
-    @SuppressWarnings("DuplicateCondition")
-    public boolean isValid (MessageReceivedEvent event, Core tronic) {
-        boolean isCoHost = tronic.getStorage().getStatic().isCoHoster(event.getAuthor());
-        boolean isHost = event.getAuthor().getId().equals(tronic.getHostToken());
-        Member author = event.getGuild().getMember(event.getAuthor());
-        boolean isAdmin = author != null && author.hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
-        if (this.level == HOST.level) {
-            return isHost;
-        } else if (this.level == CO_HOST.level) {
-            return isCoHost ||isHost;
-        } else if (this.level == ADMIN.level) {
-            return isCoHost || isAdmin;
-        } else if (this.level ==NONE.level){
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isValid(MessageReceivedEvent event, Core core) {
+        return isValid(event.getAuthor(), event.getGuild(), core);
     }
-    public static Permission getUserPermission(User user,Guild guild, Core core) {
-        boolean isCoHost =core.getStorage().getStatic().isCoHoster(user);
+
+    public boolean isValid(User user, Guild guild, Core core) {
+        return this.getLevel() <= getPermission(user, guild, core).getLevel();
+    }
+
+    public static Permission getPermission(User user, Guild guild, Core core) {
+        boolean isCoHost = core.getStorage().getStatic().isCoHoster(user);
         boolean isHost = user.getId().equals(core.getHostToken());
-        Member author = guild.getMember(user);
-        boolean isAdmin = author != null && author.hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
+        Member member = guild.getMember(user);
+        boolean isAdmin = member != null && member.hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR);
         if (isHost) {
             return HOST;
         } else if (isCoHost) {
@@ -52,12 +42,6 @@ public enum Permission {
 
     public int getLevel() {
         return this.level;
-    }
-
-    public void calcLevel(User user, Guild guild) {
-        if (user == null) {
-            return;
-        }
     }
 
 }
