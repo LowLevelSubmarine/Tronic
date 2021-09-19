@@ -7,6 +7,7 @@ import com.tronic.bot.music.sources.Track;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.Playlist;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import org.apache.hc.core5.http.ParseException;
 
@@ -74,7 +75,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
 
     private QueueItem queueItemFromPlaylistId(String id, int maxTracks) {
         try {
-            String name = this.api.getPlaylist(id).build().execute().getName();
+            Playlist playlist = this.api.getPlaylist(id).build().execute();
             Paging<PlaylistTrack> paging = this.api.getPlaylistsItems(id).limit(100).build().execute();
             List<PlaylistTrack> playlistTracks = new LinkedList<>();
             while (paging != null) {
@@ -94,7 +95,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
                 QueueItem queueItem = queueItemFromTrackId(playlistTrack.getTrack().getId());
                 if (queueItem != null) tracks.add(queueItem.nextTrack());
             }
-            return new PlaylistQueueItem(name, tracks);
+            return new PlaylistQueueItem(playlist.getName(), "https://open.spotify.com/playlist/" + playlist.getId(), tracks);
         } catch (Exception e) {
             LOGGER.info("Failed creating queue item from spotify playlist id " + id + "\n" + e);
             return null;

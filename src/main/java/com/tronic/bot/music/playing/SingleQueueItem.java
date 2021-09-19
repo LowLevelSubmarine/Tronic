@@ -42,6 +42,11 @@ public class SingleQueueItem implements QueueItem {
     }
 
     @Override
+    public Track getNextPossibleTrack() {
+        return this.track;
+    }
+
+    @Override
     public boolean hasNextTrack() {
         return !this.played;
     }

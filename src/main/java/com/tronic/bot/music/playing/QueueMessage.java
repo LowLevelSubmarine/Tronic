@@ -107,7 +107,8 @@ public class QueueMessage implements Player.EventListener {
         if (showOwner) {
             content += this.owner.getAsMention() + ": ";
         }
-        content += Markdown.uri(this.queueItem.getName(), this.queueItem.getUrl());
+        if (this.queueItem.isMultiTrack()) content += Markdown.uri(this.queueItem.getName(), this.queueItem.getUrl()) + ": ";
+        content += Markdown.uri(this.queueItem.getNextPossibleTrack().getDisplayName(), this.queueItem.getNextPossibleTrack().getUrl());
         this.messageChanger.change(new TronicMessage(content).b(), buttons);
     }
 

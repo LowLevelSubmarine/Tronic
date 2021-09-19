@@ -140,6 +140,14 @@ public class QueueList<T> {
         return this.content.contains(t);
     }
 
+    public T getFirst() {
+        return this.content.getFirst();
+    }
+
+    public T getLast() {
+        return this.content.getLast();
+    }
+
     private boolean isPosAffected(int pos) {
         return pos <= this.pos;
     }

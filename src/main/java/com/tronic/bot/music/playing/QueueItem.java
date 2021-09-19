@@ -1,7 +1,6 @@
 package com.tronic.bot.music.playing;
 
 import com.tronic.bot.music.sources.Track;
-import net.dv8tion.jda.api.entities.Member;
 
 public interface QueueItem {
 
@@ -10,6 +9,7 @@ public interface QueueItem {
     String getUrl();
     boolean isMultiTrack();
     Track getCurrentTrack();
+    Track getNextPossibleTrack();
     boolean hasNextTrack();
     Track nextTrack();
 

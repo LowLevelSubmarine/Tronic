@@ -55,7 +55,7 @@ public class LavaPlayerTrackProvider implements UrlTrackProvider {
         @Override
         public void playlistLoaded(AudioPlaylist playlist) {
             List<Track> tracks = playlist.getTracks().stream().map(LavaPlayerTrack::new).collect(Collectors.toList());
-            this.queueItem = new PlaylistQueueItem(playlist.getName(), tracks);
+            this.queueItem = new PlaylistQueueItem(playlist.getName(), "", tracks);
         }
 
         @Override
