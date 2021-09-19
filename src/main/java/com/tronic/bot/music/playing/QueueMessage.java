@@ -5,10 +5,12 @@ import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.tools.Markdown;
 import com.tronic.bot.tools.MessageChanger;
+import net.dv8tion.jda.api.entities.Member;
 
 public class QueueMessage implements Player.EventListener {
 
     private final QueueItem queueItem;
+    private final Member owner;
     private final Player player;
     private final MessageChanger messageChanger;
     private final Button deleteButton = new Button(Emoji.X, this::onDelete);
@@ -17,12 +19,17 @@ public class QueueMessage implements Player.EventListener {
     private final Button skipButton = new Button(Emoji.FAST_FORWARD, this::onSkip);
     private final Button skipPlaylistButton = new Button(Emoji.ARROW_DOUBLE_DOWN, this::onPlaylistSkip);
 
-    public QueueMessage(QueueItem queueItem, Player player) {
+    public QueueMessage(QueueItem queueItem, Member owner, Player player) {
         this.queueItem = queueItem;
+        this.owner = owner;
         this.player = player;
         this.messageChanger = new MessageChanger(player.getCore(), player.getChannel());
         setQueued();
         this.player.addEventListener(this);
+    }
+
+    public Member getOwner() {
+        return this.owner;
     }
 
     @Override
@@ -65,6 +72,12 @@ public class QueueMessage implements Player.EventListener {
         }
     }
 
+    @Override
+    public QueueMessage registerSelf(QueueItem queueItem) {
+        if (queueItem.equals(this.queueItem)) return this;
+        return null;
+    }
+
     public void setQueued() {
         changeMessage(Emoji.ARROW_HEADING_DOWN, true, this.deleteButton);
     }
@@ -92,7 +105,7 @@ public class QueueMessage implements Player.EventListener {
     private void changeMessage(Emoji emoji, boolean showOwner, Button... buttons) {
         String content = emoji.getUtf8() + "  | ";
         if (showOwner) {
-            content += queueItem.getOwner().getAsMention() + ": ";
+            content += this.owner.getAsMention() + ": ";
         }
         content += Markdown.uri(this.queueItem.getName(), this.queueItem.getUrl());
         this.messageChanger.change(new TronicMessage(content).b(), buttons);

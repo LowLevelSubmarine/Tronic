@@ -72,8 +72,32 @@ public class ReleaseConfig implements ConfigProvider {
     public String getHost() {
         try {
             FileReader fr = new FileReader(CONF_FILE);
-            BotConfig bc = gson.fromJson(fr,BotConfig.class);
+            BotConfig bc = gson.fromJson(fr, BotConfig.class);
             return bc.getHost();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public String getSpotifyClientId() {
+        try {
+            FileReader fr = new FileReader(CONF_FILE);
+            BotConfig bc = gson.fromJson(fr, BotConfig.class);
+            return bc.getSpotifyClientId();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public String getSpotifyClientSecret() {
+        try {
+            FileReader fr = new FileReader(CONF_FILE);
+            BotConfig bc = gson.fromJson(fr, BotConfig.class);
+            return bc.getSpotifyClientSecret();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;

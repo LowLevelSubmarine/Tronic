@@ -36,7 +36,7 @@ public class Core {
     private final Storage storage = new Storage();
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler();
-    private final MusicManager musicManager = new MusicManager(this);
+    private final MusicManager musicManager;
     private final QuestionHandler questionHandler = new QuestionHandler(this);
     private final HyperchannelManager hyperchannelManager;
     private final String hostToken;
@@ -48,7 +48,8 @@ public class Core {
         this.jda = buildJDA(tronic.getConfigProvider().getToken());
         this.jda.awaitReady();
         addCommands();
-        hyperchannelManager = new HyperchannelManager(this);
+        this.musicManager = new MusicManager(this);
+        this.hyperchannelManager = new HyperchannelManager(this);
         this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
         System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!" + ColorisedSout.ANSI_RESET);
         for (BootupHook hook : bootupHooks) {

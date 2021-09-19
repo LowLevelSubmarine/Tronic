@@ -1,10 +1,11 @@
 package com.tronic.bot.tools;
 
-import com.google.gson.annotations.SerializedName;
-
 public class BotConfig {
+
     private String token;
     private String host;
+    private String spotifyClientId;
+    private String spotifyClientSecret;
     private boolean activateApi = false;
     private boolean isOriginal = false;
 
@@ -28,6 +29,14 @@ public class BotConfig {
         return activateApi;
     }
 
+    public String getSpotifyClientId() {
+        return this.spotifyClientId;
+    }
+
+    public String getSpotifyClientSecret() {
+        return this.spotifyClientSecret;
+    }
+
     public void setActivateApi(boolean activateApi) {
         this.activateApi = activateApi;
     }
@@ -39,4 +48,5 @@ public class BotConfig {
     public void setOriginal(boolean activateApi) {
         this.isOriginal = activateApi;
     }
+
 }

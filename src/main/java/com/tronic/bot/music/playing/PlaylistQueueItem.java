@@ -1,22 +1,22 @@
 package com.tronic.bot.music.playing;
 
+import com.tronic.bot.music.sources.CachedTrack;
 import com.tronic.bot.music.sources.Track;
-import net.dv8tion.jda.api.entities.Member;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class PlaylistQueueItem implements QueueItem {
 
     private final String name;
     private final String id = "playlist #" + new Random().nextInt();
-    private final QueueList<Track> tracks;
-    private final Member owner;
+    private final QueueList<CachedTrack> tracks;
 
-    public PlaylistQueueItem(String name, Member owner, Collection<Track> tracks) {
+    public PlaylistQueueItem(String name, List<Track> tracks) {
         this.name = name;
-        this.owner = owner;
-        this.tracks = new QueueList<>(tracks);
+        List<CachedTrack> cachedTracks = tracks.stream().map(CachedTrack::new).collect(Collectors.toList());
+        this.tracks = new QueueList<>(cachedTracks);
     }
 
     @Override
@@ -32,11 +32,6 @@ public class PlaylistQueueItem implements QueueItem {
     @Override
     public String getUrl() {
         return this.tracks.get(0).getUrl();
-    }
-
-    @Override
-    public Member getOwner() {
-        return this.owner;
     }
 
     @Override

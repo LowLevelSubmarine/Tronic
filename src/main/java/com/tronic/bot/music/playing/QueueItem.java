@@ -8,7 +8,6 @@ public interface QueueItem {
     String getId();
     String getName();
     String getUrl();
-    Member getOwner();
     boolean isMultiTrack();
     Track getCurrentTrack();
     boolean hasNextTrack();
