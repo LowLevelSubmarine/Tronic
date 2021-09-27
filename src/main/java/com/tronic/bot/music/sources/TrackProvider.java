@@ -13,14 +13,13 @@ public class TrackProvider {
 
 
     public YouTubeTrackProvider.YouTubeTrack magnetSearch(String query) {
-        Song result = this.ytma.search(query).getSongs().get(0);
+        Song result = this.ytma.songPager(query).getResults().get(0);
         String displayName = result.getAuthor() + " / " + result.getTitle();
         return this.youTubeTrackProvider.getTrack(displayName, result);
     }
 
     public LinkedList<YouTubeTrackProvider.YouTubeTrack> listSearch(String query) {
-        MediaTypeSearchRequest<Song> searchRequest = this.ytma.search(query).getSongPager();
-        searchRequest.fetchNext();
+        MediaTypeSearchRequest<Song> searchRequest = this.ytma.songPager(query);
         LinkedList<YouTubeTrackProvider.YouTubeTrack> youTubeTracks = new LinkedList<>();
         for (Song song : searchRequest.getResults()) {
             String displayName = song.getAuthor() + " / " + song.getTitle();
