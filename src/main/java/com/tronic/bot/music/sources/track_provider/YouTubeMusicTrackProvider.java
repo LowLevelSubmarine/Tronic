@@ -6,7 +6,6 @@ import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
-import com.tronic.bot.music.playing.QueueItem;
 import com.tronic.bot.music.playing.SingleQueueItem;
 import com.tronic.bot.music.sources.Track;
 import com.tronic.bot.tools.CollectionUtils;

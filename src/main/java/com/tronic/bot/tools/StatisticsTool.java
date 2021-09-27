@@ -3,7 +3,6 @@ package com.tronic.bot.tools;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
