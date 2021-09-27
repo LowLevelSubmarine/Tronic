@@ -1,20 +1,18 @@
 package com.tronic.bot.music.playing;
 
+import com.tronic.bot.music.sources.CachedTrack;
 import com.tronic.bot.music.sources.Track;
-import net.dv8tion.jda.api.entities.Member;
 
 import java.util.Random;
 
 public class SingleQueueItem implements QueueItem {
 
     private final String id;
-    private final Track track;
-    private final Member owner;
+    private final CachedTrack track;
     private boolean played = false;
 
-    public SingleQueueItem(Track track, Member owner) {
-        this.track = track;
-        this.owner = owner;
+    public SingleQueueItem(Track track) {
+        this.track = new CachedTrack(track);
         this.id = track.getUrl() + new Random().nextInt();
     }
 
@@ -34,11 +32,6 @@ public class SingleQueueItem implements QueueItem {
     }
 
     @Override
-    public Member getOwner() {
-        return this.owner;
-    }
-
-    @Override
     public boolean isMultiTrack() {
         return false;
     }
@@ -46,6 +39,11 @@ public class SingleQueueItem implements QueueItem {
     @Override
     public Track getCurrentTrack() {
         return this.played? this.track : null;
+    }
+
+    @Override
+    public Track getNextPossibleTrack() {
+        return this.track;
     }
 
     @Override

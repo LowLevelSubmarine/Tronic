@@ -6,6 +6,10 @@ public interface Track {
 
     String getDisplayName();
     String getUrl();
-    AudioTrack getAudio();
+    AudioTrack getAudioTrack();
+
+    static String defaultDisplayName(String author, String title) {
+        return author + " / " + title;
+    }
 
 }
