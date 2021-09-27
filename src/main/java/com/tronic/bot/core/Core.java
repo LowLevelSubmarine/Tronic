@@ -51,7 +51,7 @@ public class Core {
         this.musicManager = new MusicManager(this);
         this.hyperchannelManager = new HyperchannelManager(this);
         this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
-        System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!" + ColorisedSout.ANSI_RESET);
+        System.out.println(ColorisedSout.ANSI_GREEN + "Bot started!" + ColorisedSout.ANSI_RESET);
         for (BootupHook hook : bootupHooks) {
             hook.onBootup();
         }
@@ -179,8 +179,9 @@ public class Core {
         public final LeaveListener leave = new LeaveListener(Core.this);
         public final MessageLoggerListener messageLogger = new MessageLoggerListener(Core.this);
         public final MoveListener move = new MoveListener(Core.this);
-        public final ReadyListener ready = new ReadyListener(Core.this);
         public final QuestionListener question = new QuestionListener(Core.this);
+        public final QueueItemListener queueItem = new QueueItemListener(Core.this);
+        public final ReadyListener ready = new ReadyListener(Core.this);
 
         public void attachToBuilder(JDABuilder builder) {
             builder.addEventListeners(this.button);
@@ -190,8 +191,9 @@ public class Core {
             builder.addEventListeners(this.leave);
             builder.addEventListeners(this.messageLogger);
             builder.addEventListeners(this.move);
-            builder.addEventListeners(this.ready);
             builder.addEventListeners(this.question);
+            builder.addEventListeners(this.queueItem);
+            builder.addEventListeners(this.ready);
         }
 
     }
