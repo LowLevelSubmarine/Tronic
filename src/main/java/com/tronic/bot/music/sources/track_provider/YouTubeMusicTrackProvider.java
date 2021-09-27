@@ -22,7 +22,7 @@ public class YouTubeMusicTrackProvider implements SearchTrackProvider {
 
     @Override
     public SingleQueueItem fromSingleSearch(String query) {
-        Song song = this.ytma.search(query).getSongPager().fetchNext().get(0);
+        Song song = this.ytma.songPager(query).getResults().get(0);
         if (song != null) {
             Track track = new YouTubeMusicTrack(song);
             return new SingleQueueItem(track);
@@ -32,7 +32,7 @@ public class YouTubeMusicTrackProvider implements SearchTrackProvider {
 
     @Override
     public List<SingleQueueItem> fromMultiSearch(String query, int maxResults) {
-        List<Song> songs = this.ytma.search(query).getSongPager().fetchNext();
+        List<Song> songs = this.ytma.songPager(query).getResults();
         songs = CollectionUtils.trim(songs, maxResults);
         return songs.stream().map((song) -> new SingleQueueItem(new YouTubeMusicTrack(song))).collect(Collectors.toList());
     }
