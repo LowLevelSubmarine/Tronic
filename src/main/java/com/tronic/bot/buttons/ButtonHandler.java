@@ -23,6 +23,14 @@ public class ButtonHandler {
         return message.addReaction(button.getEmoji().getUtf8());
     }
 
+    public void unregister(Button button, Message message) {
+        unregister(button, message.getId());
+    }
+
+    public void unregister(Button button, String messageId) {
+        this.buttons.remove(new ButtonKey(button, messageId));
+    }
+
     public void register(Button button, String messageId) {
         this.buttons.put(new ButtonKey(button, messageId), button);
     }

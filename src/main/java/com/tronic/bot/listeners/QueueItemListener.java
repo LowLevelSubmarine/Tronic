@@ -19,12 +19,35 @@ public class QueueItemListener extends Listener {
         if (!event.getMessage().getContentRaw().startsWith("http")) return;
         QueueItem queueItem = getCore().getMusicManager().getTrackProvider().fromUrl(event.getMessage().getContentRaw());
         if (queueItem != null) {
-            Button queueButton = new Button(Emoji.ARROW_HEADING_DOWN, () -> {
-                getCore().getMusicManager().getPlayer(event.getGuild()).addToQueue(queueItem, event.getMember());
-                event.getMessage().delete().complete();
-            });
+            OnPressListener onPressListener = new OnPressListener(event, queueItem);
+            Button queueButton = new Button(Emoji.ARROW_HEADING_DOWN, onPressListener);
+            onPressListener.init(queueButton);
             getCore().getButtonHandler().register(queueButton, event.getMessage()).complete();
         }
+    }
+
+    private class OnPressListener implements Button.PressListener {
+
+        private final GuildMessageReceivedEvent event;
+        private final QueueItem queueItem;
+        private Button button;
+
+        public OnPressListener(GuildMessageReceivedEvent event, QueueItem queueItem) {
+            this.event = event;
+            this.queueItem = queueItem;
+        }
+
+        public void init(Button button) {
+            this.button = button;
+        }
+
+        @Override
+        public void onPress() {
+            getCore().getButtonHandler().unregister(this.button, this.event.getMessage());
+            getCore().getMusicManager().getPlayer(this.event.getGuild()).addToQueue(queueItem, this.event.getMember());
+            this.event.getMessage().delete().complete();
+        }
+
     }
 
 }
