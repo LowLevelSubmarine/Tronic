@@ -13,9 +13,13 @@ public class TrackProvider {
 
 
     public YouTubeTrackProvider.YouTubeTrack magnetSearch(String query) {
-        Song result = this.ytma.songPager(query).getResults().get(0);
-        String displayName = result.getAuthor() + " / " + result.getTitle();
-        return this.youTubeTrackProvider.getTrack(displayName, result);
+        try {
+            Song result = this.ytma.songPager(query).getResults().get(0);
+            String displayName = result.getAuthor() + " / " + result.getTitle();
+            return this.youTubeTrackProvider.getTrack(displayName, result);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     public LinkedList<YouTubeTrackProvider.YouTubeTrack> listSearch(String query) {
