@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Random;
 
 public class HyperchannelManager {
-    private Core tronic;
-    private LinkedList<String> hyperIds = new LinkedList<>();
+    private final Core tronic;
+    private final LinkedList<String> hyperIds = new LinkedList<>();
     private final static String CHANNEL_NAME = "Hyper Channel";
 
     public HyperchannelManager(Core tronic) {

@@ -1,6 +1,7 @@
 package com.tronic.bot.tools;
 
 public class ColorisedSout {
+
         public static final String ANSI_RESET  = "\u001B[0m";
 
         public static final String ANSI_BLACK  = "\u001B[30m";
@@ -37,4 +38,5 @@ public class ColorisedSout {
         public static final String ANSI_BRIGHT_BG_PURPLE = "\u001B[105m";
         public static final String ANSI_BRIGHT_BG_CYAN   = "\u001B[106m";
         public static final String ANSI_BRIGHT_BG_WHITE  = "\u001B[107m";
+
 }

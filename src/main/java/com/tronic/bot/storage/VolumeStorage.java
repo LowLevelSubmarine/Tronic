@@ -1,7 +1,6 @@
 package com.tronic.bot.storage;
 
 import com.toddway.shelf.Shelf;
-import com.tronic.bot.core.Core;
 
 import java.util.ArrayList;
 import java.util.List;

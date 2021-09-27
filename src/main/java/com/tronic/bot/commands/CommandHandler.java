@@ -23,7 +23,7 @@ public class CommandHandler {
 
     private final Core core;
     private final LinkedList<Command> commands = new LinkedList<>();
-    private ShortcutResolver shortcutResolver;
+    private final ShortcutResolver shortcutResolver;
 
     public CommandHandler(Core core) {
         this.core = core;

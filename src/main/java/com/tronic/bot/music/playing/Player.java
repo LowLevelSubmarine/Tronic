@@ -98,7 +98,9 @@ public class Player extends AudioEventAdapter {
             this.audioPlayer.playTrack(this.queue.getCurrent().nextTrack().getAudioTrack());
             sendQueueItemChanged(this.queue.getPreviousNullable(), this.queue.getCurrent(), skip);
             QueueMessage message = sendRegisterSelf(this.queue.getCurrent());
-            if (message != null) ensureConnection(message.getOwner());
+            if (message != null) {
+                ensureConnection(message.getOwner());
+            }
             return true;
         } else {
             this.audioPlayer.stopTrack();
@@ -126,8 +128,8 @@ public class Player extends AudioEventAdapter {
             GuildVoiceState voiceState = target.getVoiceState();
             if (voiceState != null && voiceState.inVoiceChannel()) {
                 this.guild.getAudioManager().openAudioConnection(voiceState.getChannel());
-                return true;
             }
+            return true;
         }
         return false;
     }

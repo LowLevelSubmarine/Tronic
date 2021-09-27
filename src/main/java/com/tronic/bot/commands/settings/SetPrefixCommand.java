@@ -59,7 +59,7 @@ public class SetPrefixCommand implements Command {
         this.info.getGuildStorage(this.info.getGuild()).setPrefix(newPrefix);
         this.messageChanger.change(new TronicMessage(
                 "PREFIX",
-                "Changed prefix from \'" + this.oldPrefix + "\' to \'" + this.newPrefix + "\'"
+                "Changed prefix from '" + this.oldPrefix + "' to '" + this.newPrefix + "'"
         ).b());
     }
 
