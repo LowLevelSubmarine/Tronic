@@ -20,4 +20,4 @@ The planets dopest Discord Bot
 5.  Have fun & enjoy!
 
 ### Activate Tronics Rest API
-Simply add ```"activateApi": true``` to the tronic.conf file
+Simply add ```"activateApi": true``` to the config.json file
