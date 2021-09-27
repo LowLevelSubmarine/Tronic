@@ -1,6 +1,5 @@
 package com.tronic.bot.commands.administration;
 
-import com.lowlevelsubmarine.subsconsole.graphs.ListGraphRenderer;
 import com.lowlevelsubmarine.subsconsole.graphs.Vertex;
 import com.tronic.bot.commands.*;
 import com.tronic.bot.stats.CommandStatisticsElement;
