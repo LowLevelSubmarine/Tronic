@@ -1,6 +1,5 @@
 package com.tronic.bot.music.sources.track_provider;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.tronic.bot.core.Core;
 import com.tronic.bot.music.playing.PlaylistQueueItem;
 import com.tronic.bot.music.playing.QueueItem;
@@ -10,6 +9,7 @@ import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.Playlist;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
+import com.wrapper.spotify.requests.data.AbstractDataRequest;
 import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
@@ -36,9 +36,9 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
                     .setClientId(core.getConfig().getSpotifyClientId())
                     .setClientSecret(core.getConfig().getSpotifyClientSecret())
                     .build();
-            api.setAccessToken(api.clientCredentials().build().execute().getAccessToken());
             LOGGER.log(Level.INFO, "Connected to Spotify Api");
             this.api = api;
+            updateApiToken();
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, "Could not connect to Spotify Api.\nCheck internet connection");
         } catch (SpotifyWebApiException e) {
@@ -70,7 +70,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
 
     private QueueItem queueItemFromTrackId(String id) {
         try {
-            return queueItemFromSpotifyTrack(api.getTrack(id).build().execute());
+            return queueItemFromSpotifyTrack(executeRequest(api.getTrack(id).build()));
         } catch (Exception e) {
             LOGGER.info("Failed creating queue item from spotify track id " + id + "\n" + e);
             return null;
@@ -79,13 +79,13 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
 
     private QueueItem queueItemFromPlaylistId(String id, int maxTracks) {
         try {
-            Playlist playlist = this.api.getPlaylist(id).build().execute();
-            Paging<PlaylistTrack> paging = this.api.getPlaylistsItems(id).limit(100).build().execute();
+            Playlist playlist = executeRequest(this.api.getPlaylist(id).build());
+            Paging<PlaylistTrack> paging = executeRequest(this.api.getPlaylistsItems(id).limit(100).build());
             List<PlaylistTrack> playlistTracks = new LinkedList<>();
             while (paging != null) {
                 playlistTracks.addAll(Arrays.asList(paging.getItems()));
                 if (paging.getNext() != null) {
-                    paging = this.api.getPlaylistsItems(id).limit(100).offset(paging.getOffset() + 100).build().execute();
+                    paging = executeRequest(this.api.getPlaylistsItems(id).limit(100).offset(paging.getOffset() + 100).build());
                 } else {
                     paging = null;
                 }
@@ -103,6 +103,25 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
         } catch (Exception e) {
             LOGGER.info("Failed creating queue item from spotify playlist id " + id + "\n" + e);
             return null;
+        }
+    }
+
+    private <T> T executeRequest(AbstractDataRequest<T> request) throws IOException, SpotifyWebApiException, ParseException {
+        try {
+            return request.execute();
+        } catch (SpotifyWebApiException e) {
+            LOGGER.info("Received unexpected api response: " + e + " Trying token refresh ...");
+            updateApiToken();
+            return request.execute();
+        }
+    }
+
+    private void updateApiToken() throws IOException, SpotifyWebApiException, ParseException {
+        try {
+            this.api.setAccessToken(api.clientCredentials().build().execute().getAccessToken());
+        } catch (Exception e) {
+            LOGGER.info("Something went wrong while updating the Api Token: " + e + " This can cause further issues with spotify dependent features.");
+            throw e;
         }
     }
 
