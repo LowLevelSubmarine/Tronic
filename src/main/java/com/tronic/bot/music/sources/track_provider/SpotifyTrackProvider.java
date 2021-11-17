@@ -4,6 +4,7 @@ import com.tronic.bot.core.Core;
 import com.tronic.bot.music.playing.PlaylistQueueItem;
 import com.tronic.bot.music.playing.QueueItem;
 import com.tronic.bot.music.sources.Track;
+import com.tronic.bot.tools.BatchProcessor;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.Paging;
@@ -94,12 +95,12 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
                 Collections.shuffle(playlistTracks);
                 playlistTracks = playlistTracks.subList(0, maxTracks);
             }
-            LinkedList<Track> tracks = new LinkedList<>();
-            for (PlaylistTrack playlistTrack : playlistTracks) {
-                QueueItem queueItem = queueItemFromTrackId(playlistTrack.getTrack().getId());
-                if (queueItem != null) tracks.add(queueItem.nextTrack());
-            }
-            return new PlaylistQueueItem(playlist.getName(), "https://open.spotify.com/playlist/" + playlist.getId(), tracks);
+            BatchProcessor<PlaylistTrack, Track> playlistTrackProcessor = new BatchProcessor<>(playlistTracks, (PlaylistTrack from) -> {
+                QueueItem queueItem = queueItemFromTrackId(from.getTrack().getId());
+                if (queueItem != null) return queueItem.nextTrack();
+                else return null;
+            }, true);
+            return new PlaylistQueueItem(playlist.getName(), "https://open.spotify.com/playlist/" + playlist.getId(), playlistTrackProcessor.process());
         } catch (Exception e) {
             LOGGER.info("Failed creating queue item from spotify playlist id " + id + "\n" + e);
             return null;
