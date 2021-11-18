@@ -5,8 +5,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: "NAME"
-        run: echo "HI"
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build Jar
+        run: ./gradlew build
 
   automerge:
     needs: build
