@@ -23,7 +23,7 @@ jobs:
     - name: upgrade Version
       id: version
       run: |
-        echo "VERSIONJAR=$(./version.sh  ${{ env.RELEASE_VERSION }})" >> $GITHUB_ENV
+        echo "VERSION=${{ env.RELEASE_VERSION }}" >> $GITHUB_ENV
     - name: GRADLE
       run: ./gradlew --version
     - name: TEST STUFF
@@ -33,16 +33,16 @@ jobs:
     - name: Set jarFile
       run: echo "JARFILE=$(ls ./build/libs/*.jar| head -1)" >> $GITHUB_ENV
     - name: debug
-      run: echo "env.$VERSIONJAR env.$JARFILE"
+      run: echo "env.$VERSION env.$JARFILE"
     - name: Get previously tag
-      run: echo "PREV_TAG=$(git tag --sort=-creatordate | grep -A 1 $VERSIONJAR | tail -n 1)" >> $GITHUB_ENV
+      run: echo "PREV_TAG=$(git tag --sort=-creatordate | grep -A 1 $VERSION | tail -n 1)" >> $GITHUB_ENV
     - name: Generate Changelog
       run: echo "CHANGES=$(echo $(git log $PREV_TAG..HEAD --oneline))" >> $GITHUB_ENV
     - name: push
       run: |
           git config --global user.name "Tronicbot"
           git config --global user.email "push@tronicbot.com"
-          git add -A && git commit -m "[Auto] build.gradle -> $VERSIONJAR" && git push origin HEAD:master
+          git add -A && git commit -m "[Auto] build.gradle -> $VERSION" && git push origin HEAD:master
         
     - name: Create Release
       id: create_release
