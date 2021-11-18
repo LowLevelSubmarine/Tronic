@@ -25,3 +25,6 @@ out/
 log4j2.xml
 tronic.cfg
 tronic.cfg
+
+# fuck mac os
+.DS_Store
