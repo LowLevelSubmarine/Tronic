@@ -18,10 +18,6 @@ jobs:
       run: chmod +x gradlew
     - name: Get Tag
       run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-    - name: GRADLE
-      run: ./gradlew --version
-    - name: TEST STUFF
-      run: ./gradlew build --stacktrace
     - name: Build Jar
       run: ./gradlew shadowJar
     - name: Set jarFile
@@ -34,7 +30,7 @@ jobs:
       run: |
           git config --global user.name "Tronicbot"
           git config --global user.email "push@tronicbot.com"
-          git add -A && git commit -m "[Auto] build.gradle -> env.RELEASE_VERSION && git push origin HEAD:master
+          git add -A && git commit -m "[Auto] build.gradle -> ${env.RELEASE_VERSION}" && git push origin HEAD:master
         
     - name: Create Release
       id: create_release
