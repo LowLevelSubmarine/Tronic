@@ -17,10 +17,17 @@ class Loggy {
     data class Event(val clazz: Class<*>, val level: Level, val string: String)
 
     interface Receiver {
+        fun logLevel(): Level
         fun handleLogEvent(event: Event)
     }
 
-    class SysOutReceiver : Receiver {
+    class SysOutReceiver(private val level: Level) : Receiver {
+
+        constructor() : this(Level.TRACE)
+
+        override fun logLevel(): Level {
+            return this.level
+        }
 
         override fun handleLogEvent(event: Event) {
             println("[" + event.level + " " + timestamp() + "] " + shortClassName(event.clazz) + ": " + event.string)
@@ -74,7 +81,9 @@ class Loggy {
         fun log(level: Level, string: String) {
             val event = Event(getCallingClass(), level, string)
             for (receiver in RECEIVERS) {
-                receiver.handleLogEvent(event)
+                if (receiver.logLevel().value <= event.level.value) {
+                    receiver.handleLogEvent(event)
+                }
             }
         }
 
