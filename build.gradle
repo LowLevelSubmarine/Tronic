@@ -3,10 +3,11 @@ plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '6.0.0'
     id "org.jetbrains.kotlin.jvm" version "1.6.0"
+    id 'com.github.gmazzo.buildconfig' version "3.0.3"
 }
 
 group 'com.tronic'
-String versionjar =  System.getenv("VERSION") == null?"TESTBUILD": System.getenv("VERSION")
+String versionjar =  System.getenv("RELEASE_VERSION") == null?"TESTBUILD": System.getenv("RELEASE_VERSION")
 version = versionjar
 
 sourceCompatibility = 1.8
