@@ -30,7 +30,7 @@ class Loggy {
 
     companion object {
 
-        private val PATTERN_INLINE_CLASS_NAME = Pattern.compile("[^.]+\\\$[^.]+")
+        private val PATTERN_INLINE_CLASS_NAME = Pattern.compile("[^.]+\$")
         private val TIMESTAMP_FORMAT =  SimpleDateFormat("dd.mm.yyyy HH:mm:ss")
         private val RECEIVERS = mutableListOf<Receiver>()
 
