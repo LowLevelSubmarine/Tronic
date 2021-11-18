@@ -89,7 +89,8 @@ class Loggy {
         private fun getCallingClass(): Class<*> {
             val stackTrace = Thread.currentThread().stackTrace
             val callingClassName = stackTrace.asList().stream()
-                .skip(1).filter { it.className != this.javaClass.name }.findFirst().get().className
+                .skip(1).filter { !this::class.java.name.startsWith(it.className) }
+                .findFirst().get().className
             return Class.forName(callingClassName)
         }
 
