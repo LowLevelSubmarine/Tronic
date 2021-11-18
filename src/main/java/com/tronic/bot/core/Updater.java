@@ -10,6 +10,7 @@ import com.lowlevelsubmarine.envelope.core.Update;
 import com.lowlevelsubmarine.envelope.versioning.VersionInterpreter;
 import com.lowlevelsubmarine.envelope.versioning.WrappedSemanticVersionInterpreter;
 import com.tronic.bot.statics.GitHub;
+import com.tronic.bot.statics.Info;
 
 import java.io.IOException;
 
@@ -51,7 +52,7 @@ public class Updater implements EnvelopeConnector {
 
     @Override
     public String getCurrentVersion() {
-        return Core.class.getPackage().getImplementationVersion();
+        return Info.VERSION;
     }
 
     @Override
