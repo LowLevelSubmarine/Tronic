@@ -30,38 +30,47 @@ class Loggy {
 
     companion object {
 
-        val PATTERN_INLINE_CLASS_NAME = Pattern.compile("[^.]+\\\$[^.]+")
-        val TIMESTAMP_FORMAT =  SimpleDateFormat("dd.mm.yyyy HH:mm:ss")
+        private val PATTERN_INLINE_CLASS_NAME = Pattern.compile("[^.]+\\\$[^.]+")
+        private val TIMESTAMP_FORMAT =  SimpleDateFormat("dd.mm.yyyy HH:mm:ss")
         private val RECEIVERS = mutableListOf<Receiver>()
 
+
+        @JvmStatic()
         fun quickStart() {
             addReceiver(SysOutReceiver())
         }
 
+        @JvmStatic()
         fun addReceiver(receiver: Receiver) {
             RECEIVERS.add(receiver)
         }
 
+        @JvmStatic()
         fun logE(errorString: String) {
             log(Level.ERROR, errorString)
         }
 
+        @JvmStatic()
         fun logW(warnString: String) {
             log(Level.WARN, warnString)
         }
 
+        @JvmStatic()
         fun logI(infoString: String) {
             log(Level.INFO, infoString)
         }
 
+        @JvmStatic()
         fun logD(debugString: String) {
             log(Level.DEBUG, debugString)
         }
 
+        @JvmStatic()
         fun logT(traceString: String) {
             log(Level.TRACE, traceString)
         }
 
+        @JvmStatic()
         fun log(level: Level, string: String) {
             val event = Event(getCallingClass(), level, string)
             for (receiver in RECEIVERS) {
