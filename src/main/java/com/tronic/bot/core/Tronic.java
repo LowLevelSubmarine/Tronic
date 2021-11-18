@@ -1,5 +1,7 @@
 package com.tronic.bot.core;
 
+import com.tronic.logger.Loggy;
+
 import javax.security.auth.login.LoginException;
 
 
@@ -10,6 +12,7 @@ public class Tronic {
     private final Updater updater = new Updater(this);
 
     public Tronic(ConfigProvider configProvider) {
+        Loggy.quickStart();
         this.configProvider = configProvider;
         start();
     }
