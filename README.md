@@ -23,3 +23,6 @@ Ask a bot admin to run a update, and your code is up and running.
 2.  Just start the built jar in build/libs
 3.  Configure the bot by filling your Discord Bot-Token and your Discord user id as a host in the generated config.json
 4.  Have fun & enjoy!
+
+## License
+[GPL v3.0](LICENSE.md)
