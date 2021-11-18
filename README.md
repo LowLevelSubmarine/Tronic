@@ -2,22 +2,24 @@
 The planets dopest Discord Bot
 (for real)
 
-## Features
-- Command autocorrection
-- YouTubeMusic tracks for better audio quality and search results
-- Track volume correction via crowdsourcing
-- Easy button controls
-- Simple queue system
-
 ## Invite
 [Just click here!](https://discordapp.com/oauth2/authorize?scope=bot&client_id=554803884439240705&permissions=8)
 
-## Install to host
-1.  Clone the repo with ``` git clone https://github.com/LowLevelSubmarine/Tronic.git ```
-2.  Compile the repo with ``` gradle shadowJar ``` (You could use the gradlew or gradlew.bat scripts as well)
-3.  Just start the built jar in build/libs
-4.  Configure the bot by filling your Discord Bot-Token and your Discord user id as a host in the generated config.json
-5.  Have fun & enjoy!
+## Features
+- Command autocorrection
+- YouTubeMusic tracks for better audio quality and search results
+- Easy button controls
+- Simple queue system
+- Queue Spotify songs and playlists
+- Focus simplicisity simplicity
 
-### Activate Tronics Rest API
-Simply add ```"activateApi": true``` to the config.json file
+## Develop for Tronic
+### Create release
+Just add the next version as a tag, and our CI generates a new build.
+Ask a bot admin to run a update, and your code is up and running.
+
+## Install to host
+1.  Download the newest version
+2.  Just start the built jar in build/libs
+3.  Configure the bot by filling your Discord Bot-Token and your Discord user id as a host in the generated config.json
+4.  Have fun & enjoy!
