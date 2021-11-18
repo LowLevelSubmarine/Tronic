@@ -1,39 +1,12 @@
 package com.tronic.logger
 
+import com.tronic.logger.receiver.Receiver
+import com.tronic.logger.receiver.SysOutReceiver
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
 class Loggy {
-
-    enum class Level(val value: Int) {
-        ERROR(4000),
-        WARN(3000),
-        INFO(2000),
-        DEBUG(1000),
-        TRACE(0);
-    }
-
-    data class Event(val clazz: Class<*>, val level: Level, val string: String)
-
-    interface Receiver {
-        fun logLevel(): Level
-        fun handleLogEvent(event: Event)
-    }
-
-    class SysOutReceiver(private val level: Level) : Receiver {
-
-        constructor() : this(Level.TRACE)
-
-        override fun logLevel(): Level {
-            return this.level
-        }
-
-        override fun handleLogEvent(event: Event) {
-            println("[" + event.level + " " + timestamp() + "] " + shortClassName(event.clazz) + ": " + event.string)
-        }
-
-    }
 
     companion object {
 
@@ -41,43 +14,42 @@ class Loggy {
         private val TIMESTAMP_FORMAT =  SimpleDateFormat("dd.mm.yyyy HH:mm:ss")
         private val RECEIVERS = mutableListOf<Receiver>()
 
-
-        @JvmStatic()
+        @JvmStatic
         fun quickStart() {
             addReceiver(SysOutReceiver())
         }
 
-        @JvmStatic()
+        @JvmStatic
         fun addReceiver(receiver: Receiver) {
             RECEIVERS.add(receiver)
         }
 
-        @JvmStatic()
+        @JvmStatic
         fun logE(errorString: String) {
             log(Level.ERROR, errorString)
         }
 
-        @JvmStatic()
+        @JvmStatic
         fun logW(warnString: String) {
             log(Level.WARN, warnString)
         }
 
-        @JvmStatic()
+        @JvmStatic
         fun logI(infoString: String) {
             log(Level.INFO, infoString)
         }
 
-        @JvmStatic()
+        @JvmStatic
         fun logD(debugString: String) {
             log(Level.DEBUG, debugString)
         }
 
-        @JvmStatic()
+        @JvmStatic
         fun logT(traceString: String) {
             log(Level.TRACE, traceString)
         }
 
-        @JvmStatic()
+        @JvmStatic
         fun log(level: Level, string: String) {
             val event = Event(getCallingClass(), level, string)
             for (receiver in RECEIVERS) {
@@ -87,7 +59,8 @@ class Loggy {
             }
         }
 
-        private fun shortClassName(clazz: Class<*>): String {
+        @JvmStatic
+        fun shortClassName(clazz: Class<*>): String {
             val matcher = PATTERN_INLINE_CLASS_NAME.matcher(clazz.name)
             if (matcher.find()) {
                 return matcher.group(0)
@@ -95,16 +68,17 @@ class Loggy {
             return clazz.simpleName
         }
 
+        fun timestamp(): String {
+            return TIMESTAMP_FORMAT.format(Date())
+        }
+
+        @JvmStatic
         private fun getCallingClass(): Class<*> {
             val stackTrace = Thread.currentThread().stackTrace
             val callingClassName = stackTrace.asList().stream()
                 .skip(1).filter { !this::class.java.name.startsWith(it.className) }
                 .findFirst().get().className
             return Class.forName(callingClassName)
-        }
-
-        private fun timestamp(): String {
-            return TIMESTAMP_FORMAT.format(Date())
         }
 
     }
