@@ -5,6 +5,7 @@ import com.tronic.bot.music.playing.PlaylistQueueItem;
 import com.tronic.bot.music.playing.QueueItem;
 import com.tronic.bot.music.sources.Track;
 import com.tronic.bot.tools.BatchProcessor;
+import com.tronic.logger.Loggy;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.Paging;
@@ -15,8 +16,6 @@ import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,28 +23,27 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
 
     private static final Pattern PATTERN_SPOTIFY_TRACK_URL = Pattern.compile("http[s]?:\\/\\/[^.]*\\.spotify\\.com\\/track\\/([a-zA-Z0-9]+)[^ ]*");
     private static final Pattern PATTERN_SPOTIFY_PLAYLIST_URL = Pattern.compile("http[s]?:\\/\\/[^.]*\\.spotify\\.com\\/playlist\\/([a-zA-Z0-9]+)[^ ]*");
-    private static final Logger LOGGER = Logger.getLogger(SpotifyTrackProvider.class.getName());
     private final Core core;
     private SpotifyApi api;
 
     public SpotifyTrackProvider(Core core) {
         this.core = core;
-        LOGGER.log(Level.INFO, "Connecting to Spotify Api ...");
+        Loggy.logI("Connecting to Spotify Api ...");
         try {
             SpotifyApi api;
             api = new SpotifyApi.Builder()
                     .setClientId(core.getConfig().getSpotifyClientId())
                     .setClientSecret(core.getConfig().getSpotifyClientSecret())
                     .build();
-            LOGGER.log(Level.INFO, "Connected to Spotify Api");
+            Loggy.logI("Connected to Spotify Api");
             this.api = api;
             updateApiToken();
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Could not connect to Spotify Api.\nCheck internet connection");
+            Loggy.logW("Could not connect to Spotify Api.\nCheck internet connection");
         } catch (SpotifyWebApiException e) {
-            LOGGER.log(Level.WARNING, "Could not connect to Spotify Api.\nCheck the client credentials");
+            Loggy.logW("Could not connect to Spotify Api.\nCheck the client credentials");
         } catch (ParseException e) {
-            LOGGER.log(Level.WARNING, "Could not connect to Spotify Api.\nLook for Tronic updates");
+            Loggy.logW("Could not connect to Spotify Api.\nLook for Tronic updates");
         }
     }
 
@@ -73,7 +71,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
         try {
             return queueItemFromSpotifyTrack(executeRequest(api.getTrack(id).build()));
         } catch (Exception e) {
-            LOGGER.info("Failed creating queue item from spotify track id " + id + "\n" + e);
+            Loggy.logI("Failed creating queue item from spotify track id " + id + "\n" + e);
             return null;
         }
     }
@@ -102,7 +100,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
             }, true);
             return new PlaylistQueueItem(playlist.getName(), "https://open.spotify.com/playlist/" + playlist.getId(), playlistTrackProcessor.process());
         } catch (Exception e) {
-            LOGGER.info("Failed creating queue item from spotify playlist id " + id + "\n" + e);
+            Loggy.logI("Failed creating queue item from spotify playlist id " + id + "\n" + e);
             return null;
         }
     }
@@ -111,7 +109,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
         try {
             return request.execute();
         } catch (SpotifyWebApiException e) {
-            LOGGER.info("Received unexpected api response: " + e + " Trying token refresh ...");
+            Loggy.logI("Received unexpected api response: " + e + " Trying token refresh ...");
             updateApiToken();
             return request.execute();
         }
@@ -121,7 +119,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
         try {
             this.api.setAccessToken(api.clientCredentials().build().execute().getAccessToken());
         } catch (Exception e) {
-            LOGGER.info("Something went wrong while updating the Api Token: " + e + " This can cause further issues with spotify dependent features.");
+            Loggy.logI("Something went wrong while updating the Api Token: " + e + " This can cause further issues with spotify dependent features.");
             throw e;
         }
     }
