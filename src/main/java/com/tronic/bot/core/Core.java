@@ -95,7 +95,7 @@ public class Core {
             hook.onShutdown(restart);
         }
         this.jda.shutdown();
-        System.out.println(ColorisedSout.ANSI_GREEN + "Bot shutdown successfully!" + ColorisedSout.ANSI_RESET);
+        Loggy.logI("But shutdown successfull!");
     }
 
     public Storage getStorage() {
