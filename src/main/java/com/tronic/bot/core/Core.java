@@ -18,6 +18,7 @@ import com.tronic.bot.questions.QuestionHandler;
 import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
 import com.tronic.bot.tools.ColorisedSout;
+import com.tronic.logger.Loggy;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -51,10 +52,10 @@ public class Core {
         this.musicManager = new MusicManager(this);
         this.hyperchannelManager = new HyperchannelManager(this);
         this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
-        System.out.println(ColorisedSout.ANSI_GREEN + "Bot started!" + ColorisedSout.ANSI_RESET);
         for (BootupHook hook : bootupHooks) {
             hook.onBootup();
         }
+        Loggy.logI("Bot started!");
     }
 
     public void addShutdownHook(ShutdownHook hook) {

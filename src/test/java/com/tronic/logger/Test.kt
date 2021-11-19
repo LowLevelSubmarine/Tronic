@@ -1,7 +1,8 @@
 package com.tronic.logger
 
 fun main() {
-    Loggy.addReceiver(Loggy.SysOutReceiver(Loggy.Level.TRACE))
+    println("Test".tint(Color.GREEN))
+    Loggy.quickStart()
     Test()
 }
 

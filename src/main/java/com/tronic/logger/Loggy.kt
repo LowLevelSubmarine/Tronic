@@ -10,13 +10,21 @@ class Loggy {
 
     companion object {
 
+        private var INITZIALIZED = false;
         private val PATTERN_INLINE_CLASS_NAME = Pattern.compile("[^.]+\$")
         private val TIMESTAMP_FORMAT =  SimpleDateFormat("dd.mm.yyyy HH:mm:ss")
-        private val RECEIVERS = mutableListOf<Receiver>()
+        private val RECEIVERS = mutableSetOf<Receiver>()
+
+        @JvmStatic
+        fun init(receivers: Set<Receiver>) {
+            INITZIALIZED = true
+            this.RECEIVERS.clear()
+            this.RECEIVERS.addAll(receivers)
+        }
 
         @JvmStatic
         fun quickStart() {
-            addReceiver(SysOutReceiver())
+            init(setOf(SysOutReceiver()))
         }
 
         @JvmStatic
