@@ -5,12 +5,18 @@ import com.tronic.bot.core.ConfigProvider;
 import com.tronic.bot.core.Tronic;
 import com.tronic.bot.statics.Files;
 import com.tronic.bot.tools.GsonUtils;
+import com.tronic.logger.Level;
+import com.tronic.logger.receiver.FileReceiver;
+import com.tronic.logger.receiver.Receiver;
 
 import java.io.*;
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class ReleaseConfig implements ConfigProvider {
 
     private static final File CONF_FILE = new File(Files.ROOT_FOLDER,"config.json");
+    private static final File LOG_FILE = new File(Files.ROOT_FOLDER, "tronic.log");
 
     private class DTO implements Serializable {
         DiscordAuthentication discordAuthentication = new DiscordAuthentication();
@@ -85,6 +91,13 @@ public class ReleaseConfig implements ConfigProvider {
     @Override
     public String getSpotifyClientSecret() {
         return this.dto.spotifyAuthentication.clientSecret;
+    }
+
+    @Override
+    public Collection<Receiver> getLogReceivers() {
+        Collection<Receiver> receivers = new LinkedList<>();
+        receivers.add(new FileReceiver(Level.TRACE, LOG_FILE));
+        return receivers;
     }
 
     @Override

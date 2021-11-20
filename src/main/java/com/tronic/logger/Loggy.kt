@@ -2,6 +2,7 @@ package com.tronic.logger
 
 import com.tronic.logger.receiver.Receiver
 import com.tronic.logger.receiver.SysOutReceiver
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -10,14 +11,12 @@ class Loggy {
 
     companion object {
 
-        private var INITZIALIZED = false;
         private val PATTERN_INLINE_CLASS_NAME = Pattern.compile("[^.]+\$")
         private val TIMESTAMP_FORMAT =  SimpleDateFormat("dd.mm.yyyy HH:mm:ss")
         private val RECEIVERS = mutableSetOf<Receiver>()
 
         @JvmStatic
         fun init(receivers: Set<Receiver>) {
-            INITZIALIZED = true
             this.RECEIVERS.clear()
             this.RECEIVERS.addAll(receivers)
         }
@@ -33,8 +32,19 @@ class Loggy {
         }
 
         @JvmStatic
+        fun addReceivers(receivers: Collection<Receiver>) {
+            RECEIVERS.addAll(receivers)
+        }
+
+        @JvmStatic
         fun logE(errorString: String) {
             log(Level.ERROR, errorString)
+        }
+
+        @JvmStatic
+        @JvmOverloads
+        fun logE(exception: Exception, exceptionString: String? = null) {
+            log(Level.ERROR, exceptionString, exception)
         }
 
         @JvmStatic
@@ -43,8 +53,20 @@ class Loggy {
         }
 
         @JvmStatic
+        @JvmOverloads
+        fun logW(exception: Exception, warnString: String? = null) {
+            log(Level.WARN, warnString, exception)
+        }
+
+        @JvmStatic
         fun logI(infoString: String) {
             log(Level.INFO, infoString)
+        }
+
+        @JvmStatic
+        @JvmOverloads
+        fun logI(exception: Exception, infoString: String? = null) {
+            log(Level.INFO, infoString, exception)
         }
 
         @JvmStatic
@@ -53,13 +75,25 @@ class Loggy {
         }
 
         @JvmStatic
+        @JvmOverloads
+        fun logD(exception: Exception, debugString: String? = null) {
+            log(Level.DEBUG, debugString, exception)
+        }
+
+        @JvmStatic
         fun logT(traceString: String) {
             log(Level.TRACE, traceString)
         }
 
         @JvmStatic
-        fun log(level: Level, string: String) {
-            val event = Event(getCallingClass(), level, string)
+        @JvmOverloads
+        fun logT(exception: Exception, traceString: String? = null) {
+            log(Level.TRACE, traceString, exception)
+        }
+
+        @JvmStatic
+        private fun log(level: Level, string: String?, exception: Exception? = null) {
+            val event = Event(getCallingClass(), level, string, exception)
             for (receiver in RECEIVERS) {
                 if (receiver.logLevel().value <= event.level.value) {
                     receiver.handleLogEvent(event)

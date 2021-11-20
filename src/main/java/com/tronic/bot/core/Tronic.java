@@ -13,6 +13,7 @@ public class Tronic {
 
     public Tronic(ConfigProvider configProvider) {
         Loggy.quickStart();
+        Loggy.addReceivers(configProvider.getLogReceivers());
         this.configProvider = configProvider;
         start();
     }
