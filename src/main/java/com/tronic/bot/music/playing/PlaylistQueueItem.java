@@ -12,12 +12,12 @@ public class PlaylistQueueItem implements QueueItem {
     private final String name;
     private final String url;
     private final String id = "playlist #" + new Random().nextInt();
-    private final QueueList<CachedTrack> tracks;
+    private final QueueList<Track> tracks;
 
     public PlaylistQueueItem(String name, String url, List<Track> tracks) {
         this.name = name;
         this.url = url;
-        List<CachedTrack> cachedTracks = tracks.stream().map(CachedTrack::new).collect(Collectors.toList());
+        List<Track> cachedTracks = tracks.stream().map(CachedTrack::new).collect(Collectors.toList());
         this.tracks = new QueueList<>(cachedTracks);
     }
 
@@ -34,6 +34,11 @@ public class PlaylistQueueItem implements QueueItem {
     @Override
     public String getUrl() {
         return this.url;
+    }
+
+    @Override
+    public QueueItem copy() {
+        return new PlaylistQueueItem(this.name, this.url, this.tracks.getContent());
     }
 
     @Override

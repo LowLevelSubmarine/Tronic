@@ -32,6 +32,11 @@ public class SingleQueueItem implements QueueItem {
     }
 
     @Override
+    public QueueItem copy() {
+        return new SingleQueueItem(track);
+    }
+
+    @Override
     public boolean isMultiTrack() {
         return false;
     }

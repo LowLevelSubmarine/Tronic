@@ -1,6 +1,5 @@
 package com.tronic.bot.music.playing;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +19,10 @@ public class QueueList<T> {
 
     public QueueList(List<T> list) {
         this.content = new LinkedList<>(list);
+    }
+
+    public LinkedList<T> getContent() {
+        return this.content;
     }
 
     public int getPos() {
