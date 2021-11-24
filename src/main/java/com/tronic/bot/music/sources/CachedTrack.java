@@ -14,6 +14,12 @@ public class CachedTrack implements Track {
         this.audioTrack = track.getAudioTrack();
     }
 
+    private CachedTrack(String displayName, String url, AudioTrack audioTrack) {
+        this.displayName = displayName;
+        this.url = url;
+        this.audioTrack = audioTrack;
+    }
+
     @Override
     public String getDisplayName() {
         return this.displayName;
@@ -27,6 +33,15 @@ public class CachedTrack implements Track {
     @Override
     public AudioTrack getAudioTrack() {
         return this.audioTrack;
+    }
+
+    @Override
+    public Track copy() {
+        return new CachedTrack(
+                this.displayName,
+                this.url,
+                this.audioTrack.makeClone()
+        );
     }
 
 }
