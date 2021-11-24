@@ -38,7 +38,11 @@ public class PlaylistQueueItem implements QueueItem {
 
     @Override
     public QueueItem copy() {
-        return new PlaylistQueueItem(this.name, this.url, this.tracks.getContent());
+        return new PlaylistQueueItem(
+                this.name,
+                this.url,
+                this.tracks.getContent().stream().map((Track::copy)).collect(Collectors.toList())
+        );
     }
 
     @Override
