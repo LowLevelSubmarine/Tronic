@@ -9,6 +9,7 @@ import com.lowlevelsubmarine.subsconsole.graphs.GraphComposer;
 
 public class StatisticsGraphRenderer<T extends Number> extends GraphComposer<T> {
 
+    @SuppressWarnings("unchecked")
     public StatisticsGraphRenderer(int barSize, double maxValue) {
         super(
                 new StaticGraphFragment<>("|"),
