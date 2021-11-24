@@ -7,6 +7,7 @@ import com.tronic.bot.core.Core;
 import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.shortcuts.ShortcutElement;
 import com.tronic.bot.storage.GuildStorage;
+import com.tronic.bot.storage.ObjectExistsException;
 
 import java.util.NoSuchElementException;
 
@@ -63,7 +64,7 @@ public class ShortcutCommand implements Command {
                         }
                         info.getCore().getStorage().getGuild(info.getGuild()).addShortcut(ShortcutElement.builder(name,commands));
                         info.getChannel().sendMessage(new TronicMessage("Created shortcut '"+name+"'").b()).queue();
-                    }catch (GuildStorage.ObjectExistsException e) {
+                    }catch (ObjectExistsException e) {
                         info.getChannel().sendMessage(new TronicMessage("Cannot create shortcut '"+name+"', because it already exists").b()).queue();
                     }
                     break;

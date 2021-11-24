@@ -1,7 +1,5 @@
 package com.tronic.bot.storage;
 
-import com.toddway.shelf.Clock;
-import com.toddway.shelf.FileStorage;
 import com.toddway.shelf.Shelf;
 import com.tronic.bot.statics.Files;
 import com.tronic.bot.tools.FileUtils;
@@ -23,14 +21,12 @@ public class Storage {
     private final StaticStorage staticStorage;
     private final HashMap<String, GuildStorage> guildStorages;
     private final HashMap<String, UserStorage> userStorages;
-    private final HashMap<String, VolumeStorage> volumeStorage;
 
 
     public Storage() {
         this.staticStorage = new StaticStorage(createShelf(FILE_STATIC));
         this.guildStorages = loadGuildStorages();
         this.userStorages = loadUserStorages();
-        this.volumeStorage = loadVolumeStorages();
     }
 
     public StaticStorage getStatic() {
@@ -53,28 +49,12 @@ public class Storage {
         }
     }
 
-    public VolumeStorage getVolume(String videoId) {
-        if (this.volumeStorage.containsKey(videoId)) {
-            return this.volumeStorage.get(videoId);
-        } else {
-            return new VolumeStorage(createShelf(getVolumeStorageFile(videoId)),this.staticStorage);
-        }
-    }
-
     private HashMap<String, GuildStorage> loadGuildStorages() {
         HashMap<String, GuildStorage> guildStorages = new HashMap<>();
         for (File file : getSnowflakeFiles(FILE_GUILDS)) {
             guildStorages.put(file.getName(), new GuildStorage(createShelf(file)));
         }
         return guildStorages;
-    }
-
-    private HashMap<String, VolumeStorage> loadVolumeStorages() {
-        HashMap<String, VolumeStorage> volumeStorage = new HashMap<>();
-        for (File file : getSnowflakeFiles(FILE_VOLUME)) {
-            volumeStorage.put(file.getName(), new VolumeStorage(createShelf(file),this.staticStorage));
-        }
-        return volumeStorage;
     }
 
     private HashMap<String, UserStorage> loadUserStorages() {
@@ -103,10 +83,7 @@ public class Storage {
 
     private Shelf createShelf(File file) {
         file.mkdirs();
-        FileStorage fileStorage = new FileStorage(file);
-         Serializer serializer = new Serializer();
-        Clock clock = new Clock();
-        return new Shelf(fileStorage, serializer, clock);
+        return StorageGlue.Companion.newShelf(file);
     }
 
 }

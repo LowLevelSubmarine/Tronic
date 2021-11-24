@@ -22,7 +22,7 @@ public class CommandHandler {
 
     private final Core core;
     private final LinkedList<Command> commands = new LinkedList<>();
-    private ShortcutResolver shortcutResolver;
+    private final ShortcutResolver shortcutResolver;
 
     public CommandHandler(Core core) {
         this.core = core;
@@ -164,12 +164,7 @@ public class CommandHandler {
                 this.commandInfo.getEvent().getMessage().delete().queue();
             }
             if (!command.getPermission().isValid(this.commandInfo.getEvent(), CommandHandler.this.core)) {
-                String s = Emoji.WARNING.getUtf8()+"You are not allowed to do this!";
-
-                if (command.getPermission() == Permission.ADMIN) {
-                    s += "\nTry asking your server owner for Permission.";
-                }
-                this.commandInfo.getEvent().getChannel().sendMessage(new TronicMessage(s).b()).queue();
+                this.commandInfo.getEvent().getChannel().sendMessageEmbeds(buildMissingPermissionMessage(command.getPermission()).b()).queue();
             } else {
                 try {
                     this.command.getClass().getDeclaredConstructor().newInstance().run(this.commandInfo);
@@ -189,6 +184,14 @@ public class CommandHandler {
             ),this.commandInfo.getAuthor());
         }
 
+    }
+
+    public static TronicMessage buildMissingPermissionMessage(Permission requiredPermission) {
+        String s = Emoji.WARNING.getUtf8()+"You are not allowed to do this!";
+        if (requiredPermission == Permission.ADMIN) {
+            s += "\nTry asking your server owner for Permission.";
+        }
+        return new TronicMessage(s);
     }
 
 }

@@ -51,7 +51,9 @@ public class SetPrefixCommand implements Command {
                     new Button(Emoji.WHITE_CHECK_MARK, this::onAccept, new UserButtonValidator(info))
             );
         } catch (InvalidArgumentException e) {
-            throw new InvalidCommandArgumentsException();
+            info.getChannel().sendMessageEmbeds(
+                    new TronicMessage("PREFIX", "If you want to change my prefix, you need to tell me to which " + Emoji.SWEAT_SMILE).b()
+            ).queue();
         }
     }
 
@@ -59,7 +61,7 @@ public class SetPrefixCommand implements Command {
         this.info.getGuildStorage(this.info.getGuild()).setPrefix(newPrefix);
         this.messageChanger.change(new TronicMessage(
                 "PREFIX",
-                "Changed prefix from \'" + this.oldPrefix + "\' to \'" + this.newPrefix + "\'"
+                "Changed prefix from '" + this.oldPrefix + "' to '" + this.newPrefix + "'"
         ).b());
     }
 

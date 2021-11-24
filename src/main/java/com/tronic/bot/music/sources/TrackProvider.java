@@ -1,42 +1,58 @@
 package com.tronic.bot.music.sources;
 
-import com.lowlevelsubmarine.ytml.YTML;
-import com.lowlevelsubmarine.ytml.YTMLBuilder;
-import com.lowlevelsubmarine.ytml.library.fields.SongFields;
-import com.lowlevelsubmarine.ytml.library.interfaces.Content;
-import com.lowlevelsubmarine.ytml.library.interfaces.Search;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.tronic.bot.core.Core;
+import com.tronic.bot.music.playing.QueueItem;
+import com.tronic.bot.music.playing.SingleQueueItem;
+import com.tronic.bot.music.sources.track_provider.*;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TrackProvider {
+public class TrackProvider implements UrlTrackProvider, SearchTrackProvider {
 
-    private final YTML ytml = new YTMLBuilder().build().complete();
-    private final YouTubeTrackProvider youTubeTrackProvider = new YouTubeTrackProvider();
+    private final YouTubeMusicTrackProvider youTubeMusicTrackProvider;
+    private final SpotifyTrackProvider spotifyTrackProvider;
+    private final LavaPlayerTrackProvider lavaPlayerTrackProvider;
+    private final List<UrlTrackProvider> urlTrackProviders = new LinkedList<>();
 
-
-    public YouTubeTrackProvider.YouTubeTrack magnetSearch(String query) {
-        Content<SongFields> result = ytml.search(query).complete().getSongSection().getItems().get(0);
-        String displayName = result.getArtist() + " / " + result.getTitle();
-        return this.youTubeTrackProvider.getTrack(displayName, result);
+    public TrackProvider(Core core, AudioPlayerManager audioPlayerManager) {
+        this.youTubeMusicTrackProvider = new YouTubeMusicTrackProvider();
+        this.spotifyTrackProvider = new SpotifyTrackProvider(core);
+        this.lavaPlayerTrackProvider = new LavaPlayerTrackProvider(audioPlayerManager);
+        this.urlTrackProviders.add(this.spotifyTrackProvider);
+        this.urlTrackProviders.add(lavaPlayerTrackProvider);
     }
 
-    public LinkedList<YouTubeTrackProvider.YouTubeTrack> listSearch(String query) {
-        Search search = ytml.search(query).complete();
-        try {
-            search.getSongSection().fetchMore();
-        } catch(IOException e) {
-            System.err.println("Exception in fetch more.");
-            e.printStackTrace();
+    @Override
+    public SingleQueueItem fromSingleSearch(String query) {
+        return this.youTubeMusicTrackProvider.fromSingleSearch(query);
+    }
+
+    @Override
+    public List<SingleQueueItem> fromMultiSearch(String query, int maxItems) {
+        return this.youTubeMusicTrackProvider.fromMultiSearch(query, maxItems);
+    }
+
+    @Override
+    public QueueItem fromUrl(String url) {
+        QueueItem queueItem = null;
+        for (int i = 0; queueItem == null && i < this.urlTrackProviders.size(); i++) {
+            queueItem = this.urlTrackProviders.get(i).fromUrl(url);
         }
-        List<Content<SongFields>> results = search.getSongSection().getItems();
-        LinkedList<YouTubeTrackProvider.YouTubeTrack> youTubeTracks = new LinkedList<>();
-        for (Content<SongFields> result : results) {
-            String displayName = result.getArtist() + " / " + result.getTitle();
-            youTubeTracks.add(this.youTubeTrackProvider.getTrack(displayName, result));
-        }
-        return youTubeTracks;
+        return queueItem;
+    }
+
+    public YouTubeMusicTrackProvider getYouTubeMusicTP() {
+        return this.youTubeMusicTrackProvider;
+    }
+
+    public SpotifyTrackProvider getSpotifyTP() {
+        return this.spotifyTrackProvider;
+    }
+
+    public LavaPlayerTrackProvider getLavaPlayerTP() {
+        return this.lavaPlayerTrackProvider;
     }
 
 }

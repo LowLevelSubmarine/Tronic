@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import javax.annotation.Nonnull;
 
 public class JoinListener extends Listener {
-    private Core tronic;
+    private final Core tronic;
     public JoinListener(Core tronic) {
         super(tronic);
         this.tronic = tronic;

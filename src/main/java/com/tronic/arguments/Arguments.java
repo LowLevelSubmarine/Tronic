@@ -28,7 +28,7 @@ public class Arguments {
     }
 
     public <T> ArgumentResult<T> parse(Argument<T> argument) {
-        if (!isEmpty()) {
+        if (this.string != null && !isEmpty()) {
             try {
                 return new ArgumentResult<>(argument.parse(this));
             } catch (InvalidArgumentException ignored) {}

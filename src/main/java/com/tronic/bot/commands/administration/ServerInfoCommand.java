@@ -63,6 +63,7 @@ public class ServerInfoCommand implements Command {
 
     private class GuildGraph extends GraphComposer<Guild> {
 
+        @SuppressWarnings("unchecked")
         public GuildGraph() {
             super(
                     new StaticGraphFragment<>("|"),

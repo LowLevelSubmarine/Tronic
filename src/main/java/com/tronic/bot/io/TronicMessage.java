@@ -40,6 +40,11 @@ public class TronicMessage {
         return this;
     }
 
+    public TronicMessage setFooter(String footer) {
+        this.builder.setFooter(footer);
+        return this;
+    }
+
     public MessageEmbed build() {
         return this.builder.build();
     }

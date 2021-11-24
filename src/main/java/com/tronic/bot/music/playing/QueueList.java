@@ -2,6 +2,7 @@ package com.tronic.bot.music.playing;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 public class QueueList<T> {
 
@@ -17,8 +18,8 @@ public class QueueList<T> {
         this.content.add(t);
     }
 
-    public QueueList(Collection<T> collection) {
-        this.content = new LinkedList<>(collection);
+    public QueueList(List<T> list) {
+        this.content = new LinkedList<>(list);
     }
 
     public int getPos() {
@@ -137,6 +138,14 @@ public class QueueList<T> {
 
     public boolean contains(T t) {
         return this.content.contains(t);
+    }
+
+    public T getFirst() {
+        return this.content.getFirst();
+    }
+
+    public T getLast() {
+        return this.content.getLast();
     }
 
     private boolean isPosAffected(int pos) {

@@ -18,7 +18,7 @@ import com.tronic.bot.music.MusicManager;
 import com.tronic.bot.questions.QuestionHandler;
 import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
-import com.tronic.bot.tools.ColorisedSout;
+import com.tronic.logger.Loggy;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -38,7 +38,6 @@ public class Core {
     private final ICommandManager iCommandManager = new ICommandManager(this);
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler();
-    private final MusicManager musicManager = new MusicManager(this);
     private final QuestionHandler questionHandler = new QuestionHandler(this);
     private final HyperchannelManager hyperchannelManager;
     private final String hostToken;
@@ -50,18 +49,13 @@ public class Core {
         this.jda = buildJDA(tronic.getConfigProvider().getToken());
         this.jda.awaitReady();
         addCommands();
-        hyperchannelManager = new HyperchannelManager(this);
+        this.musicManager = new MusicManager(this);
+        this.hyperchannelManager = new HyperchannelManager(this);
         this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
-        System.out.println(ColorisedSout.ANSI_GREEN+"Bot started!" + ColorisedSout.ANSI_RESET);
-        bootUpHooks.forEach(BootUpHook::onBootUp);
-    }
-
-    public void addBootUpHook(BootUpHook hook) {
-        this.bootUpHooks.add(hook);
-    }
-
-    public void removeBootUpHooks(BootUpHook hook) {
-        this.bootUpHooks.remove(hook);
+        for (BootupHook hook : bootupHooks) {
+            hook.onBootup();
+        }
+        Loggy.logI("Bot started!");
     }
 
     public void addShutdownHook(ShutdownHook hook) {
@@ -101,7 +95,7 @@ public class Core {
             hook.onShutdown(restart);
         }
         this.jda.shutdown();
-        System.out.println(ColorisedSout.ANSI_GREEN + "Bot shutdown successfully!" + ColorisedSout.ANSI_RESET);
+        Loggy.logI("But shutdown successfull!");
     }
 
     public Storage getStorage() {
@@ -175,9 +169,10 @@ public class Core {
         this.commandHandler.addCommand(new SearchCommand());
         this.commandHandler.addCommand(new SkipCommand());
         //Settings
-        this.commandHandler.addCommand(new SetPrefixCommand());
-        this.commandHandler.addCommand(new HyperchannelCommand());
         this.commandHandler.addCommand(new BotVolumeCommand());
+        this.commandHandler.addCommand(new HyperchannelCommand());
+        this.commandHandler.addCommand(new SetBroadcastsCommand());
+        this.commandHandler.addCommand(new SetPrefixCommand());
     }
 
     public class Listeners {
@@ -189,8 +184,9 @@ public class Core {
         public final LeaveListener leave = new LeaveListener(Core.this);
         public final MessageLoggerListener messageLogger = new MessageLoggerListener(Core.this);
         public final MoveListener move = new MoveListener(Core.this);
-        public final ReadyListener ready = new ReadyListener(Core.this);
         public final QuestionListener question = new QuestionListener(Core.this);
+        public final QueueItemListener queueItem = new QueueItemListener(Core.this);
+        public final ReadyListener ready = new ReadyListener(Core.this);
 
         public void attachToBuilder(JDABuilder builder) {
             builder.addEventListeners(this.button);
@@ -200,8 +196,9 @@ public class Core {
             builder.addEventListeners(this.leave);
             builder.addEventListeners(this.messageLogger);
             builder.addEventListeners(this.move);
-            builder.addEventListeners(this.ready);
             builder.addEventListeners(this.question);
+            builder.addEventListeners(this.queueItem);
+            builder.addEventListeners(this.ready);
         }
 
     }

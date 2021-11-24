@@ -21,8 +21,14 @@ public class MessageChanger implements Runnable {
     }
 
     public void change(MessageEmbed embed, Button... buttons) {
+        change(embed, false, buttons);
+    }
+
+    public void change(MessageEmbed embed, boolean threadBlocking, Button... buttons) {
         this.nextMessageChangeAction = new MessageChangeAction(embed, buttons, this.core.getButtonHandler());
-        new Thread(this).start();
+        Thread thread = new Thread(this);
+        if (threadBlocking) thread.run();
+        else thread.start();
     }
 
     public void delete() {

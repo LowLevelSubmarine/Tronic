@@ -10,6 +10,9 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
+# Ignore auto-generated IDE files ending with ~
+*~
+
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
@@ -22,3 +25,6 @@ out/
 log4j2.xml
 tronic.cfg
 tronic.cfg
+
+# fuck mac os
+.DS_Store

@@ -37,9 +37,9 @@ public class Player extends AudioEventAdapter {
         return this.guild.getDefaultChannel();
     }
 
-    public void addToQueue(QueueItem queueItem) {
+    public void addToQueue(QueueItem queueItem, Member owner) {
         this.queue.add(queueItem);
-        new QueueMessage(queueItem, this);
+        new QueueMessage(queueItem, owner, this);
         ensurePlayback();
     }
 
@@ -95,9 +95,12 @@ public class Player extends AudioEventAdapter {
             }
         }
         if (this.queue.getCurrent().hasNextTrack()) {
-            this.audioPlayer.playTrack(this.queue.getCurrent().nextTrack().getAudio());
+            this.audioPlayer.playTrack(this.queue.getCurrent().nextTrack().getAudioTrack());
             sendQueueItemChanged(this.queue.getPreviousNullable(), this.queue.getCurrent(), skip);
-            ensureConnection(this.queue.getCurrent().getOwner());
+            QueueMessage message = sendRegisterSelf(this.queue.getCurrent());
+            if (message != null) {
+                ensureConnection(message.getOwner());
+            }
             return true;
         } else {
             this.audioPlayer.stopTrack();
@@ -125,8 +128,8 @@ public class Player extends AudioEventAdapter {
             GuildVoiceState voiceState = target.getVoiceState();
             if (voiceState != null && voiceState.inVoiceChannel()) {
                 this.guild.getAudioManager().openAudioConnection(voiceState.getChannel());
-                return true;
             }
+            return true;
         }
         return false;
     }
@@ -163,11 +166,21 @@ public class Player extends AudioEventAdapter {
         }
     }
 
+    private QueueMessage sendRegisterSelf(QueueItem queueItem) {
+        for (EventListener eventListener : new LinkedList<>(eventListeners.values())) {
+            QueueMessage queueMessage = eventListener.registerSelf(queueItem);
+            if (queueMessage != null) return queueMessage;
+        }
+        return null;
+    }
+
+
     public interface EventListener {
         void onQueueItemRemoved(QueueItem queueItem, Player player);
         void onQueueItemChanged(QueueItem oldQueueItem, QueueItem newQueueItem, boolean skipped, Player player);
         void onVolumeChanged(float oldVolume, float newVolume, Player player);
         void onStateChanged(boolean paused, Player player);
+        QueueMessage registerSelf(QueueItem queueItem);
     }
 
 }

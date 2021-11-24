@@ -65,7 +65,7 @@ public class UpdateCommand implements Command {
     private void onUpdateAccept() {
         this.msgChanger.change(new TronicMessage(Emoji.HOURGLASS + " downloading " + this.build.getVersion() + " ...").b());
         Update update = this.info.getCore().getTronicUpdater().download(this.build);
-        this.msgChanger.change(new TronicMessage(Emoji.WHITE_CHECK_MARK + " download complete. Update initiated!").b());
+        this.msgChanger.change(new TronicMessage(Emoji.WHITE_CHECK_MARK + " download complete. Update initiated!").b(), true);
         try {
             this.info.getCore().getTronicUpdater().update(update);
         } catch (Exception e) {

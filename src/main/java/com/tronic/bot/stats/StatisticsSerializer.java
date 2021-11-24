@@ -41,7 +41,7 @@ public class StatisticsSerializer  {
                 ArrayList<String> fields = getFilteredFields(s.substring(s.indexOf(" ")+1));
                 for (int i =0;i< fields.size();i++) {
                     String f = fields.get(i);
-                    String parts[] = f.split(":");
+                    String[] parts = f.split(":");
                     Field declared = newClass.getClass().getDeclaredField(parts[0].replace(";",""));
                     boolean accesible = declared.isAccessible();
                     declared.setAccessible(true);
