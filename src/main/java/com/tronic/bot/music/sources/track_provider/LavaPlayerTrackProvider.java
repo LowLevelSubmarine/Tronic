@@ -93,6 +93,11 @@ public class LavaPlayerTrackProvider implements UrlTrackProvider {
             return this.audioTrack;
         }
 
+        @Override
+        public Track copy() {
+            return new LavaPlayerTrack(this.audioTrack.makeClone());
+        }
+
     }
 
 }

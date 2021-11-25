@@ -14,6 +14,7 @@ public class QueueMessage implements Player.EventListener {
     private final Player player;
     private final MessageChanger messageChanger;
     private final Button deleteButton = new Button(Emoji.X, this::onDelete);
+    private final Button requeueButton = new Button(Emoji.ARROWS_CLOCKWISE, this::onRequeue);
     private final Button pauseButton = new Button(Emoji.PAUSE_BUTTON, this::onPause);
     private final Button resumeButton = new Button(Emoji.ARROW_FORWARD, this::onResume);
     private final Button skipButton = new Button(Emoji.FAST_FORWARD, this::onSkip);
@@ -95,11 +96,11 @@ public class QueueMessage implements Player.EventListener {
     }
 
     public void setSkipped() {
-        changeMessage(Emoji.FAST_FORWARD, true);
+        changeMessage(Emoji.FAST_FORWARD, true, this.requeueButton);
     }
 
     public void setPlayed() {
-        changeMessage(Emoji.STOP_BUTTON, true);
+        changeMessage(Emoji.STOP_BUTTON, true, this.requeueButton);
     }
 
     private void changeMessage(Emoji emoji, boolean showOwner, Button... buttons) {
@@ -114,6 +115,10 @@ public class QueueMessage implements Player.EventListener {
 
     private void onDelete() {
         this.player.removeFromQueue(this.queueItem);
+    }
+
+    private void onRequeue() {
+        this.player.addToQueue(this.queueItem.copy(), this.owner);
     }
 
     private void onPause() {

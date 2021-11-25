@@ -56,6 +56,12 @@ public class YouTubeMusicTrackProvider implements SearchTrackProvider {
             this.youtubeAudioTrack = new YoutubeAudioTrack(audioTrackInfo, YouTubeMusicTrackProvider.this.audioSourceManager);
         }
 
+        private YouTubeMusicTrack(String displayName, String url, YoutubeAudioTrack youtubeAudioTrack) {
+            this.displayName = displayName;
+            this.url = url;
+            this.youtubeAudioTrack = youtubeAudioTrack;
+        }
+
         @Override
         public String getDisplayName() {
             return this.displayName;
@@ -69,6 +75,15 @@ public class YouTubeMusicTrackProvider implements SearchTrackProvider {
         @Override
         public AudioTrack getAudioTrack() {
             return this.youtubeAudioTrack;
+        }
+
+        @Override
+        public Track copy() {
+            return new YouTubeMusicTrack(
+                    this.displayName,
+                    this.url,
+                    (YoutubeAudioTrack) this.youtubeAudioTrack.makeClone() //TODO: Check for ClassCastException
+            );
         }
 
     }
