@@ -14,6 +14,9 @@ The planets dopest Discord Bot
 - Focus simplicisity simplicity
 
 ## Develop for Tronic
+### Kotlin / Java
+Our current aim is to slowly transition to Kotlin. Which means, that new packages (or submodules) should be written in Kotlin from the start. When changing stuff, sticking to Java is still totally ok though.
+
 ### Create release
 Just add the next version as a tag, and our CI generates a new build.
 Ask a bot admin to run a update, and your code is up and running.
