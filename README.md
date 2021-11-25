@@ -19,7 +19,7 @@ Our current aim is to slowly transition to Kotlin. Which means, that new package
 
 ### Create release
 Just add the next version as a tag, and our CI generates a new build.
-Ask a bot admin to run a update, and your code is up and running.
+Ask a bot admin to start a update, and your code is up and running.
 
 ## Install to host
 1.  Download the newest version
