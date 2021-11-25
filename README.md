@@ -11,7 +11,7 @@ The planets dopest Discord Bot
 - Easy button controls
 - Simple queue system
 - Queue Spotify songs and playlists
-- Focus simplicisity simplicity
+- Focus on simplicity
 
 ## Develop for Tronic
 ### Kotlin / Java
