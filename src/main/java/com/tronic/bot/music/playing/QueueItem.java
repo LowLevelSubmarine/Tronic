@@ -7,6 +7,7 @@ public interface QueueItem {
     String getId();
     String getName();
     String getUrl();
+    QueueItem copy();
     boolean isMultiTrack();
     Track getCurrentTrack();
     Track getNextPossibleTrack();

@@ -11,12 +11,15 @@ The planets dopest Discord Bot
 - Easy button controls
 - Simple queue system
 - Queue Spotify songs and playlists
-- Focus simplicisity simplicity
+- Focus on simplicity
 
 ## Develop for Tronic
+### Kotlin / Java
+Our current aim is to slowly transition to Kotlin. Which means, that new packages (or submodules) should be written in Kotlin from the start. When changing stuff, sticking to Java is still totally ok though.
+
 ### Create release
 Just add the next version as a tag, and our CI generates a new build.
-Ask a bot admin to run a update, and your code is up and running.
+Ask a bot admin to start a update, and your code is up and running.
 
 ## Install to host
 1.  Download the newest version
