@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.github.sedmelluq:lavaplayer:1.3.78'
     implementation 'com.toddway.shelf:Shelf:2.0.7'
     implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'net.dv8tion:JDA:4.3.0_324'
+    implementation 'net.dv8tion:JDA:4.4.0_351'
     implementation 'com.github.LowLevelSubmarine:YoutubeMusicAPI:v1.3.1'
     implementation 'com.github.LowLevelSubmarine:GoogleAnswersAPI:v1.0.1'
     implementation 'com.github.LowLevelSubmarine:Envelope:v0.1.5'
