@@ -52,10 +52,8 @@ public class Core {
         this.musicManager = new MusicManager(this);
         this.hyperchannelManager = new HyperchannelManager(this);
         this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
-        for (BootupHook hook : bootupHooks) {
-            hook.onBootup();
-        }
-        Loggy.logI("Bot started!");
+        bootupHooks.forEach(BootupHook::onBootup);
+        Loggy.logI(Color.GREEN.tint("Bot started!"));
     }
 
     public void addShutdownHook(ShutdownHook hook) {
@@ -91,9 +89,7 @@ public class Core {
     }
 
     public void prepareShutdown(boolean restart) {
-        for (ShutdownHook hook : this.shutdownHooks) {
-            hook.onShutdown(restart);
-        }
+        shutdownHooks.forEach((shutdownHook -> shutdownHook.onShutdown(restart)));
         this.jda.shutdown();
         Loggy.logI(Color.GREEN.tint("But shutdown successfull!"));
     }
