@@ -7,7 +7,7 @@ import java.io.FileWriter
 
 class FileReceiver(private val level: Level = Level.TRACE, file: File) : Receiver {
 
-    private val writer = FileWriter(file)
+    private val writer = FileWriter(file, true)
 
     override fun logLevel(): Level {
         return this.level
