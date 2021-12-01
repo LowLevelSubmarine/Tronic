@@ -17,6 +17,7 @@ import com.tronic.bot.music.MusicManager;
 import com.tronic.bot.questions.QuestionHandler;
 import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
+import com.tronic.logger.Color;
 import com.tronic.logger.Loggy;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -94,7 +95,7 @@ public class Core {
             hook.onShutdown(restart);
         }
         this.jda.shutdown();
-        Loggy.logI("But shutdown successfull!");
+        Loggy.logI(Color.GREEN.tint("But shutdown successfull!"));
     }
 
     public Storage getStorage() {
