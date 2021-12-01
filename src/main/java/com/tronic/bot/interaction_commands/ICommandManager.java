@@ -20,7 +20,7 @@ public class ICommandManager extends ListenerAdapter {
     public ICommandManager(Core core) {
         this.core = core;
         this.buttonManager = new IButtonManager(core);
-        core.addBootUpHook(this::onBootUp);
+        core.addBootupHook(this::onBootUp);
         registerCommands();
     }
 

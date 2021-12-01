@@ -22,10 +22,10 @@ public class IButtonManager extends ListenerAdapter {
 
     public IButtonManager(Core core) {
         this.core = core;
-        core.addBootUpHook(this::onBootUp);
+        core.addBootupHook(this::onBootup);
     }
 
-    private void onBootUp() {
+    private void onBootup() {
         this.core.getJDA().addEventListener(this);
     }
 
@@ -61,6 +61,7 @@ public class IButtonManager extends ListenerAdapter {
         public void onPress(ButtonClickEvent event) {
             this.hook.onClick(event, this.key);
         }
+        @SuppressWarnings("unchecked")
         public <T> T getAs() {
             try {
                 return (T) key;

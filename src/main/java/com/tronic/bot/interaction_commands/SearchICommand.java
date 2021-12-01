@@ -1,9 +1,8 @@
 package com.tronic.bot.interaction_commands;
 
 import com.tronic.bot.io.TronicMessage;
+import com.tronic.bot.music.playing.QueueItem;
 import com.tronic.bot.music.playing.SingleQueueItem;
-import com.tronic.bot.music.sources.Track;
-import com.tronic.bot.music.sources.YouTubeTrackProvider;
 import com.tronic.bot.tools.JDAUtils;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -13,6 +12,7 @@ import net.dv8tion.jda.api.interactions.components.ButtonStyle;
 import net.dv8tion.jda.api.interactions.components.Component;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class SearchICommand implements ICommand {
 
@@ -40,27 +40,27 @@ public class SearchICommand implements ICommand {
     public void run(ICommandInfo info) {
         this.info = info;
         String query = info.getEvent().getOption(OPTION_SEARCH_QUERY.getName()).getAsString();
-        LinkedList<YouTubeTrackProvider.YouTubeTrack> tracks = info.getTrackProvider().listSearch(query);
+        List<SingleQueueItem> queueItems = info.getTrackProvider().fromMultiSearch(query, 5);
         StringBuilder optionsString = new StringBuilder();
         LinkedList<Component> components = new LinkedList<>();
-        for (int i = 0; i < Math.min(5, tracks.size()); i++) {
-            String displayName = tracks.get(i).getDisplayName();
-            optionsString.append(JDAUtils.getEmoji(i + 1).getUtf8()).append(" ").append(displayName).append("\n");
+        for (int i = 0; i < queueItems.size(); i++) {
+            String itemName = queueItems.get(i).getName();
+            optionsString.append(JDAUtils.getEmoji(i + 1).getUtf8()).append(" ").append(itemName).append("\n");
             components.add(info.getIButtonManager().generateButton(
                     ButtonStyle.SECONDARY,
-                    tracks.get(i),
+                    queueItems.get(i),
                     this::onSelection,
                     JDAUtils.getEmoji(i + 1)));
         }
         info.getEvent().replyEmbeds(new TronicMessage(
                 "Search Results for: " + query,
                 optionsString.toString()
-        ).b()).addActionRow(components.toArray(Component[]::new)).complete();
+        ).b()).addActionRow(components).complete();
     }
 
     private void onSelection(ButtonClickEvent event, Object o) {
-        if (o instanceof Track) {
-            this.info.getPlayer().addToQueue(new SingleQueueItem((Track) o, event.getMember()));
+        if (o instanceof QueueItem) {
+            this.info.getPlayer().addToQueue((QueueItem) o, this.info.getEvent().getMember());
         }
     }
 

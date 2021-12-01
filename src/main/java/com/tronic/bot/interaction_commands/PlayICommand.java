@@ -1,7 +1,6 @@
 package com.tronic.bot.interaction_commands;
 
-import com.tronic.bot.music.playing.SingleQueueItem;
-import com.tronic.bot.music.sources.Track;
+import com.tronic.bot.music.playing.QueueItem;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -31,9 +30,9 @@ public class PlayICommand implements ICommand {
     public void run(ICommandInfo i) {
         i.getEvent().getHook().deleteOriginal().queue();
         String query = i.getEvent().getOption(OPTION_SEARCH_QUERY.getName()).getAsString();
-        Track track = i.getTrackProvider().magnetSearch(query);
+        QueueItem queueItem = i.getTrackProvider().fromSingleSearch(query);
         Member member = i.getEvent().getMember();
-        i.getPlayer().addToQueue(new SingleQueueItem(track, member));
+        i.getPlayer().addToQueue(queueItem, member);
     }
 
 }

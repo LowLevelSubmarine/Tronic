@@ -1,5 +1,6 @@
 package com.tronic.bot.core;
 
+import com.lowlevelsubmarine.subsconsole.Color;
 import com.tronic.bot.buttons.ButtonHandler;
 import com.tronic.bot.commands.CommandHandler;
 import com.tronic.bot.commands.administration.*;
@@ -31,7 +32,7 @@ public class Core {
 
     private final Tronic tronic;
     private final LinkedList<ShutdownHook> shutdownHooks = new LinkedList<>();
-    private final LinkedList<BootUpHook> bootUpHooks = new LinkedList<>();
+    private final LinkedList<BootupHook> bootupHooks = new LinkedList<>();
     private final Listeners listeners = new Listeners();
     private final JDA jda;
     private final Storage storage = new Storage();
@@ -39,6 +40,7 @@ public class Core {
     private final CommandHandler commandHandler = new CommandHandler(this);
     private final ButtonHandler buttonHandler = new ButtonHandler();
     private final QuestionHandler questionHandler = new QuestionHandler(this);
+    private final MusicManager musicManager;
     private final HyperchannelManager hyperchannelManager;
     private final String hostToken;
 
@@ -52,10 +54,8 @@ public class Core {
         this.musicManager = new MusicManager(this);
         this.hyperchannelManager = new HyperchannelManager(this);
         this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
-        for (BootupHook hook : bootupHooks) {
-            hook.onBootup();
-        }
-        Loggy.logI("Bot started!");
+        bootupHooks.forEach(BootupHook::onBootup);
+        Loggy.logI(Color.GREEN.tint("Bot started!"));
     }
 
     public void addShutdownHook(ShutdownHook hook) {
@@ -64,6 +64,14 @@ public class Core {
 
     public void removeShutdownHook(ShutdownHook hook) {
         this.shutdownHooks.remove(hook);
+    }
+
+    public void addBootupHook(BootupHook hook) {
+        this.bootupHooks.add(hook);
+    }
+
+    public void removeBootupHook(BootupHook hook) {
+        this.bootupHooks.remove(hook);
     }
 
     public void restartTronic() {
@@ -207,8 +215,8 @@ public class Core {
         void onShutdown(boolean restart);
     }
 
-    public interface BootUpHook {
-        void onBootUp();
+    public interface BootupHook {
+        void onBootup();
     }
 
 }
