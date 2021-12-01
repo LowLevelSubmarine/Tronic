@@ -6,14 +6,14 @@ import com.tronic.bot.music.playing.QueueItem;
 import com.tronic.bot.music.sources.Track;
 import com.tronic.bot.tools.BatchProcessor;
 import com.tronic.logger.Loggy;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.exceptions.detailed.UnauthorizedException;
-import com.wrapper.spotify.model_objects.specification.Paging;
-import com.wrapper.spotify.model_objects.specification.Playlist;
-import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
-import com.wrapper.spotify.requests.data.AbstractDataRequest;
 import org.apache.hc.core5.http.ParseException;
+import se.michaelthelin.spotify.SpotifyApi;
+import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.exceptions.detailed.UnauthorizedException;
+import se.michaelthelin.spotify.model_objects.specification.Paging;
+import se.michaelthelin.spotify.model_objects.specification.Playlist;
+import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
+import se.michaelthelin.spotify.requests.data.AbstractDataRequest;
 
 import java.io.IOException;
 import java.util.*;
@@ -63,7 +63,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
         return null;
     }
 
-    private QueueItem queueItemFromSpotifyTrack(com.wrapper.spotify.model_objects.specification.Track spotifyTrack) {
+    private QueueItem queueItemFromSpotifyTrack(se.michaelthelin.spotify.model_objects.specification.Track spotifyTrack) {
         return this.core.getMusicManager().getTrackProvider().getYouTubeMusicTP()
                 .fromSingleSearch(spotifyTrack.getArtists()[0].getName() + " - " + spotifyTrack.getName());
     }
