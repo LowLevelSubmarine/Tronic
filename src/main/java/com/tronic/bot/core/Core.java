@@ -103,7 +103,7 @@ public class Core {
             hook.onShutdown(restart);
         }
         this.jda.shutdown();
-        Loggy.logI("But shutdown successfull!");
+        Loggy.logI(Color.GREEN.tint("But shutdown successfull!"));
     }
 
     public Storage getStorage() {
