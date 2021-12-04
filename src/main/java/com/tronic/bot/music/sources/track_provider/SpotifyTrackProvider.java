@@ -112,7 +112,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
         } catch (UnauthorizedException e) {
             Loggy.logD(e + " Executing access token refresh ...");
             try {
-                Thread.sleep(500); // wait a second, as it seems like the token refresh doesn't have an immidiate effect
+                Thread.sleep(5000); // wait a second, as it seems like the token refresh doesn't have an immidiate effect
             } catch (InterruptedException ex) {
                 Loggy.logW(ex);
             }
