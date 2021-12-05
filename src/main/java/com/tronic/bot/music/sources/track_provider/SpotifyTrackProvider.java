@@ -30,7 +30,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
 
     public SpotifyTrackProvider(Core core) {
         this.core = core;
-        Loggy.logI("Connecting to Spotify Api ...");
+        Loggy.logI("Connecting to Spotify api ...");
         try {
             SpotifyApi api;
             api = new SpotifyApi.Builder()
@@ -39,13 +39,13 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
                     .build();
             this.api = api;
             updateApiToken();
-            Loggy.logI("Connected to Spotify Api");
+            Loggy.logI("Connected to Spotify api");
         } catch (IOException e) {
-            Loggy.logW("Could not connect to Spotify Api.\nCheck internet connection");
+            Loggy.logW("Could not connect to Spotify api. Check internet connection");
         } catch (SpotifyWebApiException e) {
-            Loggy.logW("Could not connect to Spotify Api.\nCheck the client credentials");
+            Loggy.logW("Could not connect to Spotify api. Check the client credentials");
         } catch (ParseException e) {
-            Loggy.logW("Could not connect to Spotify Api.\nLook for Tronic updates");
+            Loggy.logW("Could not connect to Spotify api. Look for Tronic updates");
         }
     }
 
