@@ -40,7 +40,7 @@ dependencies {
     implementation 'net.dv8tion:JDA:4.4.0_351'
     implementation 'com.github.LowLevelSubmarine:YoutubeMusicAPI:v1.3.1'
     implementation 'com.github.LowLevelSubmarine:GoogleAnswersAPI:v1.0.1'
-    implementation 'com.github.LowLevelSubmarine:Envelope:v0.1.5'
+    implementation 'com.github.LowLevelSubmarine:Envelope:v0.1.6'
     implementation 'com.github.LowLevelSubmarine:SubsConsole:0.0.1'
     implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
     implementation 'se.michaelthelin.spotify:spotify-web-api-java:7.0.0'

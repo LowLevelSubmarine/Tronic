@@ -33,16 +33,16 @@ public class Updater implements EnvelopeConnector {
         return this.envelope.isUpToDate();
     }
 
-    public void update(Update update) throws MalformedUpdateException, IOException {
-        Loggy.logD("Initiating update ...");
-        this.envelope.install(update);
-    }
-
     public Update download(Build build) {
         Loggy.logD("Downloading build " + build.getVersion() + " ...");
         Update update = this.envelope.download(build);
-        Loggy.logD("Successfully downloaded build " + build.getVersion());
+        Loggy.logD("Successfully downloaded build " + build.getVersion() + ".");
         return update;
+    }
+
+    public void update(Update update) throws MalformedUpdateException, IOException {
+        Loggy.logD("Initiating update from " + getCurrentVersion() + " to " + update.getBuild().getVersion() + " ...");
+        this.envelope.install(update);
     }
 
     @Override
