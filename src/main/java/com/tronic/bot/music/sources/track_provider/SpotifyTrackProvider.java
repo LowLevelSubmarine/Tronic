@@ -71,7 +71,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
 
     private QueueItem queueItemFromTrackId(String id) {
         try {
-            return queueItemFromSpotifyTrack(executeRequest(api.getTrack(id)));
+            return queueItemFromSpotifyTrack(executeRequest(() -> api.getTrack(id)));
         } catch (Exception e) {
             Loggy.logD("Failed creating queue item from spotify track id " + id + " " + e);
             return null;
@@ -80,13 +80,14 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
 
     private QueueItem queueItemFromPlaylistId(String id, int maxTracks) {
         try {
-            Playlist playlist = executeRequest(this.api.getPlaylist(id));
-            Paging<PlaylistTrack> paging = executeRequest(this.api.getPlaylistsItems(id).limit(100));
+            Playlist playlist = executeRequest(() -> this.api.getPlaylist(id));
+            Paging<PlaylistTrack> paging = executeRequest(() -> this.api.getPlaylistsItems(id).limit(100));
             List<PlaylistTrack> playlistTracks = new LinkedList<>();
             while (paging != null) {
                 playlistTracks.addAll(Arrays.asList(paging.getItems()));
                 if (paging.getNext() != null) {
-                    paging = executeRequest(this.api.getPlaylistsItems(id).limit(100).offset(paging.getOffset() + 100));
+                    final int offset = paging.getOffset() + 100;
+                    paging = executeRequest(() -> this.api.getPlaylistsItems(id).limit(100).offset(offset));
                 } else {
                     paging = null;
                 }
@@ -107,14 +108,18 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
         }
     }
 
-    private <T> T executeRequest(AbstractDataRequest.Builder<T, ?> request) throws IOException, SpotifyWebApiException, ParseException {
+    private <T> T executeRequest(RequestBlueprint<T> blueprint) throws IOException, SpotifyWebApiException, ParseException {
         try {
-            return request.build().execute();
+            return blueprint.constructRequest().build().execute();
         } catch (UnauthorizedException e) {
             Loggy.logD(e + " Executing access token refresh ...");
             updateApiToken();
-            return request.build().execute();
+            return blueprint.constructRequest().build().execute();
         }
+    }
+    
+    private interface RequestBlueprint<T> {
+        AbstractDataRequest.Builder<T, ?> constructRequest();
     }
 
     private void updateApiToken() throws IOException, SpotifyWebApiException, ParseException {
