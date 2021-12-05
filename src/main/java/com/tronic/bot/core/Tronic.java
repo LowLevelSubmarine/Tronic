@@ -4,7 +4,6 @@ import com.tronic.logger.Loggy;
 
 import javax.security.auth.login.LoginException;
 
-
 public class Tronic {
 
     private final ConfigProvider configProvider;
@@ -44,7 +43,6 @@ public class Tronic {
             e.printStackTrace();
         }
     }
-
 
     public ConfigProvider getConfigProvider() {
         return this.configProvider;

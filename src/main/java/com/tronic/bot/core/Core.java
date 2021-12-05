@@ -31,7 +31,7 @@ public class Core {
 
     private final Tronic tronic;
     private final LinkedList<ShutdownHook> shutdownHooks = new LinkedList<>();
-    private final LinkedList<BootupHook> bootupHooks = new LinkedList<BootupHook>();
+    private final LinkedList<BootupHook> bootupHooks = new LinkedList<>();
     private final Listeners listeners = new Listeners();
     private final JDA jda;
     private final Storage storage = new Storage();
@@ -44,6 +44,7 @@ public class Core {
 
 
     public Core(Tronic tronic) throws LoginException, InterruptedException {
+        Loggy.logI(Color.GREEN.tint("Tronic booting ..."));
         this.tronic = tronic;
         this.hostToken = tronic.getConfigProvider().getHost();
         this.jda = buildJDA(tronic.getConfigProvider().getToken());
@@ -53,7 +54,7 @@ public class Core {
         this.hyperchannelManager = new HyperchannelManager(this);
         this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
         bootupHooks.forEach(BootupHook::onBootup);
-        Loggy.logI(Color.GREEN.tint("Bot started!"));
+        Loggy.logI(Color.GREEN.tint("Tronic ready! Running version " + tronic.getUpdater().getCurrentVersion() + "."));
     }
 
     public void addShutdownHook(ShutdownHook hook) {
@@ -62,6 +63,14 @@ public class Core {
 
     public void removeShutdownHook(ShutdownHook hook) {
         this.shutdownHooks.remove(hook);
+    }
+
+    public void addBootupHook(BootupHook hook) {
+        this.bootupHooks.add(hook);
+    }
+
+    public void removeBootupHook(BootupHook hook) {
+        this.bootupHooks.remove(hook);
     }
 
     public void restartTronic() {
@@ -89,9 +98,10 @@ public class Core {
     }
 
     public void prepareShutdown(boolean restart) {
+        Loggy.logI(Color.GREEN.tint("Tronic shutting down ..."));
         shutdownHooks.forEach((shutdownHook -> shutdownHook.onShutdown(restart)));
         this.jda.shutdown();
-        Loggy.logI(Color.GREEN.tint("But shutdown successfull!"));
+        Loggy.logI(Color.GREEN.tint("Tronic shutdown successfull!"));
     }
 
     public Storage getStorage() {

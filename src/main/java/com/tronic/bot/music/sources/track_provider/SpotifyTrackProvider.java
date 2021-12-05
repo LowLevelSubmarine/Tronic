@@ -37,9 +37,9 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
                     .setClientId(core.getConfig().getSpotifyClientId())
                     .setClientSecret(core.getConfig().getSpotifyClientSecret())
                     .build();
-            Loggy.logI("Connected to Spotify Api");
             this.api = api;
             updateApiToken();
+            Loggy.logI("Connected to Spotify Api");
         } catch (IOException e) {
             Loggy.logW("Could not connect to Spotify Api.\nCheck internet connection");
         } catch (SpotifyWebApiException e) {
