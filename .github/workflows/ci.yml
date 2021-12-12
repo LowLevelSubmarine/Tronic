@@ -1,5 +1,5 @@
 name: CI
-on: [commit]
+on: push
 
 jobs:
   build:
