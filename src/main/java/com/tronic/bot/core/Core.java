@@ -47,6 +47,7 @@ public class Core {
 
 
     public Core(Tronic tronic) throws LoginException, InterruptedException {
+        Loggy.logI(Color.GREEN.tint("Tronic booting ..."));
         this.tronic = tronic;
         this.hostToken = tronic.getConfigProvider().getHost();
         this.jda = buildJDA(tronic.getConfigProvider().getToken());
@@ -56,7 +57,7 @@ public class Core {
         this.hyperchannelManager = new HyperchannelManager(this);
         this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
         bootupHooks.forEach(BootupHook::onBootup);
-        Loggy.logI(Color.GREEN.tint("Bot started!"));
+        Loggy.logI(Color.GREEN.tint("Tronic ready! Running version " + tronic.getUpdater().getCurrentVersion() + "."));
     }
 
     public void addShutdownHook(ShutdownHook hook) {
@@ -100,9 +101,10 @@ public class Core {
     }
 
     public void prepareShutdown(boolean restart) {
+        Loggy.logI(Color.GREEN.tint("Tronic shutting down ..."));
         shutdownHooks.forEach((shutdownHook -> shutdownHook.onShutdown(restart)));
         this.jda.shutdown();
-        Loggy.logI(Color.GREEN.tint("But shutdown successfull!"));
+        Loggy.logI(Color.GREEN.tint("Tronic shutdown successfull!"));
     }
 
     public Storage getStorage() {

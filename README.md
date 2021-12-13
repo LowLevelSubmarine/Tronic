@@ -1,6 +1,7 @@
-# Tronic
+# <img src="design/tronic%20logo%20small.png" style="width: 25px"> Tronic 
 The planets dopest Discord Bot
 (for real)
+
 
 ## Invite
 [Just click here!](https://discordapp.com/oauth2/authorize?scope=bot&client_id=554803884439240705&permissions=8)

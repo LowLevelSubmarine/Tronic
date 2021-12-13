@@ -10,6 +10,7 @@ import org.apache.hc.core5.http.ParseException;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.exceptions.detailed.UnauthorizedException;
+import se.michaelthelin.spotify.model_objects.credentials.ClientCredentials;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.Playlist;
 import se.michaelthelin.spotify.model_objects.specification.PlaylistTrack;
@@ -29,22 +30,22 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
 
     public SpotifyTrackProvider(Core core) {
         this.core = core;
-        Loggy.logI("Connecting to Spotify Api ...");
+        Loggy.logI("Connecting to Spotify api ...");
         try {
             SpotifyApi api;
             api = new SpotifyApi.Builder()
                     .setClientId(core.getConfig().getSpotifyClientId())
                     .setClientSecret(core.getConfig().getSpotifyClientSecret())
                     .build();
-            Loggy.logI("Connected to Spotify Api");
             this.api = api;
             updateApiToken();
+            Loggy.logI("Connected to Spotify api");
         } catch (IOException e) {
-            Loggy.logW("Could not connect to Spotify Api.\nCheck internet connection");
+            Loggy.logW("Could not connect to Spotify api. Check internet connection");
         } catch (SpotifyWebApiException e) {
-            Loggy.logW("Could not connect to Spotify Api.\nCheck the client credentials");
+            Loggy.logW("Could not connect to Spotify api. Check the client credentials");
         } catch (ParseException e) {
-            Loggy.logW("Could not connect to Spotify Api.\nLook for Tronic updates");
+            Loggy.logW("Could not connect to Spotify api. Look for Tronic updates");
         }
     }
 
@@ -70,7 +71,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
 
     private QueueItem queueItemFromTrackId(String id) {
         try {
-            return queueItemFromSpotifyTrack(executeRequest(api.getTrack(id).build()));
+            return queueItemFromSpotifyTrack(executeRequest(api.getTrack(id)));
         } catch (Exception e) {
             Loggy.logD("Failed creating queue item from spotify track id " + id + " " + e);
             return null;
@@ -79,13 +80,13 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
 
     private QueueItem queueItemFromPlaylistId(String id, int maxTracks) {
         try {
-            Playlist playlist = executeRequest(this.api.getPlaylist(id).build());
-            Paging<PlaylistTrack> paging = executeRequest(this.api.getPlaylistsItems(id).limit(100).build());
+            Playlist playlist = executeRequest(this.api.getPlaylist(id));
+            Paging<PlaylistTrack> paging = executeRequest(this.api.getPlaylistsItems(id).limit(100));
             List<PlaylistTrack> playlistTracks = new LinkedList<>();
             while (paging != null) {
                 playlistTracks.addAll(Arrays.asList(paging.getItems()));
                 if (paging.getNext() != null) {
-                    paging = executeRequest(this.api.getPlaylistsItems(id).limit(100).offset(paging.getOffset() + 100).build());
+                    paging = executeRequest(this.api.getPlaylistsItems(id).limit(100).offset(paging.getOffset() + 100));
                 } else {
                     paging = null;
                 }
@@ -106,23 +107,47 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
         }
     }
 
-    private <T> T executeRequest(AbstractDataRequest<T> request) throws IOException, SpotifyWebApiException, ParseException {
+    /**
+     * Executes the given request while dealing with invalid token responses.
+     * If executing the request fails due to an invalid access token,
+     * the access token updates and the request executes for a second try.
+     * @param builder The builder of the request
+     * @param <T> The type of the builders response
+     * @return The builders response
+     * @throws IOException Is thrown when the reques fails
+     * @throws SpotifyWebApiException Is thrown when the request fails
+     * @throws ParseException Is thrown when the request fails
+     */
+    private synchronized <T> T executeRequest(AbstractDataRequest.Builder<T, ?> builder) throws IOException, SpotifyWebApiException, ParseException {
         try {
-            return request.execute();
+            return builder.build().execute();
         } catch (UnauthorizedException e) {
             Loggy.logD(e + " Executing access token refresh ...");
             updateApiToken();
-            return request.execute();
+            forceUpdateAccessToken(builder);
+            return builder.build().execute();
         }
+    }
+
+    /**
+     * Overwrites the access token of a request builder with the apis current one.
+     * This is needed, as the library writes the access token to the builder
+     * when it is being constructed, which makes it impossible to resend
+     * after the access token has been updated.
+     * @param builder The builder to overwrite the access token of
+     */
+    private void forceUpdateAccessToken(AbstractDataRequest.Builder<?, ?> builder) {
+        builder.setHeader("Authorization", "Bearer " + this.api.getAccessToken());
     }
 
     private void updateApiToken() throws IOException, SpotifyWebApiException, ParseException {
         try {
-            Loggy.logD("Updating access token");
-            this.api.setAccessToken(api.clientCredentials().build().execute().getAccessToken());
-            Loggy.logD("Successfully updated access token");
+            Loggy.logD("Updating access token ...");
+            ClientCredentials credentials = api.clientCredentials().build().execute();
+            this.api.setAccessToken(credentials.getAccessToken());
+            Loggy.logD("Successfully updated access token, valid for " + credentials.getExpiresIn() / 60 + " minutes.");
         } catch (Exception e) {
-            Loggy.logW("Something went wrong while updating the Api Token: " + e + " This can cause further issues with spotify dependent features.");
+            Loggy.logW("Something went wrong while updating the access token: " + e + " This can cause further issues with spotify dependant features.");
             throw e;
         }
     }
