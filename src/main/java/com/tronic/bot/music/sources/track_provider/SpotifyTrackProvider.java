@@ -132,7 +132,7 @@ public class SpotifyTrackProvider implements UrlTrackProvider {
     /**
      * Overwrites the access token of a request builder with the apis current one.
      * This is needed, as the library writes the access token to the builder
-     * when it is beeing constructed, which makes it impossibile to resend
+     * when it is being constructed, which makes it impossible to resend
      * after the access token has been updated.
      * @param builder The builder to overwrite the access token of
      */
