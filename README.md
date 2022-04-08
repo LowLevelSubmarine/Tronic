@@ -20,12 +20,12 @@ Our current aim is to slowly transition to Kotlin. Which means, that new package
 
 ### Create release
 Just add the next version as a tag, and our CI generates a new build.
-Ask a bot admin to start a update, and your code is up and running.
+Ask a Tronic admin for an update, and your code will be up and running 10 seconds later.
 
 ## Install to host
 1.  Download the newest version
 2.  Just start the built jar in build/libs
-3.  Configure the bot by filling your Discord Bot-Token and your Discord user id as a host in the generated config.json
+3.  Configure the bot by filling in your Discord Bot-Token and your Discord user id as a its host in the generated config.json
 4.  Have fun & enjoy!
 
 ## License

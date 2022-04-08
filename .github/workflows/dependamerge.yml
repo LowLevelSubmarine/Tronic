@@ -1,4 +1,4 @@
-name: CI
+name: Dependamerge CI
 on: [pull_request]
 
 jobs:
