@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.github.LowLevelSubmarine:Envelope:v0.1.6'
     implementation 'com.github.LowLevelSubmarine:SubsConsole:0.0.1'
     implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
-    implementation 'se.michaelthelin.spotify:spotify-web-api-java:7.0.1'
+    implementation 'se.michaelthelin.spotify:spotify-web-api-java:7.1.0'
     implementation 'fr.bmartel:jspeedtest:1.32.1'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.17.2'
     implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
