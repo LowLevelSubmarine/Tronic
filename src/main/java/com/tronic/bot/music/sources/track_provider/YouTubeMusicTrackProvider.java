@@ -21,10 +21,13 @@ public class YouTubeMusicTrackProvider implements SearchTrackProvider {
 
     @Override
     public SingleQueueItem fromSingleSearch(String query) {
-        Song song = this.ytma.songPager(query).getResults().get(0);
-        if (song != null) {
-            Track track = new YouTubeMusicTrack(song);
-            return new SingleQueueItem(track);
+        var results = this.ytma.songPager(query).getResults();
+        if (!results.isEmpty()) {
+            Song song = this.ytma.songPager(query).getResults().get(0);
+            if (song != null) {
+                Track track = new YouTubeMusicTrack(song);
+                return new SingleQueueItem(track);
+            }
         }
         return null;
     }
