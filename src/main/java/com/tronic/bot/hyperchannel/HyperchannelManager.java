@@ -4,6 +4,7 @@ import com.tronic.bot.core.Core;
 import com.tronic.bot.storage.GuildStorage;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
@@ -11,6 +12,7 @@ import net.dv8tion.jda.api.requests.restaction.ChannelAction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class HyperchannelManager {
@@ -167,19 +169,6 @@ public class HyperchannelManager {
                 }
             }
             this.tronic.getStorage().getGuild(guild).setResidualHyper(residualHyper);
-        }
-    }
-
-    public void onChannelDelete(VoiceChannelDeleteEvent event) {
-        String nc = this.tronic.getStorage().getGuild(event.getGuild()).getNewChannel();
-        if ( this.tronic.getStorage().getGuild(event.getGuild()).getHyperchannelState()&& !this.tronic.getStorage().getGuild(event.getGuild()).getNewChannel().equals("") ) {
-            boolean state = false;
-           for (VoiceChannel vc:event.getGuild().getVoiceChannels()) {
-               if (vc.getId().equals(nc)) state=true;
-           }
-           if (!state) {
-               createNewChannel(event.getGuild(),this.tronic.getStorage().getGuild(event.getGuild()));
-           }
         }
     }
 
