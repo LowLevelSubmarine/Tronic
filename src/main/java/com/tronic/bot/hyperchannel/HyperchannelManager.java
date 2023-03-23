@@ -2,19 +2,15 @@ package com.tronic.bot.hyperchannel;
 
 import com.tronic.bot.core.Core;
 import com.tronic.bot.storage.GuildStorage;
-import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.unions.AudioChannelUnion;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.requests.restaction.ChannelAction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 public class HyperchannelManager {
@@ -56,10 +52,6 @@ public class HyperchannelManager {
         }
     }
 
-
-
-
-
     private void generateChannels() {
         for (Guild guild: tronic.getJDA().getGuilds()) {
             GuildStorage gs = this.tronic.getStorage().getGuild(guild);
@@ -84,28 +76,48 @@ public class HyperchannelManager {
         ChannelAction<VoiceChannel> newChannelProto = guild.createVoiceChannel(tronic.getStorage().getGuild(guild).getHyperName());
         if ( gs.getHyperCategory(guild)!=null) {
             newChannelProto.setPosition(0);
-            newChannelProto.setParent( gs.getHyperCategory(guild));
+            newChannelProto.setParent(gs.getHyperCategory(guild));
         }
         VoiceChannel newChannel = newChannelProto.complete();
         gs.setNewChannel(newChannel.getId());
     }
 
-    public void onUserJoins(GuildVoiceJoinEvent event) {
-        onNewMember(event.getGuild(),event.getChannelJoined(),event.getMember());
+    public void onGuildVoiceUpdate(GuildVoiceUpdateEvent event) {
+        final boolean userLeftChannel = event.getChannelLeft() != null;
+        final boolean userJoinedChannel = event.getChannelJoined() != null;
+        if (userJoinedChannel && !userLeftChannel) {
+            this.onUserJoined(event);
+        } else if (userJoinedChannel && userLeftChannel) {
+            this.onUserMoved(event);
+        } else if (!userJoinedChannel && userLeftChannel) {
+            this.onUserLeft(event);
+        }
     }
 
-    public void onUserMove(GuildVoiceMoveEvent event) {
+    public void onUserJoined(GuildVoiceUpdateEvent event) {
+        onNewMember(event.getGuild(), event.getChannelJoined(), event.getMember());
+    }
+
+    public void onUserMoved(GuildVoiceUpdateEvent event) {
         if (hyperIds.contains(event.getChannelLeft().getId())) {
             testAndRemoveHyper(event.getChannelLeft());
         }
         if (this.tronic.getStorage().getGuild(event.getGuild()).getHyperchannelState()) {
             if (this.tronic.getStorage().getGuild(event.getGuild()).getNewChannel().equals(event.getChannelJoined().getId())) {
-                onNewMember(event.getGuild(),event.getChannelJoined(),event.getMember());
+                onNewMember(event.getGuild(), event.getChannelJoined(), event.getMember());
             }
         }
     }
 
-    private void onNewMember(Guild guild,VoiceChannel channel,Member member) {
+    public void onUserLeft(GuildVoiceUpdateEvent event) {
+        if (this.hyperIds.contains(event.getChannelLeft().getId()) && event.getChannelLeft().getMembers().size() == 0) {
+            event.getChannelLeft().delete().queue();
+            this.hyperIds.remove(event.getChannelLeft().getId());
+            setResidualHyper();
+        }
+    }
+
+    private void onNewMember(Guild guild, AudioChannelUnion channel, Member member) {
         GuildStorage gs = this.tronic.getStorage().getGuild(guild);
         String hyperId =  gs.getNewChannel();
         String joinedId = channel.getId();
@@ -123,7 +135,7 @@ public class HyperchannelManager {
         }
     }
 
-    private void testAndRemoveHyper(VoiceChannel channelLeft) {
+    private void testAndRemoveHyper(AudioChannelUnion channelLeft) {
         if (this.hyperIds.contains(channelLeft.getId()) &&channelLeft.getMembers().size() == 0) {
             channelLeft.delete().queue();
             this.hyperIds.remove(channelLeft.getId());
@@ -134,14 +146,6 @@ public class HyperchannelManager {
     private String createChannelName() {
         Random random = new Random();
         return CHANNEL_NAME+" "+random.nextInt(9999);
-    }
-
-    public void onUserLeaves(GuildVoiceLeaveEvent event) {
-        if (this.hyperIds.contains(event.getChannelLeft().getId()) && event.getChannelLeft().getMembers().size() == 0) {
-            event.getChannelLeft().delete().queue();
-            this.hyperIds.remove(event.getChannelLeft().getId());
-            setResidualHyper();
-        }
     }
 
     public void onShutdown() {
@@ -166,7 +170,7 @@ public class HyperchannelManager {
         }
     }
 
-    public void onChannelDelete (VoiceChannelDeleteEvent event) {
+    public void onChannelDelete(VoiceChannelDeleteEvent event) {
         String nc = this.tronic.getStorage().getGuild(event.getGuild()).getNewChannel();
         if ( this.tronic.getStorage().getGuild(event.getGuild()).getHyperchannelState()&& !this.tronic.getStorage().getGuild(event.getGuild()).getNewChannel().equals("") ) {
             boolean state = false;
