@@ -13,7 +13,7 @@ import com.tronic.bot.tools.Markdown;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.util.LinkedList;
 
@@ -80,7 +80,7 @@ public class BroadcastCommand implements Command {
         SetBroadcastsCommand broadcastCommand = new SetBroadcastsCommand();
         for (Guild guild : guilds) {
             new Thread(() -> {
-                TextChannel channel = guild.getDefaultChannel();
+                TextChannel channel = guild.getSystemChannel();
                 if (channel != null && !this.info.getGuildStorage(guild).getBroadcastMuted()) {
                     Button muteButton = new Button(Emoji.NO_BELL, () -> {
                         this.info.getGuildStorage(guild).setBroadcastMuted(true);
@@ -91,7 +91,7 @@ public class BroadcastCommand implements Command {
                                         + "."
                         ).b()).complete();
                     }, new PermissionButtonValidator(info.getCore(), broadcastCommand.getPermission()));
-                    Message message = guild.getDefaultChannel().sendMessageEmbeds(this.draft).complete();
+                    Message message = channel.sendMessageEmbeds(this.draft).complete();
                     info.getButtonHandler().register(muteButton, message).complete();
                 }
             }).start();

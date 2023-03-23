@@ -3,7 +3,7 @@ package com.tronic.bot.listeners;
 import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class CommandListener extends Listener {
 

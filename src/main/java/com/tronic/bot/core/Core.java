@@ -181,26 +181,20 @@ public class Core {
 
         public final ButtonListener button = new ButtonListener(Core.this);
         public final CommandListener command = new CommandListener(Core.this);
-        public final ExperimentStartupListener experimentStartup = new ExperimentStartupListener(Core.this);
-        public final JoinListener join = new JoinListener(Core.this);
-        public final LeaveListener leave = new LeaveListener(Core.this);
         public final MessageLoggerListener messageLogger = new MessageLoggerListener(Core.this);
-        public final MoveListener move = new MoveListener(Core.this);
         public final QuestionListener question = new QuestionListener(Core.this);
         public final QueueItemListener queueItem = new QueueItemListener(Core.this);
         public final ReadyListener ready = new ReadyListener(Core.this);
+        public final VoiceUpdateListener voiceUpdate = new VoiceUpdateListener(Core.this);
 
         public void attachToBuilder(JDABuilder builder) {
             builder.addEventListeners(this.button);
             builder.addEventListeners(this.command);
-            builder.addEventListeners(this.experimentStartup);
-            builder.addEventListeners(this.join);
-            builder.addEventListeners(this.leave);
             builder.addEventListeners(this.messageLogger);
-            builder.addEventListeners(this.move);
             builder.addEventListeners(this.question);
             builder.addEventListeners(this.queueItem);
             builder.addEventListeners(this.ready);
+            builder.addEventListeners(this.voiceUpdate);
         }
 
     }

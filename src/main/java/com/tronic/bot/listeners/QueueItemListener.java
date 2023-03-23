@@ -4,18 +4,17 @@ import com.tronic.bot.buttons.Button;
 import com.tronic.bot.core.Core;
 import com.tronic.bot.music.playing.QueueItem;
 import com.tronic.bot.statics.Emoji;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class QueueItemListener extends Listener {
-
     public QueueItemListener(Core core) {
         super(core);
     }
 
     @Override
-    public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+    public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
+        if (!event.getChannelType().isGuild()) return;
         if (!event.getMessage().getContentRaw().startsWith("http")) return;
         QueueItem queueItem = getCore().getMusicManager().getTrackProvider().fromUrl(event.getMessage().getContentRaw());
         if (queueItem != null) {
@@ -27,12 +26,11 @@ public class QueueItemListener extends Listener {
     }
 
     private class OnPressListener implements Button.PressListener {
-
-        private final GuildMessageReceivedEvent event;
+        private final MessageReceivedEvent event;
         private final QueueItem queueItem;
         private Button button;
 
-        public OnPressListener(GuildMessageReceivedEvent event, QueueItem queueItem) {
+        public OnPressListener(MessageReceivedEvent event, QueueItem queueItem) {
             this.event = event;
             this.queueItem = queueItem;
         }
@@ -47,7 +45,5 @@ public class QueueItemListener extends Listener {
             getCore().getMusicManager().getPlayer(this.event.getGuild()).addToQueue(queueItem, this.event.getMember());
             this.event.getMessage().delete().complete();
         }
-
     }
-
 }

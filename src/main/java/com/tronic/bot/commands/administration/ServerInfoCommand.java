@@ -13,6 +13,7 @@ import com.tronic.bot.io.TronicMessage;
 import com.tronic.bot.statics.Emoji;
 import com.tronic.bot.tools.MessageChanger;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.utils.FileUpload;
 
 public class ServerInfoCommand implements Command {
 
@@ -58,7 +59,7 @@ public class ServerInfoCommand implements Command {
         for (Guild guild : this.info.getJDA().getGuilds()) {
             graph.addVertex(new Vertex<>(null, guild));
         }
-        this.info.getChannel().sendFile(graph.render().getBytes(), "guild-overview.txt").queue();
+        this.info.getChannel().sendFiles(FileUpload.fromData(graph.render().getBytes(), "guild-overview.txt")).queue();
     }
 
     private class GuildGraph extends GraphComposer<Guild> {

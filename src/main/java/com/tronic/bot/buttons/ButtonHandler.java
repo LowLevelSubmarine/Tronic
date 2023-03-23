@@ -1,6 +1,7 @@
 package com.tronic.bot.buttons;
 
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 import net.dv8tion.jda.api.requests.RestAction;
 
@@ -8,7 +9,6 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class ButtonHandler {
-
     private final HashMap<ButtonKey, Button> buttons = new HashMap<>();
 
     public void handle(GenericMessageReactionEvent event) {
@@ -20,7 +20,7 @@ public class ButtonHandler {
 
     public RestAction<Void> register(Button button, Message message) {
         register(button, message.getId());
-        return message.addReaction(button.getEmoji().getUtf8());
+        return message.addReaction(Emoji.fromFormatted(button.getEmoji().getUtf8()));
     }
 
     public void unregister(Button button, Message message) {
@@ -36,7 +36,6 @@ public class ButtonHandler {
     }
 
     private static class ButtonKey {
-
         private final String emoji;
         private final String messageId;
 
@@ -46,7 +45,7 @@ public class ButtonHandler {
         }
 
         public ButtonKey(GenericMessageReactionEvent event) {
-            this.emoji = event.getReactionEmote().getEmoji();
+            this.emoji = event.getEmoji().asUnicode().getFormatted();
             this.messageId = event.getMessageId();
         }
 
@@ -63,7 +62,5 @@ public class ButtonHandler {
         public int hashCode() {
             return Objects.hash(this.emoji, this.messageId);
         }
-
     }
-
 }
