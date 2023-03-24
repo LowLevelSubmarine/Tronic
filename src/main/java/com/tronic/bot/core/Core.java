@@ -28,7 +28,6 @@ import javax.security.auth.login.LoginException;
 import java.util.LinkedList;
 
 public class Core {
-
     private final Tronic tronic;
     private final LinkedList<ShutdownHook> shutdownHooks = new LinkedList<>();
     private final LinkedList<BootupHook> bootupHooks = new LinkedList<>();
@@ -41,7 +40,6 @@ public class Core {
     private final QuestionHandler questionHandler = new QuestionHandler(this);
     private final HyperchannelManager hyperchannelManager;
     private final String hostToken;
-
 
     public Core(Tronic tronic) throws LoginException, InterruptedException {
         Loggy.logI(Color.GREEN.tint("Tronic booting ..."));
@@ -139,6 +137,7 @@ public class Core {
     private JDA buildJDA(String token) throws LoginException {
         JDABuilder builder = JDABuilder.createDefault(token);
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
+        builder.enableIntents(GatewayIntent.MESSAGE_CONTENT);
         this.listeners.attachToBuilder(builder);
         return builder.build();
     }

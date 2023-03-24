@@ -109,6 +109,7 @@ class GuildStorage(val shelf: Shelf): StorageElement(shelf) {
     private fun setShortcuts(s: List<ShortcutElement> ) {
         super.set("shortcuts", s);
     }
+
     private fun containsShortcutName(shortcuts: List<ShortcutElement>, name:String): Boolean {
         var inn = false;
         for (s in shortcuts) {
@@ -119,7 +120,6 @@ class GuildStorage(val shelf: Shelf): StorageElement(shelf) {
         }
         return  inn
     }
-
 }
 
 class ObjectExistsException : Exception();
