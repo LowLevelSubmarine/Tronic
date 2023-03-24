@@ -34,7 +34,7 @@ public class InfoCommand implements Command {
         TronicMessage tm = new TronicMessage("Info","Tronic is currently running on version " + Info.VERSION + ".\n" +
                 "You can " + Markdown.uri("invite Tronic here", inviteUrl) + ".\n" +
                 "View the " + Markdown.uri("official Tronic GitHub repo", GitHub.REPO_URL) + ".");
-        info.getChannel().sendMessage(tm.b()).queue();
+        info.getChannel().sendMessageEmbeds(tm.b()).queue();
     }
 
     @Override

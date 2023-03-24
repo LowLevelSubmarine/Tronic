@@ -139,7 +139,7 @@ public class CommandHandler {
                 this.isAutoCompleted = true;
                 checkAndRun();
             } else if (this.commandInvokeProximity > 0.05F) {
-                this.confirmCorrectionMessage = this.commandInfo.getChannel().sendMessage(
+                this.confirmCorrectionMessage = this.commandInfo.getChannel().sendMessageEmbeds(
                         new TronicMessage("Did you mean `" + this.command.invoke() + "` ?").b()
                 ).complete();
                 Button noButton = new Button(Emoji.X, this::onPressNo);
@@ -170,7 +170,7 @@ public class CommandHandler {
                 try {
                     this.command.getClass().getDeclaredConstructor().newInstance().run(this.commandInfo);
                 } catch (InvalidCommandArgumentsException e) {
-                    this.commandInfo.getEvent().getChannel().sendMessage(new TronicMessage("Correct Syntax: "+this.command.getHelpInfo().getSyntax()).b()).queue();
+                    this.commandInfo.getEvent().getChannel().sendMessageEmbeds(new TronicMessage("Correct Syntax: "+this.command.getHelpInfo().getSyntax()).b()).queue();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

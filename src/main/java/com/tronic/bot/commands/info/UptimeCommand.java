@@ -31,7 +31,7 @@ public class UptimeCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        info.getEvent().getChannel().sendMessage(new TronicMessage("Uptime",uptimeMessage()).b()).queue();
+        info.getEvent().getChannel().sendMessageEmbeds(new TronicMessage("Uptime",uptimeMessage()).b()).queue();
     }
 
     @Override

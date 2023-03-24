@@ -31,7 +31,7 @@ public class SayCommand implements Command {
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         try {
             String text = info.getArguments().parse(new TextArgument()).getOrThrowException();
-            info.getEvent().getChannel().sendMessage(new TronicMessage(text).b()).queue();
+            info.getEvent().getChannel().sendMessageEmbeds(new TronicMessage(text).b()).queue();
         } catch (InvalidArgumentException e) {
             throw new InvalidCommandArgumentsException();
         }

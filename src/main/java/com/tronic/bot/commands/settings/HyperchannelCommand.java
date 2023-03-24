@@ -35,35 +35,35 @@ public class HyperchannelCommand implements Command {
                 switch (option) {
                     case "activate":
                         info.getCore().getStorage().getGuild(info.getEvent().getGuild()).setHyperchannelState((value.equals("true")));
-                        if (value.equals("true")) info.getChannel().sendMessage(new TronicMessage("Activate Hyperchannel!").b()).queue();
-                        if (!value.equals("true")) info.getChannel().sendMessage(new TronicMessage("Deactivate Hyperchannel!").b()).queue();
+                        if (value.equals("true")) info.getChannel().sendMessageEmbeds(new TronicMessage("Activate Hyperchannel!").b()).queue();
+                        if (!value.equals("true")) info.getChannel().sendMessageEmbeds(new TronicMessage("Deactivate Hyperchannel!").b()).queue();
                         info.getCore().getHyperchannelManager().refreshHyper(info.getGuild());
                         break;
                     case "category":
                         info.getCore().getHyperchannelManager().setHyperCategory(value,info.getEvent().getGuild());
-                        info.getChannel().sendMessage(new TronicMessage("Change new HyperChannelCategory to "+value+" !").b()).queue();
+                        info.getChannel().sendMessageEmbeds(new TronicMessage("Change new HyperChannelCategory to "+value+" !").b()).queue();
                         break;
                     case "name":
                         info.getCore().getHyperchannelManager().hyperChannelRename(value,info.getEvent().getGuild());
-                        info.getChannel().sendMessage(new TronicMessage("Change new HyperChannel to "+value+" !").b()).queue();
+                        info.getChannel().sendMessageEmbeds(new TronicMessage("Change new HyperChannel to "+value+" !").b()).queue();
                         break;
                 }
             } catch (NullPointerException e) {
                 switch (option) {
                     case "activate":
-                        info.getChannel().sendMessage(new TronicMessage("Please use true or false as an value!").b()).queue();
+                        info.getChannel().sendMessageEmbeds(new TronicMessage("Please use true or false as an value!").b()).queue();
                         break;
                     case "category":
                         info.getCore().getHyperchannelManager().setHyperCategory(null,info.getEvent().getGuild());
-                        info.getChannel().sendMessage(new TronicMessage("HyperChannels are now not using a category (Not Recommended)!").b()).queue();
+                        info.getChannel().sendMessageEmbeds(new TronicMessage("HyperChannels are now not using a category (Not Recommended)!").b()).queue();
                         break;
                     case "name":
-                        info.getChannel().sendMessage(new TronicMessage("Please enter a name!").b()).queue();
+                        info.getChannel().sendMessageEmbeds(new TronicMessage("Please enter a name!").b()).queue();
                         break;
                 }
             }
         } catch (InvalidArgumentException |NullPointerException e) {
-            info.getChannel().sendMessage(new TronicMessage("Please use activate|category|name as an option!").b()).queue();
+            info.getChannel().sendMessageEmbeds(new TronicMessage("Please use activate|category|name as an option!").b()).queue();
         }
     }
     @Override

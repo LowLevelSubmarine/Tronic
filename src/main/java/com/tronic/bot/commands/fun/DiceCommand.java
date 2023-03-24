@@ -30,7 +30,7 @@ public class DiceCommand implements Command {
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
         int value = new Random().nextInt(6) + 1;
-        info.getEvent().getChannel().sendMessage(new TronicMessage("The dice says: " + value).b()).queue();
+        info.getEvent().getChannel().sendMessageEmbeds(new TronicMessage("The dice says: " + value).b()).queue();
     }
 
     @Override

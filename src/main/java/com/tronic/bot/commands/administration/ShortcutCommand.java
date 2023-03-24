@@ -43,7 +43,7 @@ public class ShortcutCommand implements Command {
             switch (option) {
                 case "create":
                     if (isNameBlocked(name,info.getCore())) {
-                        info.getChannel().sendMessage(new TronicMessage("Cannot create shortcut '"+name+"', the name is reserved for a Tronic feature").b()).queue();
+                        info.getChannel().sendMessageEmbeds(new TronicMessage("Cannot create shortcut '"+name+"', the name is reserved for a Tronic feature").b()).queue();
                         return;
                     }
                     String commands = info.getArguments().getString();
@@ -53,32 +53,32 @@ public class ShortcutCommand implements Command {
                             String invoke = c.contains(" ")? c.split(" ")[0]: c;
                             Command command = info.getCore().getCommandHandler().getCommand(invoke);
                             if (command== null) {
-                                info.getChannel().sendMessage(new TronicMessage("Syntax error! Command '"+invoke+"' not found").b()).queue();
+                                info.getChannel().sendMessageEmbeds(new TronicMessage("Syntax error! Command '"+invoke+"' not found").b()).queue();
                                 return;
                             }else {
                                 if (command.getPermission() != Permission.NONE) {
-                                    info.getChannel().sendMessage(new TronicMessage("Syntax error! Command '"+c+"' has a permission level over NONE.").b()).queue();
+                                    info.getChannel().sendMessageEmbeds(new TronicMessage("Syntax error! Command '"+c+"' has a permission level over NONE.").b()).queue();
                                     return;
                                 }
                             }
                         }
                         info.getCore().getStorage().getGuild(info.getGuild()).addShortcut(ShortcutElement.builder(name,commands));
-                        info.getChannel().sendMessage(new TronicMessage("Created shortcut '"+name+"'").b()).queue();
+                        info.getChannel().sendMessageEmbeds(new TronicMessage("Created shortcut '"+name+"'").b()).queue();
                     }catch (ObjectExistsException e) {
-                        info.getChannel().sendMessage(new TronicMessage("Cannot create shortcut '"+name+"', because it already exists").b()).queue();
+                        info.getChannel().sendMessageEmbeds(new TronicMessage("Cannot create shortcut '"+name+"', because it already exists").b()).queue();
                     }
                     break;
                 case "delete":
                     try {
                         info.getCore().getStorage().getGuild(info.getGuild()).removeShortcut(name);
-                        info.getChannel().sendMessage(new TronicMessage("Delete shortcut '"+name+"'").b()).queue();
+                        info.getChannel().sendMessageEmbeds(new TronicMessage("Delete shortcut '"+name+"'").b()).queue();
                     }catch (NoSuchElementException e) {
-                        info.getChannel().sendMessage(new TronicMessage("Cannot delete shortcut '"+name+"', because it does not exists").b()).queue();
+                        info.getChannel().sendMessageEmbeds(new TronicMessage("Cannot delete shortcut '"+name+"', because it does not exists").b()).queue();
                     }
                     break;
             }
         } catch (InvalidArgumentException |NullPointerException e) {
-            info.getChannel().sendMessage(new TronicMessage("Please use create|delete as an option!").b()).queue();
+            info.getChannel().sendMessageEmbeds(new TronicMessage("Please use create|delete as an option!").b()).queue();
         }
     }
 

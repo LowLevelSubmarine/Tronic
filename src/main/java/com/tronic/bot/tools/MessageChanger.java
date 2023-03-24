@@ -4,8 +4,8 @@ import com.tronic.bot.buttons.Button;
 import com.tronic.bot.buttons.ButtonHandler;
 import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 public class MessageChanger implements Runnable {
 
@@ -63,7 +63,7 @@ public class MessageChanger implements Runnable {
         }
 
         public Message changeMessage(MessageChannel channel) {
-            Message message = channel.sendMessage(this.embed).complete();
+            Message message = channel.sendMessageEmbeds(this.embed).complete();
             for (Button button : this.buttons) {
                 this.buttonHandler.register(button, message).complete();
             }
@@ -71,7 +71,7 @@ public class MessageChanger implements Runnable {
         }
 
         public Message changeMessage(Message message) {
-            message.editMessage(this.embed).complete();
+            message.editMessageEmbeds(this.embed).complete();
             message.clearReactions().complete();
             for (Button button : this.buttons) {
                 this.buttonHandler.register(button, message).complete();

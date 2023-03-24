@@ -4,7 +4,7 @@ import com.tronic.bot.core.Core;
 import com.tronic.bot.io.Logger;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class MessageLoggerListener extends Listener {
 

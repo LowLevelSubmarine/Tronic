@@ -33,10 +33,10 @@ public class CoHosterCommand implements Command {
         try {
             String option = info.getArguments().splitParse(new SingleArgument()).getOrThrowException();
             String users = "";
-            if (info.getEvent().getMessage().getMentionedMembers().isEmpty()) {
+            if (info.getEvent().getMessage().getMentions().getMembers().isEmpty()) {
                 throw new InvalidCommandArgumentsException();
             }
-            for (Member member:info.getEvent().getMessage().getMentionedMembers()) {
+            for (Member member : info.getEvent().getMessage().getMentions().getMembers()) {
                 users += member.getAsMention();
                 switch (option) {
                     case "add":
@@ -51,7 +51,7 @@ public class CoHosterCommand implements Command {
             }
             String action = option.equals("add")? "Added":"Removed";
             String word = option.equals("add")? "to":"from";
-            info.getChannel().sendMessage(new TronicMessage(action+": "+users+" "+word+" the Cohoster list").b()).queue();
+            info.getChannel().sendMessageEmbeds(new TronicMessage(action+": "+users+" "+word+" the Cohoster list").b()).queue();
         } catch (InvalidArgumentException|NullPointerException e) {
             throw new InvalidCommandArgumentsException();
         }
