@@ -17,6 +17,7 @@ import com.tronic.bot.music.MusicManager;
 import com.tronic.bot.questions.QuestionHandler;
 import com.tronic.bot.statics.Presets;
 import com.tronic.bot.storage.Storage;
+import com.tronic.bot.tools.JDAUtils;
 import com.tronic.logger.Color;
 import com.tronic.logger.Loggy;
 import net.dv8tion.jda.api.JDA;
@@ -47,10 +48,11 @@ public class Core {
         this.hostToken = tronic.getConfigProvider().getHost();
         this.jda = buildJDA(tronic.getConfigProvider().getToken());
         this.jda.awaitReady();
+        Loggy.logI("Logged in as " + JDAUtils.getFullName(this.jda.getSelfUser()));
         addCommands();
         this.musicManager = new MusicManager(this);
         this.hyperchannelManager = new HyperchannelManager(this);
-        this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX +"help"));
+        this.jda.getPresence().setActivity(Activity.playing(Presets.PREFIX + "help"));
         bootupHooks.forEach(BootupHook::onBootup);
         Loggy.logI(Color.GREEN.tint("Tronic ready! Running version " + tronic.getUpdater().getCurrentVersion() + "."));
     }
