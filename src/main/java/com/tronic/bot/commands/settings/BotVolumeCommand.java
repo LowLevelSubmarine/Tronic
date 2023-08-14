@@ -29,9 +29,9 @@ public class BotVolumeCommand implements Command {
         Integer vol = Integer.parseInt(info.getArguments().getString());
         if (vol<=200 && vol>=0) {
             info.getCore().getStorage().getStatic().setBotVolume(Integer.parseInt(info.getArguments().getString())/100);
-            info.getChannel().sendMessage(new TronicMessage("Bot Volume is set to "+info.getCore().getStorage().getStatic().getBotVolume()*100).b()).queue();
+            info.getChannel().sendMessageEmbeds(new TronicMessage("Bot Volume is set to "+info.getCore().getStorage().getStatic().getBotVolume()*100).b()).queue();
         } else {
-            info.getChannel().sendMessage(new TronicMessage("Bot Volume out of range! Enter a value between 0 and 200").b()).queue();
+            info.getChannel().sendMessageEmbeds(new TronicMessage("Bot Volume out of range! Enter a value between 0 and 200").b()).queue();
         }
 
     }

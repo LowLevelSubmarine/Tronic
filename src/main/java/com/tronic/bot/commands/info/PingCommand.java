@@ -30,7 +30,7 @@ public class PingCommand implements Command {
     public void run(CommandInfo info) {
         JDA jda = info.getJDA();
         long pingTime = jda.getGatewayPing();
-        info.getEvent().getChannel().sendMessage(new TronicMessage("The current API response time is  "+pingTime+"ms").b()).queue();
+        info.getEvent().getChannel().sendMessageEmbeds(new TronicMessage("The current API response time is  "+pingTime+"ms").b()).queue();
     }
 
     @Override

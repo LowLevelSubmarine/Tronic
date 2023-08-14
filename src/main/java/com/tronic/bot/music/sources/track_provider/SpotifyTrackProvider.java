@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 public class SpotifyTrackProvider implements UrlTrackProvider {
 
-    private static final Pattern PATTERN_SPOTIFY_TRACK_URL = Pattern.compile("http[s]?:\\/\\/[^.]*\\.spotify\\.com\\/track\\/([a-zA-Z0-9]+)[^ ]*");
+    private static final Pattern PATTERN_SPOTIFY_TRACK_URL = Pattern.compile("http[s]?:\\/\\/[^.]*(?:open\\.)?spotify\\.com(?:\\/intl-\\w{2})?\\/track\\/([a-zA-Z0-9]+)[^ ]*");
     private static final Pattern PATTERN_SPOTIFY_PLAYLIST_URL = Pattern.compile("http[s]?:\\/\\/[^.]*\\.spotify\\.com\\/playlist\\/([a-zA-Z0-9]+)[^ ]*");
     private final Core core;
     private SpotifyApi api;

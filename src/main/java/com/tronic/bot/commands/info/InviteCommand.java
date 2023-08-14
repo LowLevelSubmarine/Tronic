@@ -28,7 +28,7 @@ public class InviteCommand implements Command {
 
     @Override
     public void run(CommandInfo info) throws InvalidCommandArgumentsException {
-        info.getChannel().sendMessage(new TronicMessage(
+        info.getChannel().sendMessageEmbeds(new TronicMessage(
                 Markdown.uri("Here's the invite link", createInviteUrl(info))
         ).b()).queue();
     }

@@ -1,6 +1,7 @@
 package com.tronic.bot.tools;
 
 import com.tronic.bot.statics.Emoji;
+import net.dv8tion.jda.api.entities.User;
 
 import java.util.regex.Pattern;
 
@@ -31,4 +32,7 @@ public class JDAUtils {
         }
     }
 
+    public static String getFullName(User user) {
+        return user.getName() + "#" + user.getDiscriminator();
+    }
 }
