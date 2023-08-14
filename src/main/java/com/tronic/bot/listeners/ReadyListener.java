@@ -2,9 +2,7 @@ package com.tronic.bot.listeners;
 
 import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.ReadyEvent;
-
-import javax.annotation.Nonnull;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 
 public class ReadyListener extends Listener {
 
@@ -13,7 +11,7 @@ public class ReadyListener extends Listener {
     }
 
     @Override
-    public void onReady(@Nonnull ReadyEvent event) {
+    public void onReady(ReadyEvent event) {
         for (Guild guild : event.getJDA().getGuilds()) {
             new Thread(() -> guild.getAudioManager().closeAudioConnection()).start();
         }

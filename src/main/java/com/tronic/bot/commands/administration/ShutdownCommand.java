@@ -37,7 +37,7 @@ public class ShutdownCommand implements Command {
     public void run(CommandInfo info) {
         this.info = info;
         MessageEmbed embed = new TronicMessage("Do you really want to shut me down?").b();
-        this.message = info.getEvent().getChannel().sendMessage(embed).complete();
+        this.message = info.getEvent().getChannel().sendMessageEmbeds(embed).complete();
         Logger.log(this, Emoji.WHITE_CHECK_MARK.getUtf8());
         Button confirmButton = new Button(Emoji.WHITE_CHECK_MARK, this::onConfirm);
         Button discardButton = new Button(Emoji.X, this::onDiscard);

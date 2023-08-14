@@ -10,6 +10,7 @@ import com.tronic.bot.storage.StaticStorage;
 import com.tronic.bot.storage.UserStorage;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandInfo {
@@ -64,7 +65,7 @@ public class CommandInfo {
         return this.getEvent().getMember();
     }
 
-    public MessageChannel getChannel() {
+    public MessageChannelUnion getChannel() {
         return this.event.getChannel();
     }
 

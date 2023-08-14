@@ -3,7 +3,7 @@ package com.tronic.bot.storage;
 import com.toddway.shelf.Shelf;
 import com.tronic.bot.shortcuts.ShortcutElement;
 import com.tronic.bot.statics.Presets;
-import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.channel.concrete.Category;
 import net.dv8tion.jda.api.entities.Guild;
 
 import kotlin.NoSuchElementException
@@ -109,6 +109,7 @@ class GuildStorage(val shelf: Shelf): StorageElement(shelf) {
     private fun setShortcuts(s: List<ShortcutElement> ) {
         super.set("shortcuts", s);
     }
+
     private fun containsShortcutName(shortcuts: List<ShortcutElement>, name:String): Boolean {
         var inn = false;
         for (s in shortcuts) {
@@ -119,7 +120,6 @@ class GuildStorage(val shelf: Shelf): StorageElement(shelf) {
         }
         return  inn
     }
-
 }
 
 class ObjectExistsException : Exception();

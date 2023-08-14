@@ -55,7 +55,7 @@ public class HelpCommand implements Command {
             tm.addField(comT.getDisplayName()+" "+comT.getEmoji().getUtf8(),s,false);
         }
 
-        info.getAuthor().openPrivateChannel().complete().sendMessage(tm.b()).queue();
+        info.getAuthor().openPrivateChannel().complete().sendMessageEmbeds(tm.b()).queue();
     }
 
     private boolean testPem(Permission pem,Command c) {

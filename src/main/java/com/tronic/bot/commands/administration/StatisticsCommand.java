@@ -5,6 +5,7 @@ import com.tronic.bot.commands.*;
 import com.tronic.bot.stats.CommandStatisticsElement;
 import com.tronic.bot.stats.StatisticsGraphRenderer;
 import com.tronic.bot.stats.StatisticsHandler;
+import net.dv8tion.jda.api.utils.FileUpload;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class StatisticsCommand implements Command {
         for (String s:commandAmount.keySet()) {
             lg.addVertex(new Vertex<>(s,commandAmount.get(s)));
         }
-        info.getChannel().sendFile(lg.render().getBytes(),"Statistics.txt").submit();
+        info.getChannel().sendFiles(FileUpload.fromData(lg.render().getBytes(), "Statistics.txt")).submit();
     }
 
     public String getDDMMYYY(Long timestamp) {

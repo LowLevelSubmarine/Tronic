@@ -8,7 +8,7 @@ import com.tronic.bot.core.Core;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.util.IdentityHashMap;
 import java.util.LinkedList;
@@ -33,8 +33,8 @@ public class Player extends AudioEventAdapter {
         return this.core;
     }
 
-    public TextChannel getChannel() {
-        return this.guild.getDefaultChannel();
+    public MessageChannel getChannel() {
+        return this.guild.getSystemChannel();
     }
 
     public void addToQueue(QueueItem queueItem, Member owner) {
@@ -126,7 +126,7 @@ public class Player extends AudioEventAdapter {
     private boolean ensureConnection(Member target) {
         if (!this.guild.getAudioManager().isConnected()) {
             GuildVoiceState voiceState = target.getVoiceState();
-            if (voiceState != null && voiceState.inVoiceChannel()) {
+            if (voiceState != null && voiceState.inAudioChannel()) {
                 this.guild.getAudioManager().openAudioConnection(voiceState.getChannel());
             }
             return true;
@@ -174,7 +174,6 @@ public class Player extends AudioEventAdapter {
         return null;
     }
 
-
     public interface EventListener {
         void onQueueItemRemoved(QueueItem queueItem, Player player);
         void onQueueItemChanged(QueueItem oldQueueItem, QueueItem newQueueItem, boolean skipped, Player player);
@@ -182,5 +181,4 @@ public class Player extends AudioEventAdapter {
         void onStateChanged(boolean paused, Player player);
         QueueMessage registerSelf(QueueItem queueItem);
     }
-
 }
