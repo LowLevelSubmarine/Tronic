@@ -47,7 +47,7 @@ dependencies {
     implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
     implementation 'se.michaelthelin.spotify:spotify-web-api-java:8.0.0'
     implementation 'fr.bmartel:jspeedtest:1.32.1'
-    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.18.0'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.18.0'
     implementation 'com.github.LowLevelSubmarine:SubsConsole:0.0.1'
     implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
