@@ -39,7 +39,7 @@ dependencies {
     implementation 'dev.arbjerg:lavaplayer:2.0.1'
     implementation 'com.toddway.shelf:Shelf:2.0.7'
     implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'net.dv8tion:JDA:5.0.0-beta.10'
+    implementation 'net.dv8tion:JDA:5.0.0-beta.15'
     implementation 'com.github.LowLevelSubmarine:YoutubeMusicAPI:v1.3.2'
     implementation 'com.github.LowLevelSubmarine:GoogleAnswersAPI:v1.0.1'
     implementation 'com.github.LowLevelSubmarine:Envelope:v0.1.6'
