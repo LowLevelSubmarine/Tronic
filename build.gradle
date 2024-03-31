@@ -28,6 +28,7 @@ sentry {
 
     org = "happy-square"
     projectName = "tronic"
+    autoUpload = false
 }
 
 gradle.projectsEvaluated {
