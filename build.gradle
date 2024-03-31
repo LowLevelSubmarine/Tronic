@@ -28,7 +28,6 @@ sentry {
 
     org = "happy-square"
     projectName = "tronic"
-    authToken = System.getenv("SENTRY_AUTH_TOKEN")
 }
 
 gradle.projectsEvaluated {
