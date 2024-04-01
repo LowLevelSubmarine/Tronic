@@ -13,5 +13,5 @@ public interface ConfigProvider {
     String getSpotifyClientSecret();
     Collection<Receiver> getLogReceivers();
     boolean getActivateApi();
-
+    String getSentryDsn();
 }

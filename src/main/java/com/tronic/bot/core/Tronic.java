@@ -1,6 +1,7 @@
 package com.tronic.bot.core;
 
 import com.tronic.logger.Loggy;
+import io.sentry.Sentry;
 
 import javax.security.auth.login.LoginException;
 
@@ -11,6 +12,12 @@ public class Tronic {
     private final Updater updater = new Updater(this);
 
     public Tronic(ConfigProvider configProvider) {
+        Sentry.init(options -> {
+            options.setDsn((configProvider.getSentryDsn() != null)? configProvider.getSentryDsn(): "");
+            // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+            // We recommend adjusting this value in production.
+            options.setTracesSampleRate(1.0);
+        });
         Loggy.quickStart();
         if (configProvider.getLogReceivers() != null) {
             Loggy.addReceivers(configProvider.getLogReceivers());

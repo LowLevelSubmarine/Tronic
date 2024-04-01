@@ -31,6 +31,7 @@ public class ReleaseConfig implements ConfigProvider {
         String hostId = "The User Id of Tronics hoster";
         boolean debug = false;
         boolean activateApi = false;
+        String sentryDsn = "";
     }
 
     private static class ConfigException extends RuntimeException {}
@@ -103,6 +104,11 @@ public class ReleaseConfig implements ConfigProvider {
     @Override
     public boolean getActivateApi() {
         return this.dto.activateApi;
+    }
+
+    @Override
+    public String getSentryDsn() {
+        return this.dto.sentryDsn;
     }
 
 }
