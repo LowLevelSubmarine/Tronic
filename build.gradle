@@ -48,7 +48,7 @@ dependencies {
     //implementation 'com.github.sedmelluq:lavaplayer:1.3.78'
     //implementation 'com.github.idpromnut:lavaplayer:1.3.78'
     //implementation 'dev.arbjerg:lavaplayer:2.1.0'
-    implementation 'com.github.lavalink-devs.lavaplayer:lavaplayer:use-web-client-SNAPSHOT'
+    implementation 'com.github.lavalink-devs.lavaplayer:lavaplayer:2.2.0'
     implementation 'com.toddway.shelf:Shelf:2.0.7'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'net.dv8tion:JDA:5.0.0-beta.21'
