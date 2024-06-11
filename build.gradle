@@ -41,6 +41,7 @@ repositories {
     maven { url 'https://jitpack.io' }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     maven { url 'https://m2.dv8tion.net/releases' }
+    maven{ url = "https://maven.lavalink.dev/releases"}
 }
 
 dependencies {
@@ -50,6 +51,7 @@ dependencies {
     //implementation 'dev.arbjerg:lavaplayer:2.1.0'
     //implementation 'com.github.lavalink-devs.lavaplayer:lavaplayer:use-web-client-SNAPSHOT'
     implementation 'dev.arbjerg:lavaplayer:2.2.0'
+    implementation 'dev.lavalink.youtube:v2:1.3.0'
     implementation 'com.toddway.shelf:Shelf:2.0.7'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'net.dv8tion:JDA:5.0.0-beta.21'
