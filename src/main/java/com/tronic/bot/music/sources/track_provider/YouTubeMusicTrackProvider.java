@@ -2,13 +2,13 @@ package com.tronic.bot.music.sources.track_provider;
 
 import com.lowlevelsubmarine.ytma.core.YTMA;
 import com.lowlevelsubmarine.ytma.entity.Song;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import com.tronic.bot.music.playing.SingleQueueItem;
 import com.tronic.bot.music.sources.Track;
 import com.tronic.bot.tools.CollectionUtils;
+import dev.lavalink.youtube.YoutubeAudioSourceManager;
+import dev.lavalink.youtube.track.YoutubeAudioTrack;
 
 import java.util.List;
 import java.util.stream.Collectors;
